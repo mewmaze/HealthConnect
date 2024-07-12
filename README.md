@@ -1,7 +1,20 @@
 # 실행하기 전 앞서서 해야할 것
-## npm install (라이브러리 설치) (mui 컴포넌트 구동에 필요)
+## npm install (라이브러리 설치)
+### 일부 필 리액트 라이브러리
 `{
 
+    axios
+    react-calendar
+    react-router-dom
+    
+`
+
+###(mui 컴포넌트 구동에 필요)
+`{
+
+    @emotion/react
+    @emotion/styled
+    
     @mui/base/Tabs
     @mui/base/Tab
     @mui/base/TabsList
@@ -12,6 +25,7 @@
     @mui/icons-material/ChevronLeftRounded
     @mui/icons-material/ChevronRightRounded
 
+    @mui/styled-engine
     @mui/system
 
     @mui/material
