@@ -6,7 +6,7 @@
     react-calendar
     react-router-dom
 
-(mui 컴포넌트 구동에 필요)
+### mui, emotion 라이브러리
 
     @emotion/react
     @emotion/styled
