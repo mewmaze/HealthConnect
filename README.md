@@ -2,15 +2,25 @@
 ## npm install (라이브러리 설치)
 `
 '@mui/base/Tabs';
+
  '@mui/base/Tab';
+ 
  '@mui/base/TabsList';
+ 
  '@mui/base/TablePagination';
+ 
  '@mui/icons-material/FirstPageRounded';
+ 
  '@mui/icons-material/LastPageRounded';
+ 
  '@mui/icons-material/ChevronLeftRounded';
+ 
  '@mui/icons-material/ChevronRightRounded';
+ 
  '@mui/system';
+ 
  '@mui/material';
+ 
  'styled-components';
 `
 
