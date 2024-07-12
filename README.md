@@ -1,5 +1,5 @@
 # 실행하기 전 앞서서 해야할 것
-## npm install (라이브러리 설치)
+## npm install (라이브러리 설치) (mui 컴포넌트 구동에 필요)
 `{
 
     @mui/base/Tabs
