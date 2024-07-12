@@ -1,15 +1,12 @@
 # 실행하기 전 앞서서 해야할 것
 ## npm install (라이브러리 설치)
 ### 일부 필요한 리액트 라이브러리
-`
 
     axios
     react-calendar
     react-router-dom
-`
 
 (mui 컴포넌트 구동에 필요)
-`
 
     @emotion/react
     @emotion/styled
@@ -30,7 +27,6 @@
     @mui/material
 
     styled-components
-`
 
 # Getting Started with Create React App
 
