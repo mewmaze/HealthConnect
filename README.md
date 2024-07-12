@@ -1,22 +1,22 @@
 # 실행하기 전 앞서서 해야할 것
 ## npm install (라이브러리 설치)
-`
-@mui/base/Tabs
+`{
 
-@mui/base/Tab
-@mui/base/TabsList
-@mui/base/TablePagination
+    @mui/base/Tabs
+    @mui/base/Tab
+    @mui/base/TabsList
+    @mui/base/TablePagination
+    
+    @mui/icons-material/FirstPageRounded
+    @mui/icons-material/LastPageRounded
+    @mui/icons-material/ChevronLeftRounded
+    @mui/icons-material/ChevronRightRounded
 
-@mui/icons-material/FirstPageRounded
-@mui/icons-material/LastPageRounded
-@mui/icons-material/ChevronLeftRounded
-@mui/icons-material/ChevronRightRounded
+    @mui/system
 
-@mui/system
+    @mui/material
 
-@mui/material
-
-styled-components
+    styled-components
 `
 
 # Getting Started with Create React App
