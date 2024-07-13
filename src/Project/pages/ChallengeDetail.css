@@ -25,3 +25,7 @@
 .ChallengeTitle-count{
     margin-top: 20px;
 }
+.challengeDetail-img {
+    width: 400px;
+    height: 400px;
+}
