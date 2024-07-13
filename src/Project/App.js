@@ -1,4 +1,4 @@
-import React, {useReducer, useRef, useEffect, useState} from 'react';
+import React, {useReducer, useEffect, useState} from 'react';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import axios from 'axios';
 
@@ -110,7 +110,6 @@ const App = () => {
 
 
   const [challenges,dispatch] = useReducer(reducer, []); //챌린지
-  const idRef = useRef(5); //챌린지 아이디, 즉 챌린지 개수
 
   useEffect(() => {
     const fetchData = async () => {
