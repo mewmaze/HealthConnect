@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { useContext } from "react";
-import { ChallengeStateContext, ChallengeDispatchContext } from "../App";
+import { ChallengeStateContext } from "../App";
 import axios from "axios";
 import MyTabs from "../components/myTabs";
 import useChallengeActions from "../hooks/useChallengeActions";
@@ -50,6 +50,10 @@ function ChallengeDetail(){
        
     };
 
+    const handleGoList = () => {
+        navigate('/challenge', {replace:true})
+    }
+
     if (!challenge){
         return <div>프로젝트를 찾을 수 없습니다.</div>
     }
@@ -73,7 +77,8 @@ function ChallengeDetail(){
                 <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img"/>
                 <div>{description}</div>
                 <div>달성조건 : 주 {target_days}일</div>
-                <button onClick={handleJoinChallenge}>참여하기</button>
+                <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                <button type="button" onClick={handleGoList}>챌랜지 목록 보기</button>
             </div>
         </div>
     )

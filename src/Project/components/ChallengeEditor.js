@@ -1,4 +1,6 @@
 import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import './ChallengeEditor.css';
 
 const initialState = {
     challenge_name: "",
@@ -10,6 +12,7 @@ const initialState = {
 
 //initData는 챌린지를 수정할 때 기존 챌린지 데이터를 전달받아 미리 폼에 채울때 사용
 function ChallengeEditor({initData,onSubmit,text}){
+    const navigate = useNavigate();
     const [state, setState] = useState(initialState); //여기서 폼에 들어오는 내용들 관리.
 
     useEffect(()=>{
@@ -43,6 +46,10 @@ function ChallengeEditor({initData,onSubmit,text}){
         } catch (error) {
             console.error("Failed to submit form:", error);
         }
+    };
+
+    const handleCancel = () => {
+        navigate(-1); 
     };
 
     return(
@@ -87,7 +94,8 @@ function ChallengeEditor({initData,onSubmit,text}){
                     accept="image/*"
                     onChange={handleChange}
                 />
-                <button onClick={handleSubmit}>{text}</button>
+                <button type="button" onClick={handleSubmit}>{text}</button>
+                <button type="button" onClick={handleCancel}>취소</button>
             </div>
         </div>
     )
