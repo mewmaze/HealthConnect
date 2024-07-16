@@ -1,43 +1,53 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useChallenge from "../hooks/useChallenge";
+import { useState, useEffect, useCallback } from "react";
+import { useContext } from "react";
+import { ChallengeStateContext, ChallengeDispatchContext } from "../App";
 import axios from "axios";
 import MyTabs from "../components/myTabs";
+import useChallengeActions from "../hooks/useChallengeActions";
 
 import './ChallengeDetail.css';
 
 function ChallengeDetail(){
     const {id} = useParams();
-    const challenge = useChallenge(id); // useChallenge 훅을 호출하여 챌린지 정보를 가져옴
-
+    const challenges = useContext(ChallengeStateContext); //중앙상태에서 challenges 가져옴
+    const { joinChallenge } = useChallengeActions();
     const navigate = useNavigate();
+    const [challenge, setChallenge] = useState(null); // 로컬 상태로 특정 챌린지의 상세정보 관리
 
     const goHome = () => {
         navigate(`/`);
     }
 
-    const joinChallenge = async ()=>{
+    const fetchChallenge = useCallback(async () => {
         try {
-            const userId =1; //임의로 userId설정
-            const challengeId = parseInt(id, 10);// useParams로 가져온 id를 정수로 변환
-            
-            const response = await axios.post('http://localhost:5000/participants', {
-                user_id: userId,
-                challenge_id: challengeId
-            });
-            console.log("Joined challenge:", response.data);
-            alert("챌린지에 참가했습니다.");
-
-
-
-            navigate('/challenge');
+            const response = await axios.get(`http://localhost:5000/challenges/${id}`);
+            setChallenge(response.data);
         } catch (error) {
-            console.error("Failed to join challenge:", error.response.data);
-            if( error.response.data.error === '이미 참가한 챌린지입니다.') {
-                alert("이미 참가한 챌린지입니다.");
-            }else {
-                alert("챌린지 참가에 실패했습니다. 나중에 다시 시도해주세요.");
-            }
+            console.error("Failed to fetch challenge:", error);
+            setChallenge(null);
         }
+    }, [id]);
+
+    useEffect(() => {
+        const challengeDetail = challenges.find(challenge => challenge.challenge_id === parseInt(id, 10));
+        if (challengeDetail) { //로컬 상태에서 챌린지를 찾은 경우
+            setChallenge(challengeDetail);
+        } else { //로컬 상태에서 찾을 수 없는경우, 서버에서 데이터를 가져온다
+            fetchChallenge();
+        }
+    }, [id, challenges, fetchChallenge]);
+
+    const handleJoinChallenge = async () => {
+        try {
+            const userId = 1; // 임의로 userId 설정
+            await joinChallenge(parseInt(id, 10), userId);
+            console.log("Joined challenge. Challenge state:", challenges); // 상태 변화 확인
+            await fetchChallenge();
+        } catch (error) {
+            console.error("Failed to join challenge:", error);
+        }
+       
     };
 
     if (!challenge){
@@ -63,7 +73,7 @@ function ChallengeDetail(){
                 <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img"/>
                 <div>{description}</div>
                 <div>달성조건 : 주 {target_days}일</div>
-                <button onClick={joinChallenge}>참여하기</button>
+                <button onClick={handleJoinChallenge}>참여하기</button>
             </div>
         </div>
     )

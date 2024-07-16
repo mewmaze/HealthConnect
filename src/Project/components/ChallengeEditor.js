@@ -1,17 +1,19 @@
 import { useState,useEffect } from "react";
 
+const initialState = {
+    challenge_name: "",
+    description: "",
+    target_days: 1, // 기본값
+    participant_count: 0,
+    challenge_img: null
+};
+
+//initData는 챌린지를 수정할 때 기존 챌린지 데이터를 전달받아 미리 폼에 채울때 사용
 function ChallengeEditor({initData,onSubmit,text}){
-    
-    const [state,setState] = useState({
-        challenge_name:"",
-        description:"",
-        target_days:1,//기본값
-        participant_count:0,
-        challenge_img:null
-    });
+    const [state, setState] = useState(initialState); //여기서 폼에 들어오는 내용들 관리.
 
     useEffect(()=>{
-        if(initData) {//처음 내용
+        if(initData) {// 초기 데이터가 주어지면 상태를 설정 . 챌린지 수정할때
             setState({
                 ...initData,
             }); 
