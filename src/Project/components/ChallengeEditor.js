@@ -8,7 +8,8 @@ const initialState = {
     target_period: 1,
     target_days: 1, // 기본값
     participant_count: 0,
-    challenge_img: null
+    challenge_img: null,
+    start_date: new Date().toISOString().split('T')[0] // 오늘 날짜를 기본값으로 설정
 };
 
 //initData는 챌린지를 수정할 때 기존 챌린지 데이터를 전달받아 미리 폼에 채울때 사용
@@ -20,6 +21,7 @@ function ChallengeEditor({initData,onSubmit,text}){
         if(initData) {// 초기 데이터가 주어지면 상태를 설정 . 챌린지 수정할때
             setState({
                 ...initData,
+                start_date: new Date(initData.start_date).toISOString().split('T')[0] // 기존 데이터의 start_date를 설정
             }); 
         }    
     },[initData]);
@@ -41,6 +43,7 @@ function ChallengeEditor({initData,onSubmit,text}){
         formData.append("target_days", state.target_days);
         formData.append("participant_count", state.participant_count);
         formData.append("challenge_img", state.challenge_img);
+        formData.append("start_date", state.start_date);
 
         try {
             await onSubmit(formData);
