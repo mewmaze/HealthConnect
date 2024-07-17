@@ -5,6 +5,8 @@ import { ChallengeStateContext } from "../App";
 import axios from "axios";
 import MyTabs from "../components/myTabs";
 import useChallengeActions from "../hooks/useChallengeActions";
+import ChallengeInfo from "../components/ChallengeInfo";
+import useChallengeUtils from "../hooks/useChallengeUtils";
 
 import './ChallengeDetail.css';
 
@@ -14,7 +16,9 @@ function ChallengeDetail(){
     const { joinChallenge } = useChallengeActions();
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null); // 로컬 상태로 특정 챌린지의 상세정보 관리
-
+    const [testDate, setTestDate] = useState(""); // 테스트 날짜 상태 추가
+    const { calculateEndDate } = useChallengeUtils();
+    
     const goHome = () => {
         navigate(`/`);
     }
@@ -57,7 +61,11 @@ function ChallengeDetail(){
     if (!challenge){
         return <div>프로젝트를 찾을 수 없습니다.</div>
     }
-    const {challenge_name,description,participant_count,target_days,challenge_img,target_period} = challenge;
+    const {challenge_name,description,participant_count,target_days,challenge_img,target_period, start_date} = challenge;
+    
+    const startDate = new Date(start_date);// start_date를 Date 객체로 변환
+    const ChallengeStartDate = startDate.toISOString().split('T')[0];    // ISO 형식으로 변환
+    const ChallengeEndDate = calculateEndDate(start_date, target_period);
 
     return(
         <div>
@@ -77,7 +85,24 @@ function ChallengeDetail(){
                 <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img"/>
                 <div>{description}</div>
                 <div>달성기간 : {target_period}주</div>
+                <div>챌린지 기간 : {ChallengeStartDate}~{ChallengeEndDate}  {target_period}주</div>
                 <div>달성조건 : 주 {target_days}일</div>
+
+                <label>
+                    테스트 참여 날짜 설정:
+                    <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
+                </label>
+                {/* 테스트용 */}
+                {testDate && (
+                    <ChallengeInfo 
+                        challenge={challenge} 
+                        testDate={new Date(testDate)}
+                        start_date={new Date(start_date)}
+                    />
+                )}
+                
+                {/* <ChallengeInfo challenge={challenge} /> 실제용*/} 
+
                 <button type="button" onClick={handleJoinChallenge}>참여하기</button>
                 <button type="button" onClick={handleGoList}>챌랜지 목록 보기</button>
             </div>
