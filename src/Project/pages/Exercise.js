@@ -1,6 +1,5 @@
 //나의 운동기록 메인페이지
 import { useNavigate } from "react-router-dom";
-import ExerciseDiary from "./ExerciseDiary";
 import MyTabs from "../components/myTabs";
 
 function isEmptyGoal(goal) {
@@ -41,7 +40,6 @@ function Exercise({goal}){
                 </div>
             )}
             <button onClick={goSet}>목표설정하기</button>
-            <ExerciseDiary/>
         </div>
     )
 }
