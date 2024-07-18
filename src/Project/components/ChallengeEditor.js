@@ -1,30 +1,35 @@
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useChallengeUtils from "../hooks/useChallengeUtils";
 import './ChallengeEditor.css';
 
-const initialState = {
-    challenge_name: "",
-    description: "",
-    target_period: 1,
-    target_days: 1, // 기본값
-    participant_count: 0,
-    challenge_img: null,
-    start_date: new Date().toISOString().split('T')[0] // 오늘 날짜를 기본값으로 설정
-};
 
 //initData는 챌린지를 수정할 때 기존 챌린지 데이터를 전달받아 미리 폼에 채울때 사용
 function ChallengeEditor({initData,onSubmit,text}){
     const navigate = useNavigate();
+    const {calculateEndDate} = useChallengeUtils();
+
+    const initialState = { //이거 왜필요한거지?
+        challenge_name: "",
+        description: "",
+        target_period: 1,
+        target_days: 1, // 기본값
+        participant_count: 0,
+        challenge_img: null,
+        start_date: new Date().toISOString().split('T')[0], // 오늘 날짜를 기본값으로 설정
+        end_date: calculateEndDate(new Date().toISOString().split('T')[0], 1)
+    };
+
     const [state, setState] = useState(initialState); //여기서 폼에 들어오는 내용들 관리.
 
     useEffect(()=>{
         if(initData) {// 초기 데이터가 주어지면 상태를 설정 . 챌린지 수정할때
             setState({
                 ...initData,
-                start_date: new Date(initData.start_date).toISOString().split('T')[0] // 기존 데이터의 start_date를 설정
             }); 
         }    
-    },[initData]);
+    },[initData, calculateEndDate]);
+
 
     const handleChange = (e) => { // 모든 입력 필드의 변화 처리
         const { name, value, files } = e.target;
@@ -44,6 +49,8 @@ function ChallengeEditor({initData,onSubmit,text}){
         formData.append("participant_count", state.participant_count);
         formData.append("challenge_img", state.challenge_img);
         formData.append("start_date", state.start_date);
+        formData.append("end_date", state.end_date);
+
 
         try {
             await onSubmit(formData);

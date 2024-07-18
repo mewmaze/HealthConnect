@@ -45,7 +45,7 @@ function ChallengeDetail(){
     const handleJoinChallenge = async () => {
         try {
             const userId = 1; // 임의로 userId 설정
-            await joinChallenge(parseInt(id, 10), userId);
+            await joinChallenge(parseInt(id, 10), userId, challenge.target_period);
             console.log("Joined challenge. Challenge state:", challenges); // 상태 변화 확인
             await fetchChallenge();
         } catch (error) {
@@ -62,7 +62,7 @@ function ChallengeDetail(){
         return <div>프로젝트를 찾을 수 없습니다.</div>
     }
     const {challenge_name,description,participant_count,target_days,challenge_img,target_period, start_date} = challenge;
-    
+
     const startDate = new Date(start_date);// start_date를 Date 객체로 변환
     const ChallengeStartDate = startDate.toISOString().split('T')[0];    // ISO 형식으로 변환
     const ChallengeEndDate = calculateEndDate(start_date, target_period);

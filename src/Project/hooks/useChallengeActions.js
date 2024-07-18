@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import axios from 'axios';
 import { ChallengeDispatchContext } from '../App';
+import useChallengeUtils from './useChallengeUtils';
 
 const useChallengeActions = () => {
   const dispatch = useContext(ChallengeDispatchContext);
@@ -46,11 +47,26 @@ const useChallengeActions = () => {
     }
   };
 
-  const joinChallenge = async (challengeId, userId) => {
+  const { calculateEndDate } = useChallengeUtils();
+
+  const joinChallenge = async (challengeId, userId,target_period) => {
     try {
+
+      // 현재 날짜를 시작 날짜로 설정
+      const startDate = new Date().toISOString().split('T')[0];
+
+      // 종료 날짜 계산 (calculateEndDate 함수를 사용)
+      const endDate = calculateEndDate(startDate, target_period);
+
+      // 기본 진행 상태 설정
+      const progress = "not started";
+
       const response = await axios.post('http://localhost:5000/participants', {
         user_id: userId,
-        challenge_id: challengeId
+        challenge_id: challengeId,
+        start_date: startDate,
+        end_date: endDate,
+        progress: progress
       });
       dispatch({ type: 'JOIN_CHALLENGE', data: response.data });
     } catch (error) {
