@@ -65,7 +65,7 @@ const SignupForm = () => {
     
     try {
       const { name, email, password, gender, height, weight, age, interest } = formData;
-      const response = await axios.post('http://localhost:3001/auth/register', {
+      const response = await axios.post('http://localhost:5000/auth/register', {
         name, email, password, gender, height, weight, age, interest
       });
       console.log('회원가입 성공!', formData);
