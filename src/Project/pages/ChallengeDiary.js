@@ -35,10 +35,10 @@ function ChallengeDiary() {
                 setChallengeStatus(prevStatus => {
                     const newStatus = {
                         ...prevStatus,
-                        [formattedDate]: response.data.reduce((acc, curr) => {
+                        [formattedDate]: response.data.reduce((acc, curr) => { //배열을 객체 형태로 변환
                             acc[curr.challenge_id] = true; // 서버에서 가져온 완료 상태
                             return acc;
-                        }, {...(prevStatus[formattedDate] || {})}) // 기존 상태 유지
+                        }, {...(prevStatus[formattedDate] || {})}) // 현재 날짜에 대한 로컬 상태를 가져옴. 기존 상태 유지
                     };
                     console.log('Updated challenge status with server data:', newStatus);
                     return newStatus;

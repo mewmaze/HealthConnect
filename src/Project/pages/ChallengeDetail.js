@@ -67,7 +67,7 @@ function ChallengeDetail(){
     const ChallengeStartDate = startDate.toISOString().split('T')[0];    // ISO 형식으로 변환
     const ChallengeEndDate = calculateEndDate(start_date, target_period);
 
-    return(
+    return (
         <div>
             <nav className="topNav">
                 <li className="Logo" onClick={goHome}>
@@ -82,31 +82,34 @@ function ChallengeDetail(){
                     <div className="ChallengeTitle-name">{challenge_name}</div>
                     <div className="ChallengeTitle-count">{participant_count}명 도전중</div>
                 </div>
-                <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img"/>
-                <div>{description}</div>
-                <div>달성기간 : {target_period}주</div>
-                <div>챌린지 기간 : {ChallengeStartDate}~{ChallengeEndDate}  {target_period}주</div>
-                <div>달성조건 : 주 {target_days}일</div>
-
-                <label>
-                    테스트 참여 날짜 설정:
-                    <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
-                </label>
-                {/* 테스트용 */}
-                {testDate && (
-                    <ChallengeInfo 
-                        challenge={challenge} 
-                        testDate={new Date(testDate)}
-                        start_date={new Date(start_date)}
-                    />
-                )}
-                
-                {/* <ChallengeInfo challenge={challenge} /> 실제용*/} 
-
-                <button type="button" onClick={handleJoinChallenge}>참여하기</button>
-                <button type="button" onClick={handleGoList}>챌랜지 목록 보기</button>
+                <div className="ChallengeContent">
+                    <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img" />
+                    <div className="ChallengeDetails">
+                        <div>챌린지 설명 : {description}</div>
+                        <div>달성기간 : {target_period}주</div>
+                        <div>챌린지 기간 : {ChallengeStartDate}~{ChallengeEndDate}  {target_period}주</div>
+                        <div>달성조건 : 주 {target_days}일</div>
+                    </div>
+                </div>
+                <div className="ChallengeActions">
+                    <label>
+                        테스트 참여 날짜 설정:
+                        <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
+                    </label>
+                    {/* 테스트용 */}
+                    {testDate && (
+                        <ChallengeInfo 
+                            challenge={challenge} 
+                            testDate={new Date(testDate)}
+                            start_date={new Date(start_date)}
+                        />
+                    )}
+                    {/* <ChallengeInfo challenge={challenge} /> 실제용 */}
+                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                    <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 export default ChallengeDetail;
