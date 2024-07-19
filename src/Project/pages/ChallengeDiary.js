@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import axios from "axios";
-import { format} from 'date-fns';
+import { format } from 'date-fns';
 
-function ChallengeDiary(){
-    const [date, setDate] = useState(new Date()); //날짜 상태 관리
-    const [challenges, setChallenges] = useState([]); //사용자가 가입한 챌린지 목록상태 관리
-    const [challengeStatus, setChallengeStatus] = useState({}); //날짜별 챌린지 완료상태 여부 관리
+function ChallengeDiary() {
+    const [date, setDate] = useState(new Date()); // 날짜 상태 관리
+    const [challenges, setChallenges] = useState([]); // 사용자가 가입한 챌린지 목록 상태 관리
+    const [challengeStatus, setChallengeStatus] = useState({}); // 날짜별 챌린지 완료 상태 관리
     const userId = 1; // 특정 사용자의 user_id. 테스트용
 
-    useEffect(() => { //사용자가 가입한 챌린지 목록을 불러온다
+    useEffect(() => { // 사용자가 가입한 챌린지 목록을 불러온다
         const fetchChallenges = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/participants/user-challenges?userId=${userId}`); //지금은 테스트용으로 userId를 쿼리 파라미터로 서버에 전달
-                console.log('Fetched challenges:', response.data); // 응답 데이터 로그
+                const response = await axios.get(`http://localhost:5000/participants/user-challenges?userId=${userId}`);
+                console.log('Fetched challenges:', response.data);
                 setChallenges(response.data);
             } catch (error) {
                 console.error('Failed to fetch challenges:', error);
@@ -24,16 +24,25 @@ function ChallengeDiary(){
     }, []);
 
     useEffect(() => {
-        // 날짜가 변경될 때마다 해당 날짜의 챌린지 완료 여부를 불러옵니다.
+        // 날짜가 변경될 때마다 해당 날짜의 챌린지 완료 여부를 불러온다
         const fetchChallengeStatus = async () => {
             try {
-                const formattedDate = format(date, 'yyyy-MM-dd'); //date-fns의 format 함수를 사용하여 날짜를 로컬 시간대로 형식화
-                const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status?date=${date.toISOString().split('T')[0]}`);
+                const formattedDate = format(date, 'yyyy-MM-dd');
+                const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status?date=${formattedDate}`);
                 console.log('Fetched challenge status:', response.data);
-                setChallengeStatus(prevStatus => ({
-                    ...prevStatus,
-                    [formattedDate]: response.data
-                }));
+
+                // 서버 데이터로 로컬 상태 초기화 (서버 데이터가 로컬 상태를 덮어쓰지 않도록)
+                setChallengeStatus(prevStatus => {
+                    const newStatus = {
+                        ...prevStatus,
+                        [formattedDate]: response.data.reduce((acc, curr) => {
+                            acc[curr.challenge_id] = true; // 서버에서 가져온 완료 상태
+                            return acc;
+                        }, {...(prevStatus[formattedDate] || {})}) // 기존 상태 유지
+                    };
+                    console.log('Updated challenge status with server data:', newStatus);
+                    return newStatus;
+                });
             } catch (error) {
                 console.error('Failed to fetch challenge status:', error);
             }
@@ -44,8 +53,6 @@ function ChallengeDiary(){
 
     const handleChallengeCheck = async (challengeId, participantId, checked) => {
         try {
-            console.log(date.toISOString().split('T')[0]);
-            console.log(date);
             const completionDate = format(date, 'yyyy-MM-dd');
             if (checked) {
                 // 체크된 경우에만 서버에 데이터 저장
@@ -63,15 +70,17 @@ function ChallengeDiary(){
                 });
             }
 
-            // 상태 업데이트
-            
-            console.log('Updating local state');
+            // 로컬 상태 업데이트
+            console.log('Updating local state with check:', { completionDate, challengeId, checked });
             setChallengeStatus(prevStatus => {
-                const newStatus = { ...prevStatus };
-                if (!newStatus[completionDate]) {
-                    newStatus[completionDate] = {};
-                }
-                newStatus[completionDate][challengeId] = checked;
+                const newStatus = {
+                    ...prevStatus,
+                    [completionDate]: {
+                        ...prevStatus[completionDate],
+                        [challengeId]: checked
+                    }
+                };
+                console.log('Local state updated:', newStatus);
                 return newStatus;
             });
         } catch (error) {
@@ -101,4 +110,5 @@ function ChallengeDiary(){
         </div>
     );
 }
+
 export default ChallengeDiary;
