@@ -3,17 +3,16 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import MyTabs from '../components/myTabs';
 import LeftNav from '../components/leftNav';
-
 import "./ProfileEdit.css";
 
-export default function Edit({ profiles }) {
+export default function ProfileEdit({ profiles }) {
     const { userId } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         nickname: '',
         intro: '',
-        profile_picture: null,
+        profile_picture: '',
         profile_picture_url: ''
     });
 
