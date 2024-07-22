@@ -1,0 +1,20 @@
+.ChallengeDiary{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.challenge-list {
+    padding: 10px; 
+}
+
+.challenge-item {
+    margin-bottom: 14px; 
+}
+
+
+.challenge-item label {
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #333; 
+}

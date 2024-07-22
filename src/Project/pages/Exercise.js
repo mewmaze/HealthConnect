@@ -13,6 +13,9 @@ function Exercise({goal}){
     const goSet=()=>{
         navigate('/exerciseset',{replace:true});
     }
+    const goChallengeDiary=()=>{
+        navigate('/challengeDiary',{replace:true});
+    }
 
     const goHome = () => {
         navigate(`/`);
@@ -40,6 +43,7 @@ function Exercise({goal}){
                 </div>
             )}
             <button onClick={goSet}>목표설정하기</button>
+            <button onClick={goChallengeDiary}>챌린지기록하기</button>
         </div>
     )
 }
