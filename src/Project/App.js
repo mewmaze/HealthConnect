@@ -1,6 +1,7 @@
 import React, {useReducer, useEffect, useState} from 'react';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import axios from 'axios';
+import { AuthContextProvider } from './hooks/AuthContext';
 
 import './App.css';
 
@@ -143,24 +144,25 @@ const App = () => {
     BMI: "",
   }); // 챌린지, 나의 운동 기록 부분 끝
 
-    return (
-        <ChallengeStateContext.Provider value={challenges}>
-        <ChallengeDispatchContext.Provider value={dispatch}> 
+  return (
+    <AuthContextProvider>
+      <ChallengeStateContext.Provider value={challenges}>
+        <ChallengeDispatchContext.Provider value={dispatch}>
           <BrowserRouter>
             <div className='App'>
               <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path='/challenge' element={<Challenge/>}/>
-                <Route path="/challengeDetail/:id" element={<ChallengeDetail/>}/>
-                <Route path="/challengecreate" element={<ChallengeCreate/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/signUp" element={<Signup/>}/>
-                <Route path="/myPage" element={<MyPage/>}/>
-                <Route path="/edit" element={<Edit/>}/>
-                <Route path="/exercise" element={<Exercise goal={goal}/>}/>
-                <Route path="/exercisediary" element={<ExerciseDiary/>}/>
-                <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal}/>}/>
-                <Route path="/challengediary" element={<ChallengeDiary/>}/>
+                <Route path="/" element={<Home />} />
+                <Route path='/challenge' element={<Challenge />} />
+                <Route path="/challengeDetail/:id" element={<ChallengeDetail />} />
+                <Route path="/challengecreate" element={<ChallengeCreate />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signUp" element={<Signup />} />
+                <Route path="/myPage" element={<MyPage />} />
+                <Route path="/edit" element={<Edit />} />
+                <Route path="/exercise" element={<Exercise goal={goal} />} />
+                <Route path="/exercisediary" element={<ExerciseDiary />} />
+                <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal} />} />
+                <Route path="/challengediary" element={<ChallengeDiary />} />
                 <Route path="/communities" element={<CommunityList communities={communities} />} />
                 <Route path="/community/:communityId" element={<Community communities={communities} />} />
                 <Route path="/community/:communityId/new-post" element={<NewPostPage addPost={addPost} />} />
@@ -170,7 +172,7 @@ const App = () => {
           </BrowserRouter>
         </ChallengeDispatchContext.Provider>
       </ChallengeStateContext.Provider>
-    )
+    </AuthContextProvider>
+  );
 }
-
 export default App;
