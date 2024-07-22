@@ -1,27 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import axios from "axios";
 import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { AuthContext } from "../hooks/AuthContext";
+import MyTabs from "../components/myTabs"; 
+import "./ChallengeDiary.css";
 
 function ChallengeDiary() {
     const [date, setDate] = useState(new Date()); // 날짜 상태 관리
     const [challenges, setChallenges] = useState([]); // 사용자가 가입한 챌린지 목록 상태 관리
     const [challengeStatus, setChallengeStatus] = useState({}); // 날짜별 챌린지 완료 상태 관리
-    const userId = 1; // 특정 사용자의 user_id. 테스트용
+    const { currentUser } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
+    const navigate = useNavigate();
 
-    useEffect(() => { // 사용자가 가입한 챌린지 목록을 불러온다
-        const fetchChallenges = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/participants/user-challenges?userId=${userId}`);
-                console.log('Fetched challenges:', response.data);
-                setChallenges(response.data);
-            } catch (error) {
-                console.error('Failed to fetch challenges:', error);
-            }
-        };
+    const userId = currentUser ? currentUser.id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
+    const token = currentUser ? currentUser.token : null; // 사용자 토큰 가져오기
 
-        fetchChallenges();
-    }, []);
+    const goHome = () => {
+        navigate(`/`);
+    }
+
+    useEffect(() => {
+        if (userId && token) {
+            // 사용자가 로그인 되어 있을 때만 챌린지 목록 불러옴
+            const fetchChallenges = async () => {
+                try {
+                    const response = await axios.get('http://localhost:5000/participants/user-challenges', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    console.log('Fetched challenges:', response.data);
+                    setChallenges(response.data);
+                } catch (error) {
+                    console.error('Failed to fetch challenges:', error);
+                }
+            };
+
+            fetchChallenges();
+        }
+    }, [userId, token]);
 
     useEffect(() => {
         // 날짜가 변경될 때마다 해당 날짜의 챌린지 완료 여부를 불러온다
@@ -90,9 +110,18 @@ function ChallengeDiary() {
 
     return (
         <div className="ChallengeDiary">
-            <h2>Challenge Diary</h2>
+            <nav className="topNav">
+                <li className="Logo" onClick={goHome}>
+                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
+                </li>
+                <li>
+                    <MyTabs />
+                </li>
+            </nav>            
+            <h2>챌린지 기록</h2>
+            <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
             <Calendar onChange={setDate} value={date} />
-            <p>{date.toDateString()}</p>
+            <h3>챌린지 목록</h3>
             <div className="challenge-list">
                 {challenges.map(challenge => (
                     <div key={challenge.challenge_id} className="challenge-item">
