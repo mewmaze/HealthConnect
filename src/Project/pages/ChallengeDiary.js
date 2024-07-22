@@ -108,6 +108,17 @@ function ChallengeDiary() {
         }
     };
 
+    const tileClassName = ({ date, view }) => {
+        if (view === 'month') {
+            const formattedDate = format(date, 'yyyy-MM-dd');
+            if (challengeStatus[formattedDate]) {
+                const challengeColors = Object.values(challengeStatus[formattedDate]);
+                return `tile-checked ${challengeColors.includes('defaultColor') ? 'tile-checked-green' : ''}`;
+            }
+        }
+        return null;
+    };
+
     return (
         <div className="ChallengeDiary">
             <nav className="topNav">
@@ -120,7 +131,7 @@ function ChallengeDiary() {
             </nav>            
             <h2>챌린지 기록</h2>
             <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
-            <Calendar onChange={setDate} value={date} />
+            <Calendar onChange={setDate} value={date} tileClassName={tileClassName} className="react-calendar"/>
             <h3>챌린지 목록</h3>
             <div className="challenge-list">
                 {challenges.map(challenge => (
