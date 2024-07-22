@@ -45,6 +45,7 @@ function ChallengeDetail(){
         }
     }, [id, challenges, fetchChallenge]);
 
+
     const handleJoinChallenge = async () => {
         try {
             const userId = currentUser.id; //현재 로그인한 사용자의 ID사용
