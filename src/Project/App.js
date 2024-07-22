@@ -5,7 +5,7 @@ import axios from 'axios';
 import './App.css';
 
 import MyPage from './pages/MyPage';
-import Edit from './pages/Edit';
+import Edit from './pages/ProfileEdit';
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -116,13 +116,13 @@ const App = () => {
   }; // 게시판 부분 끝
 
   //챌린지
-  const [challenges,dispatch] = useReducer(reducer, []); 
+  const [challenges, dispatch] = useReducer(reducer, []); 
   
   //서버에서 초기 데이터 가져오기
   useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/challenges'); 
+        const response = await axios.get('http://localhost:5000/challenges'); {/* http://localhost:5000/challenges */}
         console.log("Fetched Data: ", response.data);
         dispatch({ type: "INIT_CHALLENGE", data: response.data });
       } catch (error) {
@@ -154,8 +154,8 @@ const App = () => {
                 <Route path="/challengecreate" element={<ChallengeCreate/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/signUp" element={<Signup/>}/>
-                <Route path="/myPage" element={<MyPage/>}/>
-                <Route path="/edit" element={<Edit/>}/>
+                <Route path="/myPage/:user_id" element={<MyPage/>}/> {/*  ... */}
+                <Route path="/myPage/:user_id/edit" element={<Edit/>}/> {/*  ... */}
                 <Route path="/exercise" element={<Exercise goal={goal}/>}/>
                 <Route path="/exercisediary" element={<ExerciseDiary/>}/>
                 <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal}/>}/>

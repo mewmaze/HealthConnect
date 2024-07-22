@@ -15,6 +15,7 @@ const Login = () => {
   const goHome = () => {
     navigate(`/`);
   }
+
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
 
@@ -38,13 +39,14 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/auth/login', {
+      const response = await axios.post('http://localhost:5000/auth/login', {
         email,
         password
       });
       console.log('로그인 성공!', { email, password });
       console.log(response.data);
-      navigate(`/myPage`);
+      const userId = response.data.user_id;
+      navigate(`/myPage/${userId}`);
     } catch (error) {
       console.error('Error 로그인 실패', error);
     }
@@ -61,31 +63,31 @@ const Login = () => {
         </li>
       </nav>
       <div className="container">
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-          {emailError && <p className="error">{emailError}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-          {passwordError && <p className="error">{passwordError}</p>}
-        </div>
-        <button type="submit">로그인</button>
-      </form>
-    </div>
+        <h2>로그인</h2>
+        <form onSubmit={handleLogin}>
+          <div className="form-group">
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            {emailError && <p className="error">{emailError}</p>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            {passwordError && <p className="error">{passwordError}</p>}
+          </div>
+          <button type="submit">로그인</button>
+        </form>
+      </div>
     </div>
   );
 };
