@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import "./profile.css";
 import axios from "axios";
 
@@ -16,7 +16,6 @@ function Profile() {
         profile_picture: '',
         profile_picture_url: ''
     });
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -83,23 +82,25 @@ function Profile() {
             const form = new FormData();
             form.append('nickname', formData.nickname);
             form.append('intro', formData.intro);
-            form.append('profile_picture', formData.profile_picture);
-
-            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, form, {
+            if (formData.profile_picture) {
+                form.append('profile_picture', formData.profile_picture);
+            }
+    
+            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+    
             setUserData(response.data);
         } catch (error) {
-            console.error('프로필 업데이트 실패!', error);
+            console.error('프로필 업데이트 실패!', error.response ? error.response.data : error.message);
+            setError('프로필 업데이트 실패!');
         }
     };
-
+    
     const handleUpdateClick = async () => {
         await handleSubmit();
-        navigate(`/`); // 페이지 새로고침 대신 해당 경로로 리다이렉트
     };
 
     if (loading) return <p>로딩 중...</p>;

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../components/styles.css';
-import MyTabs from "../components/myTabs";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,10 +10,6 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState('');
   
   const navigate = useNavigate();
-  
-  const goHome = () => {
-    navigate(`/`);
-  }
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
@@ -33,11 +28,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (emailError || passwordError) {
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:5000/auth/login', {
         email,
@@ -48,20 +43,15 @@ const Login = () => {
       const userId = response.data.user_id;
       navigate(`/myPage/${userId}`);
     } catch (error) {
-      console.error('Error 로그인 실패', error);
+      console.error('Error 로그인 실패', error.response ? error.response.data : error.message);
     }
+  };  
+
+  const handleSignup = () => {
+    navigate('/signUp');
   };
 
   return (
-    <div>
-      <nav className="topNav">
-        <li className="Logo" onClick={goHome}>
-          <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-        </li>
-        <li>
-          <MyTabs />
-        </li>
-      </nav>
       <div className="container">
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
@@ -87,8 +77,9 @@ const Login = () => {
           </div>
           <button type="submit">로그인</button>
         </form>
+        <p>아직 계정이 없으신가요?</p>
+        <button onClick={handleSignup}>회원가입 하기</button>
       </div>
-    </div>
   );
 };
 

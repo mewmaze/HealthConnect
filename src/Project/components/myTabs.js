@@ -1,22 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import { Tabs } from '@mui/base/Tabs';
 import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
 import { styled } from '@mui/system';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// Context to provide and consume user_id
+const UserContext = createContext(null);
+
 function MyTabs() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
+  const { user_id } = useContext(UserContext);
 
   useEffect(() => {
     setSelectedTab(location.pathname);
   }, [location.pathname]);
 
   const handleTabChange = (newValue) => {
-    setSelectedTab(newValue);
-    navigate(newValue);
+    if (newValue === '/myPage' && !user_id) {
+      console.log("로그인을 하셔야 합니다.");
+      navigate('/login');
+    } else {
+      setSelectedTab(newValue);
+      navigate(newValue);
+    }
   };
 
   return (
@@ -37,10 +46,14 @@ function MyTabs() {
 }
 
 export default function UnstyledTabsRouting() {
+  const user_id = null; // Replace with actual user_id fetching logic
+
   return (
-    <TabsWrapper>
-      <MyTabs />
-    </TabsWrapper>
+    <UserContext.Provider value={{ user_id }}>
+      <TabsWrapper>
+        <MyTabs />
+      </TabsWrapper>
+    </UserContext.Provider>
   );
 }
 
@@ -102,8 +115,8 @@ const TabsWrapper = styled('div')`
 const TabsContainer = styled('div')`
   display: inline-flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  align-items: left;
+  width: 80%;
   position: inherit;
   background-color: ${blue[500]};
 `;
@@ -117,12 +130,10 @@ const TabsList = styled(BaseTabsList)`
   align-items: center;
   justify-content: center;
   align-content: space-between;
-  margin-right: 10%;
-  padding-right: 20%;
 `;
 
 const MyInfoTabsList = styled(BaseTabsList)`
-  min-width: 300px;
+  min-width: 600px;
   background-color: ${blue[500]};
   position: inherit;
   border-radius: 12px;
@@ -130,6 +141,6 @@ const MyInfoTabsList = styled(BaseTabsList)`
   align-items: center;
   justify-content: center;
   align-content: space-between;
-  margin-left: 20%;
+  margin-left: 6%;
   padding: 10px;
 `;

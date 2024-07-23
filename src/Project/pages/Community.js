@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import MyTabs from "../components/myTabs";
 import './Community.css';
 
 const Community = ({ communities }) => {
@@ -15,10 +14,6 @@ const Community = ({ communities }) => {
           .catch(error => console.error(error));
     }, [communityId]);
 
-    const goHome = () => {
-        navigate(`/`);
-    }
-
     const community = communities.find(c => c.id === parseInt(communityId));
 
     if (!community) {
@@ -30,15 +25,6 @@ const Community = ({ communities }) => {
     };
 
     return (
-      <div>
-          <nav className="topNav">
-            <li className="Logo" onClick={goHome}>
-                <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-            </li>
-            <li>
-                <MyTabs />
-            </li>
-          </nav>
       <div className="community">
           <h2>{community.name}</h2>
           <ul className="posts-list">
@@ -52,7 +38,6 @@ const Community = ({ communities }) => {
           </ul>
           <button className="new-post-button" onClick={handleNewPost}>글쓰기</button>
       </div>
-    </div>
   );
 };
 

@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import './App.css';
 
+import Layout from './components/Layout'; // Import Layout
+
 import MyPage from './pages/MyPage';
 import Edit from './pages/ProfileEdit';
 
@@ -147,6 +149,7 @@ const App = () => {
         <ChallengeDispatchContext.Provider value={dispatch}> 
           <BrowserRouter>
             <div className='App'>
+              <Layout>
               <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path='/challenge' element={<Challenge/>}/>
@@ -164,6 +167,7 @@ const App = () => {
                 <Route path="/community/:communityId/new-post" element={<NewPostPage addPost={addPost} />} />
                 <Route path="/community/:communityId/post/:postId" element={<PostDetail communities={communities} addComment={addComment} />} />
               </Routes>
+              </Layout>
             </div>
           </BrowserRouter>
         </ChallengeDispatchContext.Provider>

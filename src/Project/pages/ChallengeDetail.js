@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useContext } from "react";
 import { ChallengeStateContext } from "../App";
 import axios from "axios";
-import MyTabs from "../components/myTabs";
 import ChallengeInfo from "../components/ChallengeInfo";
 import useChallengeActions from "../hooks/useChallengeActions";
 import useChallengeUtils from "../hooks/useChallengeUtils";
@@ -18,10 +17,6 @@ function ChallengeDetail(){
     const [challenge, setChallenge] = useState(null); // 로컬 상태로 특정 챌린지의 상세정보 관리
     const [testDate, setTestDate] = useState(""); // 테스트 날짜 상태 추가
     const { calculateEndDate } = useChallengeUtils();
-    
-    const goHome = () => {
-        navigate(`/`);
-    }
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -69,14 +64,6 @@ function ChallengeDetail(){
 
     return(
         <div>
-            <nav className="topNav">
-                <li className="Logo" onClick={goHome}>
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs />
-                </li>
-            </nav>
             <div className="ChallengeDetail">
                 <div className="ChallengeTitle">
                     <div className="ChallengeTitle-name">{challenge_name}</div>

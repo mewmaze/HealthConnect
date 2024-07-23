@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ChallengeEditor from "../components/ChallengeEditor";
 import useChallengeActions from "../hooks/useChallengeActions"
-import MyTabs from "../components/myTabs";  // Ensure the path is correct
 import "./ChallengeCreate.css";
 
 function ChallengeCreate() {
@@ -20,14 +19,6 @@ function ChallengeCreate() {
 
     return (
         <div className="ChallengeCreate">
-            <nav className="topNav">
-                <li className="Logo">
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs defaultValue="/challenge" />
-                </li>
-            </nav>
             <div>챌린지 만들기</div>
             <ChallengeEditor onSubmit={onSubmit} text={"등록"}></ChallengeEditor>
         </div>

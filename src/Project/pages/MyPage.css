@@ -20,9 +20,22 @@ li {
     position: inherit; /* Adjust positioning to be relative */
 }
 
-.imgLogo {
-    width: 50px; /* Adjust the width to fit well within the reduced height nav */
-    height: auto; /* Maintain aspect ratio */
-    transform: scale(1.2);
-    margin-left: 20px;
+.logout-btn {
+    padding: 10px 20px;
+    background-color: #007FFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    position: absolute;
+    align-self: flex-start;
+    display: flex;
+    margin-left: 82.5%; /* Space between Profile and Logout button */
+    z-index: 10;
+    margin-top: -13.5%;
+}
+
+.logout-btn:hover {
+    background-color: #0059B2;
 }
