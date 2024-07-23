@@ -72,13 +72,8 @@ const SignupForm = () => {
       });
       console.log('회원가입 성공!', formData);
       console.log(response.data);
-<<<<<<< HEAD
-      
-      navigate(`/login`);
-=======
       const userId = response.data.user_id;
       navigate(`/login`, { replace: true });
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
     } catch (error) {
       console.error('Error 회원가입 실패', error);
     }

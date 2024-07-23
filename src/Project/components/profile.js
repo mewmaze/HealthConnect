@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
-=======
 import React, { useEffect, useState, useContext} from "react";
 import { useNavigate, useParams } from 'react-router-dom';
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
 import "./profile.css";
 import axios from "axios";
 import { AuthContext } from "../hooks/AuthContext";
@@ -22,15 +17,12 @@ function Profile() {
         profile_picture: '',
         profile_picture_url: ''
     });
-<<<<<<< HEAD
-=======
     const navigate = useNavigate();
     const { currentUser } = useContext(AuthContext); // AuthContext에서 currentUser 가져오기
     const token = currentUser ? currentUser.token : null; // token을 currentUser에서 가져오기
 
     console.log('Current User:', currentUser);
     console.log('user_id', user_id)
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -121,31 +113,20 @@ function Profile() {
                     'Authorization': `Bearer ${token}`
                 }
             });
-<<<<<<< HEAD
-    
-            setUserData(response.data);
-        } catch (error) {
-            console.error('프로필 업데이트 실패!', error.response ? error.response.data : error.message);
-            setError('프로필 업데이트 실패!');
-=======
             console.log('업데이트 성공 응답:', response.data);
 
             setUserData(response.data);
         } catch (error) {
             console.error('프로필 업데이트 실패:', error);
             setError('프로필 업데이트에 실패했습니다.');
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
         }
     };
     
     const handleUpdateClick = async () => {
         await handleSubmit();
-<<<<<<< HEAD
-=======
 
         navigate(`/myPage/${user_id}`);
         // navigate(`/`); // 페이지 새로고침 대신 해당 경로로 리다이렉트
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
     };
 
     if (loading) return <p>로딩 중...</p>;

@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-<<<<<<< HEAD
-=======
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import MyTabs from "../components/myTabs";
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
 import './NewPostPage.css';
 
 const NewPostPage = () => {
@@ -48,25 +44,6 @@ const NewPostPage = () => {
 
   return (
       <div className="new-post-page">
-<<<<<<< HEAD
-      <h2>글쓰기</h2>
-      <form onSubmit={handleSubmit} className="new-post-form">
-        <input 
-          type="text" 
-          placeholder="제목" 
-          value={title} 
-          onChange={e => setTitle(e.target.value)} 
-          required 
-        />
-        <textarea 
-          placeholder="내용" 
-          value={content} 
-          onChange={e => setContent(e.target.value)} 
-          required 
-        ></textarea>
-        <button type="submit">작성</button>
-      </form>
-=======
         <h2>글쓰기</h2>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         <form onSubmit={handleSubmit} className="new-post-form">
@@ -86,8 +63,6 @@ const NewPostPage = () => {
           <button type="submit">작성</button>
         </form>
       </div>
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
-    </div>
   );
 };
 

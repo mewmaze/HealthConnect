@@ -1,22 +1,12 @@
-<<<<<<< HEAD
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import Comment from '../components/Comment';
 import NewComment from '../components/NewComment';
+import { jwtDecode } from 'jwt-decode';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './PostDetail.css';
 
 const PostDetail = ({ communities, addComment }) => {
-=======
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import MyTabs from "../components/myTabs";
-import './PostDetail.css';
-
-const PostDetail = () => {
-  const navigate = useNavigate();
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
   const { communityId, postId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -62,10 +52,6 @@ const PostDetail = () => {
   };
 
   if (!post) return <div>로딩중...</div>;
-
-  const goHome = () => {
-    navigate(`/`);
-  }
 
   return (
     <div>

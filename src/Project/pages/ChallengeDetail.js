@@ -18,15 +18,9 @@ function ChallengeDetail(){
     const [challenge, setChallenge] = useState(null); // 로컬 상태로 특정 챌린지의 상세정보 관리
     const [testDate, setTestDate] = useState(""); // 테스트 날짜 상태 추가
     const { calculateEndDate } = useChallengeUtils();
-<<<<<<< HEAD
-=======
     
     // 콘솔 로그로 currentUser 상태 확인
     console.log('Current User:', currentUser);
-    const goHome = () => {
-        navigate(`/`);
-    }
->>>>>>> 269ea67950137398c425d289e065a6a29fc3b916
 
     const fetchChallenge = useCallback(async () => {
         try {
