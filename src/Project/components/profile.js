@@ -22,6 +22,7 @@ function Profile() {
     const token = currentUser ? currentUser.token : null; // token을 currentUser에서 가져오기
 
     console.log('Current User:', currentUser);
+    console.log('user_id', user_id)
 
     useEffect(() => {
         const fetchUserData = async () => {

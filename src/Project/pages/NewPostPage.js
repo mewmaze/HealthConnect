@@ -30,16 +30,21 @@ const NewPostPage = () => {
 
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.id;
-
-    axios.post('http://localhost:5000/posts', { title, content, user_id: userId }, {
+    
+    // 수정함
+    axios.post('http://localhost:5000/posts', { title, content }, {
       headers: {
-        Authorization: token
+        Authorization: `Bearer ${token}`
       }
     })
-      .then(() => {
+      .then((response) => {
+        console.log('글이 성공적으로 작성되었습니다:', response.data);
         navigate(`/community/${communityId}`);
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error('글 작성 실패:', error);
+        setErrorMessage('글 작성 중 오류가 발생했습니다.');
+      });
   };
 
   return (
