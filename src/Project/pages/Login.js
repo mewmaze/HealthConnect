@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../hooks/AuthContext';
 import '../components/styles.css';
 import MyTabs from "../components/myTabs";
 
@@ -10,6 +11,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   
+  const { fetchCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   
   const goHome = () => {
@@ -43,9 +45,24 @@ const Login = () => {
         email,
         password
       });
-      console.log('로그인 성공!', { email, password });
-      console.log(response.data);
-      const userId = response.data.user_id;
+
+        
+    console.log('Response Data:', response.data);
+    
+    const token = response.data.token;
+    const userId = response.data.user_id;
+
+    // 토큰을 localStorage에 저장
+    localStorage.setItem('token', token);
+    
+   
+    console.log('Received Token:', token);
+    console.log('User ID:', userId);
+
+
+      // 현재 사용자 정보를 업데이트
+      await fetchCurrentUser();
+
       navigate(`/myPage/${userId}`);
     } catch (error) {
       console.error('Error 로그인 실패', error);

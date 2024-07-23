@@ -1,0 +1,55 @@
+.ChallengeDiary{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.challenge-list {
+    padding: 10px; 
+}
+
+.challenge-item {
+    margin-bottom: 14px; 
+}
+
+
+.challenge-item label {
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #333; 
+}
+
+.react-calendar button {
+    background-color: initial; /* 기본 배경색으로 설정 */
+    color: initial; /* 기본 텍스트 색으로 설정 */
+    border: initial; /* 기본 테두리로 설정 */
+}
+
+/* 날짜 셀에 표시될 동그라미 스타일 */
+.tile-checked {
+    position: relative;
+}
+
+.tile-checked::after {
+    content: '';
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: transparent; /* 기본 색상은 투명 */
+}
+
+/* 색상 클래스를 추가하여 색상 표시 */
+.tile-checked-green::after {
+    background-color: #4caf50; /* 연두색 */
+}
+
+.tile-checked-red::after {
+    background-color: #f44336; /* 빨간색 */
+}
+
+.highlight-range {
+    background-color: rgba(0, 255, 0, 0.3); /* 연두색 배경으로 범위를 강조 */
+}

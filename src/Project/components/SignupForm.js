@@ -106,6 +106,16 @@ const SignupForm = () => {
           />
         </div>
         <div className="form-group">
+          <label htmlFor="name">닉네임</label>
+          <FormInput
+            type="text"
+            name="nickname"
+            value={formData.nickname}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor="email">이메일</label>
           <FormInput
             type="email"

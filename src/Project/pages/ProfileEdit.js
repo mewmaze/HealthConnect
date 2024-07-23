@@ -8,6 +8,7 @@ import "./ProfileEdit.css";
 export default function ProfileEdit({ profiles }) {
     const { userId } = useParams();
     const navigate = useNavigate();
+    const token = localStorage.getItem('token'); //추가
 
     const [formData, setFormData] = useState({
         nickname: '',
@@ -17,7 +18,11 @@ export default function ProfileEdit({ profiles }) {
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/profiles?user_id=${userId}`)
+        axios.get(`http://localhost:5000/profiles?user_id=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }) //헤더에 토큰 추가
             .then(response => {
                 const profile = response.data;
                 setFormData({
@@ -28,7 +33,7 @@ export default function ProfileEdit({ profiles }) {
                 });
             })
             .catch(error => console.error('프로필 불러오기 실패!', error));
-    }, [userId]);
+    }, [userId, token]); //수정
 
     const goBack = (e) => {
         e.preventDefault();
@@ -64,11 +69,12 @@ export default function ProfileEdit({ profiles }) {
             form.append('intro', formData.intro);
             form.append('profile_picture', formData.profile_picture);
 
-            const response = await axios.put(`http://localhost:5000/profile/update/${userId}`, form, {
+            const response = await axios.put(`http://localhost:5000/profile/update`, form, {
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
                 }
-            });
+            }); //수정
 
             console.log('프로필 업데이트 성공!', response.data);
             navigate(`/profile/${userId}`);

@@ -2,9 +2,12 @@ import { useContext } from 'react';
 import axios from 'axios';
 import { ChallengeDispatchContext } from '../App';
 import useChallengeUtils from './useChallengeUtils';
+import { AuthContext } from './AuthContext';
 
 const useChallengeActions = () => {
   const dispatch = useContext(ChallengeDispatchContext);
+  const { currentUser } = useContext(AuthContext);
+  const { calculateEndDate } = useChallengeUtils();
 
   console.log("Dispatch: ", dispatch);
 
@@ -47,10 +50,11 @@ const useChallengeActions = () => {
     }
   };
 
-  const { calculateEndDate } = useChallengeUtils();
-
   const joinChallenge = async (challengeId, userId,target_period) => {
     try {
+      if (!currentUser || !currentUser.token) {
+        throw new Error("Authentication token is missing");
+      }
 
       // 현재 날짜를 시작 날짜로 설정
       const startDate = new Date().toISOString().split('T')[0];
@@ -67,6 +71,10 @@ const useChallengeActions = () => {
         start_date: startDate,
         end_date: endDate,
         progress: progress
+      }, {
+        headers: {
+          Authorization: `Bearer ${currentUser.token}` // 토큰을 헤더에 추가
+        }
       });
       dispatch({ type: 'JOIN_CHALLENGE', data: response.data });
     } catch (error) {
