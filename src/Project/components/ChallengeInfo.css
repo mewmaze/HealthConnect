@@ -1,0 +1,10 @@
+.CalendarWrapper {
+    margin-top: 20px;
+}
+
+.highlight-range {
+    background: #f5b62e !important; 
+    border-radius: 0 !important; 
+    color: white !important;
+
+}

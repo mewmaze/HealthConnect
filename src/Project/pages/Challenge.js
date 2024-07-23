@@ -46,7 +46,7 @@ function Challenge(){
             <div className="Challenge">
                 <div className="Challenge-Langking">
                     <div>챌린지 랭킹</div>
-                    <LangkingList/>
+                    {/* <LangkingList/> */}
                 </div>
                 <div className="Challenge-List">
                     <div>챌린지</div>

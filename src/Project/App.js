@@ -1,6 +1,7 @@
 import React, {useReducer, useEffect, useState} from 'react';
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import axios from 'axios';
+import { AuthContextProvider } from './hooks/AuthContext';
 
 import './App.css';
 
@@ -19,6 +20,7 @@ import ChallengeDetail from "./pages/ChallengeDetail";
 import Exercise from "./pages/Exercise";
 import ExerciseDiary from "./pages/ExerciseDiary";
 import ExerciseSet from "./pages/ExerciseSet";
+import ChallengeDiary from './pages/ChallengeDiary';
 
 import CommunityList from './pages/CommunityList';
 import Community from './pages/Community';
@@ -144,9 +146,10 @@ const App = () => {
     BMI: "",
   }); // 챌린지, 나의 운동 기록 부분 끝
 
-    return (
-        <ChallengeStateContext.Provider value={challenges}>
-        <ChallengeDispatchContext.Provider value={dispatch}> 
+  return (
+    <AuthContextProvider>
+      <ChallengeStateContext.Provider value={challenges}>
+        <ChallengeDispatchContext.Provider value={dispatch}>
           <BrowserRouter>
             <div className='App'>
               <Layout>
@@ -162,6 +165,7 @@ const App = () => {
                 <Route path="/exercise" element={<Exercise goal={goal}/>}/>
                 <Route path="/exercisediary" element={<ExerciseDiary/>}/>
                 <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal}/>}/>
+                <Route path="/challengediary" element={<ChallengeDiary />} />
                 <Route path="/communities" element={<CommunityList communities={communities} />} />
                 <Route path="/community/:communityId" element={<Community communities={communities} />} />
                 <Route path="/community/:communityId/new-post" element={<NewPostPage addPost={addPost} />} />
@@ -172,7 +176,7 @@ const App = () => {
           </BrowserRouter>
         </ChallengeDispatchContext.Provider>
       </ChallengeStateContext.Provider>
-    )
+    </AuthContextProvider>
+  );
 }
-
 export default App;
