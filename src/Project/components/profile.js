@@ -21,9 +21,6 @@ function Profile() {
     const { currentUser } = useContext(AuthContext); // AuthContext에서 currentUser 가져오기
     const token = currentUser ? currentUser.token : null; // token을 currentUser에서 가져오기
 
-    console.log('Current User:', currentUser);
-    console.log('user_id', user_id)
-
     useEffect(() => {
         const fetchUserData = async () => {
             if (!user_id) {
@@ -55,6 +52,9 @@ function Profile() {
             } finally {
                 setLoading(false);
             }
+            
+        console.log('Current User:', currentUser);
+        console.log('user_id', user_id)
         };
 
         fetchUserData();

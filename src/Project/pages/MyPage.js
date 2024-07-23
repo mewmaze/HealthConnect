@@ -13,8 +13,17 @@ export default function MyPage() {
 
     useEffect(() => {
         const fetchUserData = async () => {
+            const token = localStorage.getItem('token'); // Get token from localStorage
+
+            if (!token) {
+                navigate('/login'); // Redirect if no token
+                return;
+            }
+
             try {
-                const response = await axios.get(`http://localhost:5000/api/myPage/${user_id}`);
+                const response = await axios.get(`http://localhost:5000/api/myPage/${user_id}`, {
+                    headers: { Authorization: `Bearer ${token}` } // Include token in headers
+                });
                 setUserProfile(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);

@@ -63,17 +63,13 @@ const PostDetail = ({ communities, addComment }) => {
   };
   if (!post) return <div>로딩중...</div>;
 
-  const goHome = () => {
-    navigate(`/`);
-  }
-
   return (
     <div>
       <div className="post-detail">
         <h2>{post.title}</h2>
         <p>{post.content}</p>
         <p>작성자: {post.user_id}</p>
-        <p>작성 시간: {formatDate(post.created_at)}</p>
+        <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
 
         <h3>댓글</h3>
         <ul>
@@ -81,7 +77,7 @@ const PostDetail = ({ communities, addComment }) => {
             <li key={comment.comment_id}>
               <p>{comment.content}</p>
               <p>작성자: {comment.user_id}</p>
-              <p>작성 시간: {formatDate(comment.created_at)}</p>
+              <p>작성 시간: {new Date(comment.created_at).toLocaleString()}</p>
             </li>
           ))}
         </ul>
