@@ -9,6 +9,7 @@ const CommunityList = ({ communities }) => {
   const goHome = () => {
     navigate(`/`);
   }
+  
   return (
     <div>
       <nav className="topNav">

@@ -11,6 +11,7 @@ const SignupForm = () => {
 
   const [formData, setFormData] = useState({
     name: '',
+    nickname: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -18,6 +19,7 @@ const SignupForm = () => {
     height: '',
     weight: '',
     age: '',
+    profile_picture: '',
     interest: ''
   });
   const [errors, setErrors] = useState({
@@ -64,13 +66,14 @@ const SignupForm = () => {
     }
     
     try {
-      const { name, email, password, gender, height, weight, age, interest } = formData;
+      const { name, nickname, email, password, gender, height, weight, age, profile_picture, interest } = formData;
       const response = await axios.post('http://localhost:5000/auth/register', {
-        name, email, password, gender, height, weight, age, interest
+        name, nickname, email, password, gender, height, weight, age, profile_picture, interest
       });
       console.log('회원가입 성공!', formData);
       console.log(response.data);
-      navigate(`/myPage`);
+      const userId = response.data.user_id;
+      navigate(`/myPage/${userId}`);
     } catch (error) {
       console.error('Error 회원가입 실패', error);
     }

@@ -1,73 +1,112 @@
-.profile {
-    position: absolute;
-    margin-top: 2%;
-    margin-left: 19%;
-    width: 61%;
-    padding-bottom: 15%;
-    background-color: #8dc6ff;
+/* Profile container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 20vh;
+    margin-top: 6%;
+    margin-left: 2%;
 }
 
-.profile_img {
-    background-image: url(../img/cute.jpg);
-    position: inherit;
-    text-align: center;
+/* Profile box */
+.profile {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    align-content: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
     background-color: white;
-    width: 180px;
-    height: 180px;
-    border-radius: 200px;
-    margin-top: 25px;
-    margin-left: 25px;
-    object-fit: fill;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* profile.css */
+.profile_img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+/* Image preview */
+.img-preview {
+    display: flex;
+    background-color: white;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    margin-left: 2%;
+    cursor: pointer;
+}
+
+#img-prev {
+    position: inherit;
+    margin-top: 10%;
+}
+
+/* Profile details */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+    margin-left: 15%;
+    line-height: 11px;
+}
+
+.nickname, .challengeComplete, .intro, .update {
+    margin: 5px 0;
 }
 
 .nickname {
     position: inherit;
-    margin-left: 25%;
     font-size: 1rem;
+    font-weight: bold;
 }
 
-.challengeCompelete {
-    position: inherit;
-    margin-left: 25%;
-    margin-top: 5%;
+.challengeComplete {
+    font-size: 1rem;
+    margin-right: 5px; /* Adjust spacing between label and count */
 }
 
-.compeletedCount {
-    position: inherit;
-    margin-left: 35%;
-    margin-top: 5%;
+.completedCount {
+    font-weight: bold;
+}
+
+/* Ensure that challengeComplete and completedCount are on the same line */
+.challenge-info {
+    display: flex;
+    align-items: center;
 }
 
 .intro {
+    width: 100%;
     text-align: left;
+    font-size: 0.9rem;
     background-color: white;
     border: 1px solid #007FFF;
     border-radius: 5px;
-    position: inherit;
-    margin-left: 25%;
-    margin-top: 8%;
-    padding-left: 13%;
-    padding-top: 4%;
-    padding-right: 23%;
-    padding-bottom: 4%;
+    padding: 10px;
+    resize: none;
 }
 
 .update {
-    position: inherit;
+    align-self: flex-end;
     font-weight: 600;
-    margin-left: 88%;
-    margin-top: 20%;
     border: none;
     border-radius: 5px;
     background-color: #007FFF;
     color: white;
-    padding: 5px 15px 5px 15px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 6%;
 }
 
 .update:hover {
     color: #007FFF;
     background-color: white;
+    border: 1px solid #007FFF;
 }

@@ -17,6 +17,7 @@ const Login = () => {
   const goHome = () => {
     navigate(`/`);
   }
+
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
 
@@ -47,12 +48,13 @@ const Login = () => {
 
       console.log('로그인 성공!', { email, password });
       console.log(response.data);
+      const userId = response.data.user_id;
 
       localStorage.setItem('token', response.data.token); // 서버에서 받은 토큰을 localStorage에 저장
 
       await fetchCurrentUser(); // AuthContext의 currentUser 상태를 업데이트
 
-      navigate(`/myPage`);
+      navigate(`/myPage/${userId}`);
     } catch (error) {
       console.error('Error 로그인 실패', error);
     }
@@ -69,31 +71,31 @@ const Login = () => {
         </li>
       </nav>
       <div className="container">
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-          {emailError && <p className="error">{emailError}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-          {passwordError && <p className="error">{passwordError}</p>}
-        </div>
-        <button type="submit">로그인</button>
-      </form>
-    </div>
+        <h2>로그인</h2>
+        <form onSubmit={handleLogin}>
+          <div className="form-group">
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            {emailError && <p className="error">{emailError}</p>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            {passwordError && <p className="error">{passwordError}</p>}
+          </div>
+          <button type="submit">로그인</button>
+        </form>
+      </div>
     </div>
   );
 };
