@@ -46,13 +46,22 @@ const Login = () => {
         password
       });
 
-      console.log('로그인 성공!', { email, password });
-      console.log(response.data);
-      const userId = response.data.user_id;
+        
+    console.log('Response Data:', response.data);
+    
+    const token = response.data.token;
+    const userId = response.data.user_id;
 
-      localStorage.setItem('token', response.data.token); // 서버에서 받은 토큰을 localStorage에 저장
+    // 토큰을 localStorage에 저장
+    localStorage.setItem('token', token);
+    
+   
+    console.log('Received Token:', token);
+    console.log('User ID:', userId);
 
-      await fetchCurrentUser(); // AuthContext의 currentUser 상태를 업데이트
+
+      // 현재 사용자 정보를 업데이트
+      await fetchCurrentUser();
 
       navigate(`/myPage/${userId}`);
     } catch (error) {

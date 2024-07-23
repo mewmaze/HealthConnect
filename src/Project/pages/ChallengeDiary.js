@@ -19,7 +19,7 @@ function ChallengeDiary() {
     const token = currentUser ? currentUser.token : null; // 사용자 토큰 가져오기
 
     const goHome = () => {
-        navigate(`/`);
+        navigate(`/`); 
     }
 
     useEffect(() => {
