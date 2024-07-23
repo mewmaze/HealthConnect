@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useContext } from "react";
 import { ChallengeStateContext } from "../App";
 import axios from "axios";
-import MyTabs from "../components/myTabs";
 import ChallengeInfo from "../components/ChallengeInfo";
 import useChallengeActions from "../hooks/useChallengeActions";
 import useChallengeUtils from "../hooks/useChallengeUtils";
@@ -22,9 +21,6 @@ function ChallengeDetail(){
     
     // 콘솔 로그로 currentUser 상태 확인
     console.log('Current User:', currentUser);
-    const goHome = () => {
-        navigate(`/`);
-    }
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -73,14 +69,6 @@ function ChallengeDetail(){
 
     return (
         <div>
-            <nav className="topNav">
-                <li className="Logo" onClick={goHome}>
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs />
-                </li>
-            </nav>
             <div className="ChallengeDetail">
                 <div className="ChallengeTitle">
                     <div className="ChallengeTitle-name">{challenge_name}</div>

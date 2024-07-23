@@ -5,7 +5,7 @@
     align-items: center;
     width: 95%;
     height: 20vh;
-    margin-top: 6%;
+    margin-top: 3%;
     margin-left: 2%;
 }
 
@@ -53,7 +53,7 @@
     flex-direction: column;
     justify-content: center;
     width: 60%;
-    margin-left: 15%;
+    margin-left: 3%;
     line-height: 11px;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .intro {
-    width: 100%;
+    width: 90%;
     text-align: left;
     font-size: 0.9rem;
     background-color: white;
@@ -102,7 +102,8 @@
     color: white;
     padding: 10px 20px;
     cursor: pointer;
-    margin-left: 6%;
+    margin-left: 1%;
+    width: 170px;
 }
 
 .update:hover {

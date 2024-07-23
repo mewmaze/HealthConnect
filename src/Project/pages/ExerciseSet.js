@@ -1,6 +1,5 @@
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import MyTabs from "../components/myTabs";
 import './ExerciseSet.css';
 
 function ExerciseSet({goal,setGoal}){
@@ -53,20 +52,8 @@ function ExerciseSet({goal,setGoal}){
         navigate('/exercise',{replace:true});
     }
 
-    const goHome = () => {
-        navigate(`/`);
-    }
-
     return(
         <div>
-            <nav className="topNav">
-                <li className="Logo" onClick={goHome}>
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                 <MyTabs />
-                </li>
-            </nav>
             <div className="ExerciseSet">
             <div>나의 운동기록 목표설정</div>
                 <div className="ExerciseSet-content">

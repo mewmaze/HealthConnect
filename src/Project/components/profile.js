@@ -103,9 +103,11 @@ function Profile() {
             const form = new FormData();
             form.append('nickname', formData.nickname);
             form.append('intro', formData.intro);
-            form.append('profile_picture', formData.profile_picture);
-
-            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, form, {
+            if (formData.profile_picture) {
+                form.append('profile_picture', formData.profile_picture);
+            }
+    
+            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
@@ -119,7 +121,7 @@ function Profile() {
             setError('프로필 업데이트에 실패했습니다.');
         }
     };
-
+    
     const handleUpdateClick = async () => {
         await handleSubmit();
 

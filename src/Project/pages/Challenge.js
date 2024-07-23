@@ -4,7 +4,6 @@ import axios from 'axios';
 import { ChallengeStateContext, ChallengeDispatchContext } from '../App';
 import LangkingList from "../components/LangkingList";
 import ChallengeItem from "../components/ChallengeItem";
-import MyTabs from '../components/myTabs';
 import "./Challenge.css";
 
 function Challenge(){
@@ -44,14 +43,6 @@ function Challenge(){
     console.log("Challenges data:", data); // 데이터 출력
     return(
         <div>
-            <nav className="topNav">
-                <li className="Logo">
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs />
-                </li>
-            </nav>
             <div className="Challenge">
                 <div className="Challenge-Langking">
                     <div>챌린지 랭킹</div>

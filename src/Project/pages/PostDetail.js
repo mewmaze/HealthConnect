@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import Comment from '../components/Comment';
+import NewComment from '../components/NewComment';
 import { jwtDecode } from 'jwt-decode';
-import MyTabs from "../components/myTabs";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './PostDetail.css';
 
-const PostDetail = () => {
-  const navigate = useNavigate();
+const PostDetail = ({ communities, addComment }) => {
   const { communityId, postId } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -63,26 +63,12 @@ const PostDetail = () => {
   };
   if (!post) return <div>로딩중...</div>;
 
-  // 날짜 포맷팅 함수
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? '날짜 정보 없음' : date.toLocaleString();
-  };
-
   const goHome = () => {
     navigate(`/`);
   }
 
   return (
     <div>
-      <nav className="topNav">
-        <li className="Logo" onClick={goHome}>
-          <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-        </li>
-        <li>
-          <MyTabs />
-        </li>
-      </nav>
       <div className="post-detail">
         <h2>{post.title}</h2>
         <p>{post.content}</p>

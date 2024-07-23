@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import MyTabs from "../components/myTabs";
 import './NewPostPage.css';
 
 const NewPostPage = () => {
@@ -11,10 +10,6 @@ const NewPostPage = () => {
   const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  const goHome = () => {
-    navigate(`/`);
-  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -48,15 +43,6 @@ const NewPostPage = () => {
   };
 
   return (
-    <div>
-      <nav className="topNav">
-        <li className="Logo" onClick={goHome}>
-          <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-        </li>
-        <li>
-          <MyTabs />
-        </li>
-      </nav>
       <div className="new-post-page">
         <h2>글쓰기</h2>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -77,7 +63,6 @@ const NewPostPage = () => {
           <button type="submit">작성</button>
         </form>
       </div>
-    </div>
   );
 };
 
