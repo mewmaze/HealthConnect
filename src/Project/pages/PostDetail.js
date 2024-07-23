@@ -1,25 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Comment from '../components/Comment';
-import NewComment from '../components/NewComment';
-import './PostDetail.css';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import MyTabs from "../components/myTabs";
+import './PostDetail.css';
 
-const PostDetail = ({ communities, addComment }) => {
+const PostDetail = () => {
   const navigate = useNavigate();
-
-    const goHome = () => {
-        navigate(`/`);
-    }
-    
   const { communityId, postId } = useParams();
-  const community = communities.find(c => c.id === parseInt(communityId));
-  const post = community?.posts.find(p => p.id === parseInt(postId));
+  const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  if (!community || !post) {
-    return <div>게시글을 찾을 수 없습니다.</div>;
+  useEffect(() => {
+    // 게시글 불러오기
+    axios.get('http://localhost:5000/posts')
+      .then(response => {
+        const foundPost = response.data.find(p => p.post_id === parseInt(postId));
+        setPost(foundPost);
+      })
+      .catch(error => console.error(error));
+
+    // 댓글 불러오기
+    axios.get(`http://localhost:5000/posts/${postId}/comments`)
+      .then(response => setComments(response.data))
+      .catch(error => console.error(error));
+  }, [postId]);
+
+  const handleCommentSubmit = e => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setErrorMessage('로그인이 필요합니다.');
+      return;
+    }
+
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
+
+    axios.post(`http://localhost:5000/posts/${postId}/comments`, { content: comment, user_id: userId }, {
+      headers: {
+        Authorization: token
+      }
+    })
+      .then(response => {
+        setComments([...comments, { ...response.data, username: '현재 사용자' }]); // 임시 사용자 이름
+        setComment('');
+      })
+      .catch(error => console.error(error));
+  };
+
+  if (!post) return <div>로딩중...</div>;
+
+  const goHome = () => {
+    navigate(`/`);
   }
-  
+
   return (
     <div>
       <nav className="topNav">
@@ -31,16 +68,33 @@ const PostDetail = ({ communities, addComment }) => {
         </li>
       </nav>
       <div className="post-detail">
-      <h2>{post.title}</h2>
-      <p>{post.content}</p>
-      <h3>댓글</h3>
-      <ul className="comments-list">
-        {post.comments.map(comment => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
-      </ul>
-      <NewComment communityId={community.id} postId={post.id} addComment={addComment} />
-    </div>
+        <h2>{post.title}</h2>
+        <p>{post.content}</p>
+        <p>작성자: {post.user_id}</p>
+        <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
+
+        <h3>댓글</h3>
+        <ul>
+          {comments.map(comment => (
+            <li key={comment.comment_id}>
+              <p>{comment.content}</p>
+              <p>작성자: {comment.user_id}</p>
+              <p>작성 시간: {new Date(comment.created_at).toLocaleString()}</p>
+            </li>
+          ))}
+        </ul>
+
+        <form onSubmit={handleCommentSubmit}>
+          <textarea
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+            required
+          ></textarea>
+          <button type="submit">댓글 작성</button>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+        </form>
+      </div>
     </div>
   );
 };
