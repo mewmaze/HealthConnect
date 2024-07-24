@@ -18,9 +18,12 @@ function Profile() {
         profile_picture_url: ''
     });
     const navigate = useNavigate();
-    const { currentUser } = useContext(AuthContext); // AuthContext에서 currentUser 가져오기
-    const token = currentUser ? currentUser.token : null; // token을 currentUser에서 가져오기
-
+    const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
+    
+    console.log('curr', currentUser)
+    console.log('token', token)
+    console.log('user_id', user_id)
+    
     useEffect(() => {
         const fetchUserData = async () => {
             if (!user_id) {
@@ -126,7 +129,6 @@ function Profile() {
         await handleSubmit();
 
         navigate(`/myPage/${user_id}`);
-        // navigate(`/`); // 페이지 새로고침 대신 해당 경로로 리다이렉트
     };
 
     if (loading) return <p>로딩 중...</p>;

@@ -1,36 +1,47 @@
 //로그인한 사용자의 정보 제공
+//token, user관리 
 import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
 
 export const AuthContext = createContext();
 
-export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
 
-  const fetchCurrentUser = async () => {
-    try {
-      const token = localStorage.getItem('token'); // 토큰을 localStorage에서 가져오기
-      if (!token) {
-        console.log('No token found in localStorage');
-        return;
-      }
-      console.log('Token:', token); // 디버깅: 토큰 확인
-      const res = await axios.get('http://localhost:5000/auth/current-user', {
-        headers: { Authorization: `Bearer ${token}` } // 토큰을 요청 헤더에 추가
-      });
-      setCurrentUser({ ...res.data, token }); // 사용자 정보와 토큰을 함께 저장
-    } catch (error) {
-      console.error('Failed to fetch current user:', error);
-    }
-  };
+export const AuthContextProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(() => {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+  });
+
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('token') || null;
+  });
 
   useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+    if (currentUser) {
+      localStorage.setItem('user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [token]);
+
+  //로그아웃시 localStorate에서 user,token 삭제
+  const logout = () => {
+    setCurrentUser(null);
+    setToken(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  };
 
   return (
-    <AuthContext.Provider value={{ currentUser, fetchCurrentUser }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ currentUser, setCurrentUser, token, setToken ,logout}}>
+          {children}
+      </AuthContext.Provider>
   );
 };

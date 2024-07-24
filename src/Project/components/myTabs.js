@@ -4,15 +4,15 @@ import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
 import { styled } from '@mui/system';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-// Context to provide and consume user_id
-const UserContext = createContext(null);
+import { AuthContext } from '../hooks/AuthContext';
 
 function MyTabs() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
-  const { user_id } = useContext(UserContext);
+  const { currentUser } = useContext(AuthContext);
+
+  const user_id = currentUser ? currentUser.user_id : null;
 
   useEffect(() => {
     setSelectedTab(location.pathname);
@@ -49,11 +49,9 @@ export default function UnstyledTabsRouting() {
   const user_id = null; // Replace with actual user_id fetching logic
 
   return (
-    <UserContext.Provider value={{ user_id }}>
       <TabsWrapper>
         <MyTabs />
       </TabsWrapper>
-    </UserContext.Provider>
   );
 }
 

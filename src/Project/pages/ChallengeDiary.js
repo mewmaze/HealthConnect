@@ -12,17 +12,18 @@ function ChallengeDiary() {
     const [date, setDate] = useState(new Date()); // 날짜 상태 관리
     const [challenges, setChallenges] = useState([]); // 사용자가 가입한 챌린지 목록 상태 관리
     const [challengeStatus, setChallengeStatus] = useState({}); // 날짜별 챌린지 완료 상태 관리
-    const { currentUser } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
+    const { currentUser, token } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
     const navigate = useNavigate();
 
-    const userId = currentUser ? currentUser.id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
-    const token = currentUser ? currentUser.token : null; // 사용자 토큰 가져오기
-
+    const userId = currentUser ? currentUser.user_id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
+    console.log('userId : ',userId);
     const goHome = () => {
         navigate(`/`); 
     }
 
     useEffect(() => {
+        console.log('Current user:', currentUser);
+        console.log('Token:', token);
         if (userId && token) {
             // 사용자가 로그인 되어 있을 때만 챌린지 목록 불러옴
             const fetchChallenges = async () => {
@@ -40,6 +41,8 @@ function ChallengeDiary() {
             };
 
             fetchChallenges();
+        } else {
+            console.log('UserId or token is missing');
         }
     }, [userId, token]);
 

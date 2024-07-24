@@ -13,14 +13,11 @@ function ChallengeDetail(){
     const {id} = useParams();
     const challenges = useContext(ChallengeStateContext); //중앙상태에서 challenges 가져옴
     const { joinChallenge } = useChallengeActions();
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null); // 로컬 상태로 특정 챌린지의 상세정보 관리
     const [testDate, setTestDate] = useState(""); // 테스트 날짜 상태 추가
     const { calculateEndDate } = useChallengeUtils();
-    
-    // 콘솔 로그로 currentUser 상태 확인
-    console.log('Current User:', currentUser);
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -44,8 +41,8 @@ function ChallengeDetail(){
 
     const handleJoinChallenge = async () => {
         try {
-            const userId = currentUser.id; //현재 로그인한 사용자의 ID사용
-            await joinChallenge(parseInt(id, 10), userId, challenge.target_period);
+            const userId = currentUser.user_id; //현재 로그인한 사용자의 ID사용
+            await joinChallenge(parseInt(id, 10), userId, challenge.target_period, token);
 
             await fetchChallenge();
         } catch (error) {
