@@ -26,8 +26,7 @@ const NewPostPage = () => {
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.id;
     
-    // 수정함
-    axios.post('http://localhost:5000/posts', { title, content }, {
+    axios.post('http://localhost:5000/posts', { title, content, userId, communityId }, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -43,26 +42,26 @@ const NewPostPage = () => {
   };
 
   return (
-      <div className="new-post-page">
-        <h2>글쓰기</h2>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <form onSubmit={handleSubmit} className="new-post-form">
-          <input 
-            type="text" 
-            placeholder="제목" 
-            value={title} 
-            onChange={e => setTitle(e.target.value)} 
-            required 
-          />
-          <textarea 
-            placeholder="내용" 
-            value={content} 
-            onChange={e => setContent(e.target.value)} 
-            required 
-          ></textarea>
-          <button type="submit">작성</button>
-        </form>
-      </div>
+    <div className="new-post-page">
+      <h2>글쓰기</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <form onSubmit={handleSubmit} className="new-post-form">
+        <input 
+          type="text" 
+          placeholder="제목" 
+          value={title} 
+          onChange={e => setTitle(e.target.value)} 
+          required 
+        />
+        <textarea 
+          placeholder="내용" 
+          value={content} 
+          onChange={e => setContent(e.target.value)} 
+          required 
+        ></textarea>
+      </form>
+      <button className="new-post-submit-button" onClick={handleSubmit}>작성</button>
+    </div>
   );
 };
 

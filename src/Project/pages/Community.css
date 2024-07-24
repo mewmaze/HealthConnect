@@ -1,29 +1,70 @@
-.community {
-  padding: 20px;
-}
-
-.posts-list {
-  list-style-type: none;
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
   padding: 0;
 }
 
-.posts-list li {
-  margin-bottom: 10px;
+.community {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.posts-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
+
+.posts-list th, .posts-list td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.posts-list th {
+  background-color: #007bff;
+  color: white;
+}
+
+.posts-list tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.posts-list tr:hover {
+  background-color: #f1f1f1;
 }
 
 .new-post-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 15px;
   background-color: #007bff;
   color: white;
   text-align: center;
   text-decoration: none;
-  border-radius: 5px;
-  margin-top: 20px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .new-post-button:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .new-post-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .posts-list th, .posts-list td {
+    padding: 8px;
+  }
 }

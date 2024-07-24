@@ -19,19 +19,31 @@ const Community = () => {
   };
 
   return (
-        <div className="community">
-        <h2>게시판</h2>
-        <ul className="posts-list">
-          {posts.map(post => (
-            <li key={post.post_id}>
-              <Link to={`/community/${communityId}/post/${post.post_id}`}>{post.title}</Link>
-              <p>작성자: {post.user_id}</p>
-              <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
-            </li>
+    <div className="community">
+      <table className="posts-list">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((post, index) => (
+            <tr key={post.post_id}>
+              <td>{index + 1}</td>
+              <td>
+                <Link to={`/community/${communityId}/post/${post.post_id}`}>{post.title}</Link>
+              </td>
+              <td>{post.user_id}</td>
+              <td>{new Date(post.created_at).toLocaleString()}</td>
+            </tr>
           ))}
-        </ul>
-        <button className="new-post-button" onClick={handleNewPost}>글쓰기</button>
-      </div>
+        </tbody>
+      </table>
+      <button className="new-post-button" onClick={handleNewPost}>글쓰기</button>
+    </div>
   );
 };
 

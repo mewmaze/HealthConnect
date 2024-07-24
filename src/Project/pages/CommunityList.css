@@ -1,18 +1,44 @@
 .community-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .community-list li {
-    margin: 10px 0;
-  }
-  
-  .community-list a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-  }
-  
-  .community-list a:hover {
-    text-decoration: underline;
-  }  
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.community-list li {
+  width: 200px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.community-list a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+.community-list a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.community-list li::before {
+  content: '💬';
+  display: block;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.community-list li:hover {
+  background-color: #e6f7ff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
