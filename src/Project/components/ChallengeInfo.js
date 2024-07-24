@@ -40,14 +40,16 @@ const ChallengeInfo = ({ challenge, testDate }) => {
     console.log("range:",range);
     return (
         <div className="ChallengeInfo">
-            <div>챌린지 시작일: {formattedStartDate}</div>
-            <div>챌린지 종료일: {endDate}</div>
-            <div>얻을 수 있는 뱃지 개수: {badges}</div>
             <div className="CalendarWrapper">
                 <Calendar
                     view="month"
                     tileClassName={tileClassName}
                 />
+            </div>            
+            <div className="ChallengeInfo-container">
+                <div>챌린지 시작일 : {formattedStartDate}</div>
+                <div>챌린지 종료일 : {endDate}</div>
+                <div>얻을 수 있는 뱃지 개수 : {badges}</div>
             </div>
         </div>
     );

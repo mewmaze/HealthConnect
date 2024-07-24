@@ -8,3 +8,15 @@
     color: white !important;
 
 }
+
+.ChallengeInfo{
+    display: flex;
+    gap: 120px;
+}
+
+.ChallengeInfo-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+}
