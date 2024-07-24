@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LeftNav from '../components/leftNav';
 import Profile from '../components/profile';
 import MyList from '../components/mylist';
 import axios from "axios";
 import "./MyPage.css";
 import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from '../hooks/AuthContext';
 
 export default function MyPage() {
     const navigate = useNavigate();
     const { user_id } = useParams();
     const [userProfile, setUserProfile] = useState(null);
+    const { logout } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -40,9 +42,13 @@ export default function MyPage() {
     
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:5000/auth/logout'); // Logout endpoint
-            localStorage.removeItem('user'); // Clear user data
-            navigate('/'); // Redirect to Home
+            // 로컬 스토리지에서 JWT와 사용자 정보 삭제. localstorage에 토큰을 저장했으므로 클라이언트쪽에서만 지워주면된다.
+            localStorage.removeItem('token'); 
+            localStorage.removeItem('user');
+
+            logout(); // AuthContext 상태 초기화
+
+            navigate('/'); //로그아웃 후 메인페이지로
         } catch (error) {
             console.error('Logout failed:', error);
         }
