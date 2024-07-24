@@ -6,7 +6,7 @@ import { AuthContext } from './AuthContext';
 
 const useChallengeActions = () => {
   const dispatch = useContext(ChallengeDispatchContext);
-  const { currentUser } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const { calculateEndDate } = useChallengeUtils();
 
   console.log("Dispatch: ", dispatch);
@@ -52,7 +52,7 @@ const useChallengeActions = () => {
 
   const joinChallenge = async (challengeId, userId,target_period) => {
     try {
-      if (!currentUser || !currentUser.token) {
+      if (!token) {
         throw new Error("Authentication token is missing");
       }
 
@@ -73,7 +73,7 @@ const useChallengeActions = () => {
         progress: progress
       }, {
         headers: {
-          Authorization: `Bearer ${currentUser.token}` // 토큰을 헤더에 추가
+          Authorization: `Bearer ${token}` // 토큰을 헤더에 추가
         }
       });
       dispatch({ type: 'JOIN_CHALLENGE', data: response.data });
