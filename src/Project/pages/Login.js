@@ -10,7 +10,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   
-  const { fetchCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -40,25 +40,26 @@ const Login = () => {
         email,
         password
       });
-
-        
-    console.log('Response Data:', response.data);
     
-    const token = response.data.token;
-    const userId = response.data.user_id;
+    const { token, user } = response.data;
 
-    // 토큰을 localStorage에 저장
+    // 토큰,User정보 localStorage에 저장
     localStorage.setItem('token', token);
-    
+    localStorage.setItem('user', JSON.stringify(user)); 
    
     console.log('Received Token:', token);
-    console.log('User ID:', userId);
+    console.log('User:', user);
 
 
       // 현재 사용자 정보를 업데이트
-      await fetchCurrentUser();
+      setToken(token);
+      setCurrentUser(user);
 
-      navigate(`/myPage/${userId}`);
+      // 상태 초기화
+      setEmail('');
+      setPassword('');
+
+      navigate(`/myPage/${user.user_id}`); //로그인 후 마이페이지로 이동
     } catch (error) {
       console.error('Error 로그인 실패', error.response ? error.response.data : error.message);
     }
