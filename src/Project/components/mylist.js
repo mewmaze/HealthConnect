@@ -291,7 +291,7 @@ export default function MyList() {
             <tr key={post.post_id}>
             <TableCell className="number">{post.post_id}</TableCell>
             <TableCell className="title">
-            <Link to={`/myPosts/${post.post_id}`}>{post.title}</Link>
+            <Link to={`/myPosts/${user_id}/${post.post_id}`}>{post.title}</Link>
             </TableCell>
             <TableCell className="date">
             {new Date(post.created_at).toLocaleString()}
