@@ -5,13 +5,19 @@ import axios from "axios";
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { AuthContext } from "../hooks/AuthContext";
-import MyTabs from "../components/myTabs"; 
+import MyTabs from "../components/myTabs";
+import Modal from "../components/Modal";
 import "./ChallengeDiary.css";
 
+const challengeColors = ["#FF6B6B", "#4ECDC4", "#556270", "#FFD700", "#C71585"]; // 챌린지별 색상 배열
+
 function ChallengeDiary() {
-    const [date, setDate] = useState(new Date()); // 날짜 상태 관리
-    const [challenges, setChallenges] = useState([]); // 사용자가 가입한 챌린지 목록 상태 관리
+    const [date, setDate] = useState(new Date()); // 현재 선택된 날짜 
+    const [challenges, setChallenges] = useState([]); // 사용자가 참여하고 있는 챌린지 목록
     const [challengeStatus, setChallengeStatus] = useState({}); // 날짜별 챌린지 완료 상태 관리
+    const [selectedChallenge, setSelectedChallenge] = useState("all"); //필터링할 챌린지의 ID를 저장
+    const [showModal, setShowModal] = useState(false); //모달의 표시 여부를 저장
+    const [modalContent, setModalContent] = useState([]); //모달에 표시할 챌린지 데이터를 저장
     const { currentUser, token } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
     const navigate = useNavigate();
 
@@ -34,7 +40,10 @@ function ChallengeDiary() {
                         }
                     });
                     console.log('Fetched challenges:', response.data);
-                    setChallenges(response.data);
+                    setChallenges(response.data.map((challenge, index) => ({ //챌린지에 색상부여
+                        ...challenge,
+                        color: challengeColors[index % challengeColors.length]
+                    })));
                 } catch (error) {
                     console.error('Failed to fetch challenges:', error);
                 }
@@ -74,6 +83,7 @@ function ChallengeDiary() {
         fetchChallengeStatus();
     }, [date]);
 
+    // 체크박스 상태가 변경되면 서버에 상태를 업데이트하고 로컬 상태를 업데이트
     const handleChallengeCheck = async (challengeId, participantId, checked) => {
         try {
             const completionDate = format(date, 'yyyy-MM-dd');
@@ -81,7 +91,7 @@ function ChallengeDiary() {
                 // 체크된 경우에만 서버에 데이터 저장
                 await axios.post('http://localhost:5000/challengerecords/update', {
                     participant_id: participantId,
-                    challenge_id: challengeId,
+                    challenge_id: challengeId, // 어떤 챌린지가 체크되었는지를 식별하는 고유 ID
                     completion_date: completionDate
                 });
             } else {
@@ -111,18 +121,58 @@ function ChallengeDiary() {
         }
     };
 
-    const tileClassName = ({ date, view }) => {
+    const tileContent = ({ date, view }) => {
         if (view === 'month') {
             const formattedDate = format(date, 'yyyy-MM-dd');
             if (challengeStatus[formattedDate]) {
-                const challengeColors = Object.values(challengeStatus[formattedDate]);
-                return `tile-checked ${challengeColors.includes('defaultColor') ? 'tile-checked-green' : ''}`;
+                // 특정 날짜에 완료된 챌린지의 ID 목록을 가져옴
+                const completedChallenges = Object.keys(challengeStatus[formattedDate]).filter(challengeId => challengeStatus[formattedDate][challengeId]);
+                if (completedChallenges.length > 0) {
+                    return (
+                        <div className="tile-content">
+                            {completedChallenges.map((challengeId, index) => {
+                                const challenge = challenges.find(ch => ch.challenge_id === challengeId);
+                                console.log('점챌린지:',challenge);
+                                return (
+                                    <div
+                                        key={index}
+                                        className="challenge-dot"
+                                        style={{ backgroundColor: challenge ? challenge.color : '#000' }} //점에 챌린지 색상 설정
+                                    />
+                                );
+                            })}
+                        </div>
+                    );
+                }
             }
         }
         return null;
     };
 
-    return (
+    // 날짜를 클릭하면 해당 날짜의 챌린지 목록을 모달에 표시
+    const handleDateClick = date => {
+        setDate(date);
+        const formattedDate = format(date, 'yyyy-MM-dd');
+        if (challengeStatus[formattedDate]) {
+            const challengesForDate = challengeStatus[formattedDate];
+            const completedChallenges = challenges.filter(challenge => challengesForDate[challenge.challenge_id]);
+            setModalContent(completedChallenges);
+            setShowModal(true);
+        }
+    };
+
+    const handleChallengeFilterChange = (e) => {
+        setSelectedChallenge(e.target.value);
+    };
+
+    const getFilteredChallenges = () => {
+        if (selectedChallenge === "all") {
+            return challenges;
+        }
+        return challenges.filter(challenge => challenge.challenge_id === selectedChallenge);
+    };
+
+ return (
         <div className="ChallengeDiary">
             <nav className="topNav">
                 <li className="Logo" onClick={goHome}>
@@ -131,15 +181,30 @@ function ChallengeDiary() {
                 <li>
                     <MyTabs />
                 </li>
-            </nav>            
+            </nav>
             <h2>챌린지 기록</h2>
             <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
-            <Calendar onChange={setDate} value={date} tileClassName={tileClassName} className="react-calendar"/>
+            <Calendar 
+                onChange={setDate} 
+                value={date} 
+                tileContent={tileContent} 
+                onClickDay={handleDateClick} 
+                className="react-calendar" 
+            />
             <h3>챌린지 목록</h3>
+            <div>
+                <label>챌린지 필터:</label>
+                <select value={selectedChallenge} onChange={handleChallengeFilterChange}>
+                    <option value="all">전체</option>
+                    {challenges.map(challenge => (
+                        <option key={challenge.challenge_id} value={challenge.challenge_id}>{challenge.challenge_name}</option>
+                    ))}
+                </select>
+            </div>
             <div className="challenge-list">
-                {challenges.map(challenge => (
+                {getFilteredChallenges().map(challenge => (
                     <div key={challenge.challenge_id} className="challenge-item">
-                        <label>
+                        <label style={{color: challenge.color}}>
                             {challenge.challenge_name}
                             <input
                                 type="checkbox"
@@ -150,6 +215,18 @@ function ChallengeDiary() {
                     </div>
                 ))}
             </div>
+            {showModal && (
+                <Modal onClose={() => setShowModal(false)}>
+                    <h3>{format(date, 'yyyy년 M월 d일', { locale: ko })}의 완료된 챌린지</h3>
+                    <ul>
+                        {modalContent.map(challenge => (
+                            <li key={challenge.challenge_id} style={{color: challenge.color}}>
+                                {challenge.challenge_name}
+                            </li>
+                        ))}
+                    </ul>
+                </Modal>
+            )}
         </div>
     );
 }

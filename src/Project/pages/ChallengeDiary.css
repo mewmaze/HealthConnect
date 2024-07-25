@@ -7,6 +7,13 @@
 .challenge-list {
     padding: 10px; 
 }
+.challenge-list {
+    margin-top: 20px;
+}
+
+.challenge-item {
+    margin-bottom: 10px;
+}
 
 .challenge-item {
     margin-bottom: 14px; 
@@ -25,31 +32,29 @@
     border: initial; /* 기본 테두리로 설정 */
 }
 
+
 /* 날짜 셀에 표시될 동그라미 스타일 */
 .tile-checked {
     position: relative;
 }
 
-.tile-checked::after {
-    content: '';
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 8px;
+.react-calendar {
+    width: 100%; /* 달력의 너비를 페이지 전체로 설정 */
+    max-width: 800px; /* 달력의 최대 너비를 800px로 제한 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
+
+.tile-content {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.challenge-dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background-color: transparent; /* 기본 색상은 투명 */
+    display: inline-block;
+    margin: 2px;
 }
 
-/* 색상 클래스를 추가하여 색상 표시 */
-.tile-checked-green::after {
-    background-color: #4caf50; /* 연두색 */
-}
-
-.tile-checked-red::after {
-    background-color: #f44336; /* 빨간색 */
-}
-
-.highlight-range {
-    background-color: rgba(0, 255, 0, 0.3); /* 연두색 배경으로 범위를 강조 */
-}
