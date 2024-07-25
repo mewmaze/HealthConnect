@@ -7,12 +7,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 
 function MyTabs() {
+  const { currentUser } = useContext(AuthContext);
+  const user_id = currentUser ? currentUser.user_id : null;
+
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
-  const { currentUser } = useContext(AuthContext);
-
-  const user_id = currentUser ? currentUser.user_id : null;
 
   useEffect(() => {
     setSelectedTab(location.pathname);
