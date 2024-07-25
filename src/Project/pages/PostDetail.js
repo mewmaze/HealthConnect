@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Comment from '../components/Comment';
 import NewComment from '../components/NewComment';
 import { jwtDecode } from 'jwt-decode';
@@ -8,27 +8,28 @@ import './PostDetail.css';
 
 const PostDetail = ({ communities, addComment }) => {
   const { communityId, postId } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [editMode, setEditMode] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedContent, setEditedContent] = useState('');
 
   useEffect(() => {
     // 게시글 불러오기
-    axios.get('http://localhost:5000/posts')
+    axios.get(`http://localhost:5000/posts/${postId}`)
       .then(response => {
-        console.log('Post Data:', response.data); 
-        const foundPost = response.data.find(p => p.post_id === parseInt(postId));
-        setPost(foundPost);
+        setPost(response.data);
+        setEditedTitle(response.data.title);
+        setEditedContent(response.data.content);
       })
       .catch(error => console.error(error));
 
     // 댓글 불러오기
     axios.get(`http://localhost:5000/posts/${postId}/comments`)
-    .then(response => {
-      console.log('Comments Data:', response.data); // 서버에서 받은 데이터 로깅
-      setComments(response.data);
-    })
+      .then(response => setComments(response.data))
       .catch(error => console.error(error));
   }, [postId]);
 
@@ -51,25 +52,91 @@ const PostDetail = ({ communities, addComment }) => {
           'Content-Type': 'application/json'
         }
       });
-  
       setComments([...comments, response.data]);
       setComment('');
-      console.log('댓글이 성공적으로 작성되었습니다.');
-      setErrorMessage(''); // 에러 메시지 초기화
+      setErrorMessage('');
     } catch (error) {
       console.error('댓글 작성에 실패했습니다:', error.response ? error.response.data : error.message);
-      setErrorMessage('댓글 작성에 실패했습니다.'); 
+      setErrorMessage('댓글 작성에 실패했습니다.');
     }
   };
+
+  const handleEditSubmit = async e => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setErrorMessage('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
+      await axios.put(`http://localhost:5000/posts/${postId}`, 
+        { title: editedTitle, content: editedContent }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      setPost({ ...post, title: editedTitle, content: editedContent });
+      setEditMode(false);
+      setErrorMessage('');
+    } catch (error) {
+      console.error('게시글 수정에 실패했습니다:', error.response ? error.response.data : error.message);
+      setErrorMessage('게시글 수정에 실패했습니다.');
+    }
+  };
+
+  const handleDelete = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setErrorMessage('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
+      await axios.delete(`http://localhost:5000/posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      navigate(`/community/${communityId}`);
+    } catch (error) {
+      console.error('게시글 삭제에 실패했습니다:', error.response ? error.response.data : error.message);
+      setErrorMessage('게시글 삭제에 실패했습니다.');
+    }
+  };
+
   if (!post) return <div>로딩중...</div>;
 
   return (
     <div>
       <div className="post-detail">
-        <h2>{post.title}</h2>
-        <p>{post.content}</p>
-        <p>작성자: {post.user_id}</p>
-        <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
+        {editMode ? (
+          <form onSubmit={handleEditSubmit}>
+            <input 
+              type="text" 
+              value={editedTitle} 
+              onChange={e => setEditedTitle(e.target.value)} 
+              required 
+            />
+            <textarea
+              value={editedContent}
+              onChange={e => setEditedContent(e.target.value)}
+              required
+            ></textarea>
+            <button type="submit">저장</button>
+            <button type="button" onClick={() => setEditMode(false)}>취소</button>
+          </form>
+        ) : (
+          <>
+            <h2>{post.title}</h2>
+            <p>{post.content}</p>
+            <p>작성자: {post.user_id}</p>
+            <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
+            <button onClick={() => setEditMode(true)}>수정</button>
+            <button onClick={handleDelete}>삭제</button>
+          </>
+        )}
 
         <h3>댓글</h3>
         <ul>

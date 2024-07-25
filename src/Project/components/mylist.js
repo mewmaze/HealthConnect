@@ -1,15 +1,15 @@
-import { TablePagination } from '@mui/base/TablePagination';
-import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
-import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import { Checkbox } from '@mui/material';
-import styled, { createGlobalStyle } from 'styled-components';
-
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from "../hooks/AuthContext";
+import { createGlobalStyle } from 'styled-components';
+import { TablePagination } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import styled from 'styled-components';
+import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 
 // Global styles including CSS variables
 const GlobalStyle = createGlobalStyle`
@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     --focus-outline-color: #dae2ed;
     --focus-border-color: #3399ff;
   }
-`;
+;`
 
 // Styled components
 const Root = styled.div`
@@ -34,7 +34,7 @@ const Root = styled.div`
   background-color: white;
   padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
+;`
 
 const Filter = styled.div`
   position: relative;
@@ -43,7 +43,7 @@ const Filter = styled.div`
   margin-top: 1%;
   margin-left: 40%;
   margin-bottom: 5px;
-`;
+;`
 
 const DeleteAllButton = styled.button`
   position: inherit;
@@ -51,15 +51,15 @@ const DeleteAllButton = styled.button`
   margin-left: 28%;
   margin-right: 3%;
   width: 90px;
-`;
+;`
 
 const DeleteButton = styled.button`
   font-size: 0.7rem;
-`;
+;`
 
-const SmallCheckbox = styled(Checkbox)`
+const StyledSmallCheckbox = styled(Checkbox)`
   transform: scale(0.9);
-`;
+;`
 
 const CustomTablePagination = styled(TablePagination)`
   .tablePagination-spacer {
@@ -160,7 +160,7 @@ const CustomTablePagination = styled(TablePagination)`
     border: 1px solid var(--border-color);
     background-color: transparent;
   }
-`;
+;`
 
 const Table = styled.table`
   font-family: 'IBM Plex Sans', sans-serif;
@@ -169,7 +169,7 @@ const Table = styled.table`
   border: none;
   width: 98%;
   margin: 10px;
-`;
+;`
 
 const TableCell = styled.td`
   border: 1px solid var(--border-color);
@@ -193,7 +193,7 @@ const TableCell = styled.td`
     width: 12%;
     text-align: center;
   }
-`;
+;`
 
 const TableHeaderCell = styled.th`
   border: 1px solid var(--border-color);
@@ -217,33 +217,39 @@ const TableHeaderCell = styled.th`
     width: 15%;
     text-align: center;
   }
-`;
+;`
 
 export default function MyList() {
-  const { user_id } = useParams();
+  const { user_id, postId } = useParams();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
-
+  const [view, setView] = useState('posts'); // Default to 'posts'
   const navigate = useNavigate();
   const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/myPage/${user_id}/getPosts`)
+    const endpoint = view === 'posts'
+      ? `http://localhost:5000/api/myPage/${user_id}/getPosts`
+      : `http://localhost:5000/api/myPage/${user_id}/${postId}/getComments`;
+  
+    axios.get(endpoint)
       .then(response => {
-        const data = response.data.posts; // 서버 응답에서 posts 배열 추출
+        const data = response.data[view];
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
-          setError('서버에서 반환된 데이터가 올바르지 않습니다.');
+          setPosts([]);
+          setError('Server returned invalid data.');
         }
       })
       .catch(error => {
-        console.error('API 호출 실패:', error);
-        setError('데이터를 가져오는 데 실패했습니다.');
+        console.error('API call failed:', error);
+        setPosts([]);
+        setError('Failed to fetch data.');
       });
-  }, [user_id]);
+  }, [user_id, view]);  
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
 
@@ -256,68 +262,80 @@ export default function MyList() {
     setPage(0);
   };
 
-  const handleCheckboxChange = (event, post_id) => {
+  const handleCheckboxChange = (event, id) => {
     setPosts((prevRows) =>
-      prevRows.map((post) =>
-        post.post_id === post_id ? { ...post, checked: event.target.checked } : post
+      prevRows.map((item) =>
+        item[view === 'posts' ? 'post_id' : 'comment_id'] === id
+          ? { ...item, checked: event.target.checked }
+          : item
       )
     );
   };
 
-  if (error) return <p>{error}</p>;
+  if (error) return <p>{error}</p>;  
 
   return (
     <>
       <GlobalStyle />
       <Root>
         <Filter>
-          <li>작성글</li>
-          <li>작성댓글</li>
+          <button onClick={() => setView('posts')}>작성글</button>
+          <button onClick={() => setView('comments')}>작성댓글</button>
           <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
           <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
         </Filter>
         <Table aria-label="custom pagination table">
           <thead>
-            <tr>
-              <TableHeaderCell className="number">글번호</TableHeaderCell>
-              <TableHeaderCell className="title-header">제목</TableHeaderCell>
-              <TableHeaderCell className="date">날짜</TableHeaderCell>
-              <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
-            </tr>
+            {posts.length === 0 ? (
+              <tr>
+                <TableCell colSpan={4}>No data available</TableCell>
+              </tr>
+            ) : (
+              <tr>
+                <TableHeaderCell className="number">번호</TableHeaderCell>
+                <TableHeaderCell className="title-header">{view === 'posts' ? '제목' : '댓글 내용'}</TableHeaderCell>
+                <TableHeaderCell className="date">작성일</TableHeaderCell>
+                <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
+              </tr>
+            )}
           </thead>
           <tbody>
-          {Array.isArray(posts) && posts.length > 0 ? (
-            posts.map((post) => (
-            <tr key={post.post_id}>
-            <TableCell className="number">{post.post_id}</TableCell>
-            <TableCell className="title">
-            <Link to={`/myPosts/${user_id}/${post.post_id}`}>{post.title}</Link>
-            </TableCell>
-            <TableCell className="date">
-            {new Date(post.created_at).toLocaleString()}
-            </TableCell>
-            <TableCell className="delete">
-              <SmallCheckbox
-                className="small-checkbox"
-                checked={post.checked || false}
-                onChange={(event) => handleCheckboxChange(event, post.post_id)}
-              />
-            </TableCell>
+            {posts.length > 0 ? (
+              posts.map((item) => (
+                <tr key={view === 'posts' ? item.post_id : item.comment_id}>
+                  <TableCell className="number">{view === 'posts' ? item.post_id : item.comment_id}</TableCell>
+                  <TableCell className="title">
+                    {view === 'posts' ? (
+                      <Link to={`/myPosts/${user_id}/${item.post_id}`}>
+                        {item.title}
+                      </Link>
+                    ) : (
+                      item.content
+                    )}
+                  </TableCell>
+                  <TableCell className="date">
+                    {new Date(item.created_at).toLocaleString()}
+                  </TableCell>
+                  <TableCell className="delete">
+                    <StyledSmallCheckbox
+                      className="small-checkbox"
+                      checked={item.checked || false}
+                      onChange={(event) => handleCheckboxChange(event, view === 'posts' ? item.post_id : item.comment_id)}
+                    />
+                  </TableCell>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <TableCell colSpan={4}>No data available</TableCell>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <TableCell colSpan={4}>No data available</TableCell>
-            </tr>
-          )}
-
-          {emptyRows > 0 && (
-            <tr style={{ height: 34 * emptyRows }}>
-              <TableCell colSpan={4} aria-hidden />
-            </tr>
-          )}
+            )}
+            {emptyRows > 0 && (
+              <tr style={{ height: 34 * emptyRows }}>
+                <TableCell colSpan={4} aria-hidden />
+              </tr>
+            )}
           </tbody>
-
           <tfoot>
             <tr>
               <CustomTablePagination
@@ -351,8 +369,4 @@ export default function MyList() {
       </Root>
     </>
   );
-}
-
-function createData(post_id, title, created_at, checked = false) {
-  return { post_id, title, created_at, checked };
 }
