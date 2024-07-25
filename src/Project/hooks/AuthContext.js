@@ -2,17 +2,18 @@
 //token, user관리 
 import { createContext, useState, useEffect } from 'react';
 
-export const AuthContext = createContext();
+// AuthContext를 생성하여 사용자 인증 상태를 관리
+export const AuthContext = createContext(); 
 
-
+// AuthContextProvider는 인증 정보를 제공
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(() => {
+  const [currentUser, setCurrentUser] = useState(() => { // currentUser : 현재 로그인한 사용자 정보
       const user = localStorage.getItem('user');
-      return user ? JSON.parse(user) : null;
+      return user ? JSON.parse(user) : null; // 사용자 정보가 있으면 파싱하여 반환, 없으면 null 반환
   });
 
-  const [token, setToken] = useState(() => {
-    return localStorage.getItem('token') || null;
+  const [token, setToken] = useState(() => { // token : 현재 로그인한 사용자의 토큰
+    return localStorage.getItem('token') || null; // 토큰이 있으면 반환, 없으면 null 반환
   });
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, [token]);
 
-  //로그아웃시 localStorate에서 user,token 삭제
+  //로그아웃시 사용자 정보를 null로 설정하고 localStorate에서 user,token 제거
   const logout = () => {
     setCurrentUser(null);
     setToken(null);
