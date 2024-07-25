@@ -121,6 +121,7 @@ function ChallengeDiary() {
         }
     };
 
+    // 달력에 완료한 챌린지 표시
     const tileContent = ({ date, view }) => {
         if (view === 'month') {
             const formattedDate = format(date, 'yyyy-MM-dd');
@@ -129,15 +130,18 @@ function ChallengeDiary() {
                 const completedChallenges = Object.keys(challengeStatus[formattedDate])
                     .filter(challengeId => challengeStatus[formattedDate][challengeId]);
 
-                console.log('Completed Challenges:', completedChallenges); // 완료된 챌린지 ID
+                // 필터링된 챌린지 ID
+                const filteredChallenges = selectedChallenge === "all"
+                    ? completedChallenges
+                    : completedChallenges.filter(challengeId => Number(challengeId) === Number(selectedChallenge));
 
-                if (completedChallenges.length > 0) {
+
+                if (filteredChallenges.length > 0) {
                     return (
                         <div className="tile-content">
-                            {completedChallenges.map((challengeId, index) => {
+                            {filteredChallenges.map((challengeId, index) => {
                                 const numericChallengeId = Number(challengeId); // 숫자형으로 변환
                                 const challenge = challenges.find(ch => ch.challenge_id === numericChallengeId);
-                                console.log('Challenge:', challenge);
                                 return (
                                     <div
                                         key={index}
