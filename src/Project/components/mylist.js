@@ -1,243 +1,358 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import Calendar from "react-calendar";
-import axios from "axios";
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { TablePagination } from '@mui/base/TablePagination';
+import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
+import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Checkbox } from '@mui/material';
+import styled, { createGlobalStyle } from 'styled-components';
+
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { AuthContext } from "../hooks/AuthContext";
-import MyTabs from "../components/myTabs";
-import Modal from "../components/Modal";
-import "./ChallengeDiary.css";
 
-const challengeColors = ["#FF6B6B", "#4ECDC4", "#556270", "#FFD700", "#C71585"]; // 챌린지별 색상 배열
+// Global styles including CSS variables
+const GlobalStyle = createGlobalStyle`
+  :root {
+    --border-color: grey;
+    --text-color: #1c2025;
+    --hover-background-color: #f3f6f9;
+    --hover-border-color: #dae2ed;
+    --focus-outline-color: #dae2ed;
+    --focus-border-color: #3399ff;
+  }
+`;
 
-function ChallengeDiary() {
-    const [date, setDate] = useState(new Date()); // 현재 선택된 날짜 
-    const [challenges, setChallenges] = useState([]); // 사용자가 참여하고 있는 챌린지 목록
-    const [challengeStatus, setChallengeStatus] = useState({}); // 날짜별 챌린지 완료 상태 관리
-    const [selectedChallenge, setSelectedChallenge] = useState("all"); //필터링할 챌린지의 ID를 저장
-    const [showModal, setShowModal] = useState(false); //모달의 표시 여부를 저장
-    const [modalContent, setModalContent] = useState([]); //모달에 표시할 챌린지 데이터를 저장
-    const { currentUser, token } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
-    const navigate = useNavigate();
+// Styled components
+const Root = styled.div`
+  border-radius: 12px;
+  overflow: clip;
+  margin-left: 19%;
+  margin-top: 6%;
+  margin-bottom: 10%;
+  width: 61%;
+  background-color: white;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
 
-    const userId = currentUser ? currentUser.user_id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
-    console.log('userId : ',userId);
-    const goHome = () => {
-        navigate(`/`); 
+const Filter = styled.div`
+  position: relative;
+  display: inline-flex;
+  width: 60%;
+  margin-top: 1%;
+  margin-left: 40%;
+  margin-bottom: 5px;
+`;
+
+const DeleteAllButton = styled.button`
+  position: inherit;
+  font-size: 0.7rem;
+  margin-left: 28%;
+  margin-right: 3%;
+  width: 90px;
+`;
+
+const DeleteButton = styled.button`
+  font-size: 0.7rem;
+`;
+
+const SmallCheckbox = styled(Checkbox)`
+  transform: scale(0.9);
+`;
+
+const CustomTablePagination = styled(TablePagination)`
+  .tablePagination-spacer {
+    display: none;
+  }
+
+  .tablePagination-toolbar {
+    position: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    margin-left: 10px;
+  }
+
+  @media (min-width: 600px) {
+    .tablePagination-toolbar {
+      flex-direction: row;
+      align-items: center;
     }
+  }
 
-    useEffect(() => {
-        console.log('Current user:', currentUser);
-        console.log('Token:', token);
-        if (userId && token) {
-            // 사용자가 로그인 되어 있을 때만 챌린지 목록 불러옴
-            const fetchChallenges = async () => {
-                try {
-                    const response = await axios.get('http://localhost:5000/participants/user-challenges', {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    console.log('challenges:', response.data);
-                    setChallenges(response.data.map((challenge, index) => ({ //챌린지에 색상부여
-                        ...challenge,
-                        color: challengeColors[index % challengeColors.length]
-                    })));
-                } catch (error) {
-                    console.error('Failed to fetch challenges:', error);
-                }
-            };
+  .tablePagination-selectLabel {
+    margin: 0;
+  }
 
-            fetchChallenges();
+  .tablePagination-select {
+    position: inherit;
+    margin-left: 10px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 2px 0 2px 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--text-color);
+    transition: all 100ms ease;
+  }
+
+  .tablePagination-select:hover {
+    background-color: var(--hover-background-color);
+    border-color: var(--hover-border-color);
+  }
+
+  .tablePagination-select:focus {
+    outline: 3px solid var(--focus-outline-color);
+    border-color: var(--focus-border-color);
+  }
+
+  .tablePagination-displayedRows {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .tablePagination-displayedRows {
+      margin-left: auto;
+    }
+  }
+
+  .tablePagination-actions {
+    display: flex;
+    gap: 6px;
+    border: transparent;
+    text-align: center;
+  }
+
+  .tablePagination-actions > button {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border: transparent;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: all 120ms ease;
+  }
+
+  .tablePagination-actions > button > svg {
+    font-size: 22px;
+  }
+
+  .tablePagination-actions > button:hover {
+    background-color: var(--hover-background-color);
+    border-color: var(--hover-border-color);
+  }
+
+  .tablePagination-actions > button:focus {
+    outline: 3px solid var(--focus-outline-color);
+    border-color: var(--focus-border-color);
+  }
+
+  .tablePagination-actions > button:disabled {
+    opacity: 0.3;
+  }
+
+  .tablePagination-actions > button:disabled:hover {
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+  }
+`;
+
+const Table = styled.table`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.875rem;
+  border-collapse: collapse;
+  border: none;
+  width: 98%;
+  margin: 10px;
+`;
+
+const TableCell = styled.td`
+  border: 1px solid var(--border-color);
+  text-align: left;
+  padding: 8px;
+
+  &.number {
+    width: 15%;
+  }
+
+  &.title {
+    width: 48%;
+    font-size: 0.875rem;
+  }
+
+  &.date {
+    width: 20%;
+  }
+
+  &.delete {
+    width: 12%;
+    text-align: center;
+  }
+`;
+
+const TableHeaderCell = styled.th`
+  border: 1px solid var(--border-color);
+  text-align: left;
+  padding: 8px;
+
+  &.number {
+    width: 15%;
+  }
+
+  &.title-header {
+    width: 55%;
+    font-size: 0.875rem; /* Set the font size for the "제목" header */
+  }
+
+  &.date {
+    width: 15%;
+  }
+
+  &.delete {
+    width: 15%;
+    text-align: center;
+  }
+`;
+
+export default function MyList() {
+  const { user_id } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
+
+  const navigate = useNavigate();
+  const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/myPage/${user_id}/getPosts`)
+      .then(response => {
+        const data = response.data.posts; // 서버 응답에서 posts 배열 추출
+        if (Array.isArray(data)) {
+          setPosts(data);
         } else {
-            console.log('UserId or token is missing');
+          setError('서버에서 반환된 데이터가 올바르지 않습니다.');
         }
-    }, [userId, token]);
+      })
+      .catch(error => {
+        console.error('API 호출 실패:', error);
+        setError('데이터를 가져오는 데 실패했습니다.');
+      });
+  }, [user_id]);
 
-    useEffect(() => {
-        // 날짜가 변경될 때마다 해당 날짜의 챌린지 완료 여부를 불러온다
-        const fetchChallengeStatus = async () => {
-            try {
-                const formattedDate = format(date, 'yyyy-MM-dd');
-                const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status?date=${formattedDate}`);
-                console.log('Fetched challenge status:', response.data);
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
 
-                // 서버 데이터로 로컬 상태 초기화 (서버 데이터가 로컬 상태를 덮어쓰지 않도록)
-                setChallengeStatus(prevStatus => {
-                    const newStatus = {
-                        ...prevStatus,
-                        [formattedDate]: response.data.reduce((acc, curr) => { //배열을 객체 형태로 변환
-                            acc[curr.challenge_id] = true; // 서버에서 가져온 완료 상태
-                            return acc;
-                        }, {...(prevStatus[formattedDate] || {})}) // 현재 날짜에 대한 로컬 상태를 가져옴. 기존 상태 유지
-                    };
-                    console.log('Updated challenge status with server data:', newStatus);
-                    return newStatus;
-                });
-            } catch (error) {
-                console.error('Failed to fetch challenge status:', error);
-            }
-        };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-        fetchChallengeStatus();
-    }, [date]);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-    // 체크박스 상태가 변경되면 서버에 상태를 업데이트하고 로컬 상태를 업데이트
-    const handleChallengeCheck = async (challengeId, participantId, checked) => {
-        try {
-            const completionDate = format(date, 'yyyy-MM-dd');
-            if (checked) {
-                // 체크된 경우에만 서버에 데이터 저장
-                await axios.post('http://localhost:5000/challengerecords/update', {
-                    participant_id: participantId,
-                    challenge_id: challengeId, // 어떤 챌린지가 체크되었는지를 식별하는 고유 ID
-                    completion_date: completionDate
-                });
-            } else {
-                // 체크 해제된 경우에 데이터를 서버에서 삭제
-                await axios.post('http://localhost:5000/challengerecords/delete', {
-                    participant_id: participantId,
-                    challenge_id: challengeId,
-                    completion_date: completionDate
-                });
-            }
-
-            // 로컬 상태 업데이트
-            console.log('Updating local state with check:', { completionDate, challengeId, checked });
-            setChallengeStatus(prevStatus => {
-                const newStatus = {
-                    ...prevStatus,
-                    [completionDate]: {
-                        ...prevStatus[completionDate],
-                        [challengeId]: checked
-                    }
-                };
-                console.log('Local state updated:', newStatus);
-                return newStatus;
-            });
-        } catch (error) {
-            console.error('Failed to update challenge status:', error);
-        }
-    };
-
-    // 달력에 완료한 챌린지 표시
-    const tileContent = ({ date, view }) => {
-        if (view === 'month') {
-            const formattedDate = format(date, 'yyyy-MM-dd');
-            if (challengeStatus[formattedDate]) {
-                // 특정 날짜에 완료된 챌린지의 ID 목록을 가져옴
-                const completedChallenges = Object.keys(challengeStatus[formattedDate])
-                    .filter(challengeId => challengeStatus[formattedDate][challengeId]);
-
-                // 필터링된 챌린지 ID
-                const filteredChallenges = selectedChallenge === "all"
-                    ? completedChallenges
-                    : completedChallenges.filter(challengeId => Number(challengeId) === Number(selectedChallenge));
-
-
-                if (filteredChallenges.length > 0) {
-                    return (
-                        <div className="tile-content">
-                            {filteredChallenges.map((challengeId, index) => {
-                                const numericChallengeId = Number(challengeId); // 숫자형으로 변환
-                                const challenge = challenges.find(ch => ch.challenge_id === numericChallengeId);
-                                return (
-                                    <div
-                                        key={index}
-                                        className="challenge-dot"
-                                        style={{ backgroundColor: challenge ? challenge.color : '#000' }} //점에 챌린지 색상 설정
-                                    />
-                                );
-                            })}
-                        </div>
-                    );
-                }
-            }
-        }
-        return null;
-    };
-
-    // 날짜를 클릭하면 해당 날짜의 챌린지 목록을 모달에 표시
-    const handleDateClick = date => {
-        setDate(date);
-        const formattedDate = format(date, 'yyyy-MM-dd');
-        if (challengeStatus[formattedDate]) {
-            const challengesForDate = challengeStatus[formattedDate];
-            const completedChallenges = challenges.filter(challenge => challengesForDate[challenge.challenge_id]);
-            setModalContent(completedChallenges);
-            setShowModal(true);
-        }
-    };
-
-    const handleChallengeFilterChange = (e) => {
-        setSelectedChallenge(e.target.value);
-    };
-
-    const getFilteredChallenges = () => {
-        if (selectedChallenge === "all") {
-            return challenges;
-        }
-        return challenges.filter(challenge => challenge.challenge_id === selectedChallenge);
-    };
-
- return (
-        <div className="ChallengeDiary">
-            <nav className="topNav">
-                <li className="Logo" onClick={goHome}>
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs />
-                </li>
-            </nav>
-            <h2>챌린지 기록</h2>
-            <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
-            <Calendar 
-                onChange={setDate} 
-                value={date} 
-                tileContent={tileContent} 
-                onClickDay={handleDateClick} 
-                className="react-calendar" 
-            />
-            <h3>챌린지 목록</h3>
-            <div>
-                <label>챌린지 필터:</label>
-                <select value={selectedChallenge} onChange={handleChallengeFilterChange}>
-                    <option value="all">전체</option>
-                    {challenges.map(challenge => (
-                        <option key={challenge.challenge_id} value={challenge.challenge_id}>{challenge.challenge_name}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="challenge-list">
-                {getFilteredChallenges().map(challenge => (
-                    <div key={challenge.challenge_id} className="challenge-item">
-                        <label style={{color: challenge.color}}>
-                            {challenge.challenge_name}
-                            <input
-                                type="checkbox"
-                                checked={(challengeStatus[format(date, 'yyyy-MM-dd')] && challengeStatus[format(date, 'yyyy-MM-dd')][challenge.challenge_id]) || false}
-                                onChange={(e) => handleChallengeCheck(challenge.challenge_id, challenge.participant_id, e.target.checked)}
-                            />
-                        </label>
-                    </div>
-                ))}
-            </div>
-            {showModal && (
-                <Modal onClose={() => setShowModal(false)}>
-                    <h3>{format(date, 'yyyy년 M월 d일', { locale: ko })}의 완료된 챌린지</h3>
-                    <ul>
-                        {modalContent.map(challenge => (
-                            <li key={challenge.challenge_id} style={{color: challenge.color}}>
-                                {challenge.challenge_name}
-                            </li>
-                        ))}
-                    </ul>
-                </Modal>
-            )}
-        </div>
+  const handleCheckboxChange = (event, post_id) => {
+    setPosts((prevRows) =>
+      prevRows.map((post) =>
+        post.post_id === post_id ? { ...post, checked: event.target.checked } : post
+      )
     );
+  };
+
+  if (error) return <p>{error}</p>;
+
+  return (
+    <>
+      <GlobalStyle />
+      <Root>
+        <Filter>
+          <li>작성글</li>
+          <li>작성댓글</li>
+          <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
+          <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
+        </Filter>
+        <Table aria-label="custom pagination table">
+          <thead>
+            <tr>
+              <TableHeaderCell className="number">글번호</TableHeaderCell>
+              <TableHeaderCell className="title-header">제목</TableHeaderCell>
+              <TableHeaderCell className="date">날짜</TableHeaderCell>
+              <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
+            </tr>
+          </thead>
+          <tbody>
+          {Array.isArray(posts) && posts.length > 0 ? (
+            posts.map((post) => (
+            <tr key={post.post_id}>
+            <TableCell className="number">{post.post_id}</TableCell>
+            <TableCell className="title">
+            <Link to={`/myPosts/${user_id}/${post.post_id}`}>{post.title}</Link>
+            </TableCell>
+            <TableCell className="date">
+            {new Date(post.created_at).toLocaleString()}
+            </TableCell>
+            <TableCell className="delete">
+              <SmallCheckbox
+                className="small-checkbox"
+                checked={post.checked || false}
+                onChange={(event) => handleCheckboxChange(event, post.post_id)}
+              />
+            </TableCell>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <TableCell colSpan={4}>No data available</TableCell>
+            </tr>
+          )}
+
+          {emptyRows > 0 && (
+            <tr style={{ height: 34 * emptyRows }}>
+              <TableCell colSpan={4} aria-hidden />
+            </tr>
+          )}
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <CustomTablePagination
+                rowsPerPageOptions={[3, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={4}
+                count={posts.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                slotProps={{
+                  select: {
+                    'aria-label': 'rows per page',
+                  },
+                  actions: {
+                    showFirstButton: true,
+                    showLastButton: true,
+                    slots: {
+                      firstPageIcon: FirstPageRoundedIcon,
+                      lastPageIcon: LastPageRoundedIcon,
+                      nextPageIcon: ChevronRightRoundedIcon,
+                      backPageIcon: ChevronLeftRoundedIcon,
+                    },
+                  },
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                className="customTablePagination"
+              />
+            </tr>
+          </tfoot>
+        </Table>
+      </Root>
+    </>
+  );
 }
 
-export default ChallengeDiary;
+function createData(post_id, title, created_at, checked = false) {
+  return { post_id, title, created_at, checked };
+}
