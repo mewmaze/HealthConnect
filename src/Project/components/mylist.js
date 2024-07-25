@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { TablePagination } from '@mui/base/TablePagination';
 import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
@@ -6,6 +5,11 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { Checkbox } from '@mui/material';
 import styled, { createGlobalStyle } from 'styled-components';
+
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from "../hooks/AuthContext";
 
 // Global styles including CSS variables
 const GlobalStyle = createGlobalStyle`
@@ -177,15 +181,16 @@ const TableCell = styled.td`
   }
 
   &.title {
-    width: 55%;
+    width: 48%;
+    font-size: 0.875rem;
   }
 
   &.date {
-    width: 15%;
+    width: 20%;
   }
 
   &.delete {
-    width: 15%;
+    width: 12%;
     text-align: center;
   }
 `;
@@ -215,29 +220,32 @@ const TableHeaderCell = styled.th`
 `;
 
 export default function MyList() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const { user_id } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
 
-  const rowsData = [
-    createData(1, "운동추천", "2024-07-03"),
-    createData(2, "운동추천", "2024-07-03"),
-    createData(3, "글내용", "2024-07-03"),
-    createData(4, "글내용", "2024-07-03"),
-    createData(5, "글내용", "2024-07-03"),
-    createData(6, "글내용", "2024-07-03"),
-    createData(7, "글내용", "2024-07-03"),
-    createData(8, "글내용", "2024-07-04"),
-    createData(9, "글내용", "2024-07-04"),
-    createData(10, "글내용", "2024-07-04"),
-    createData(11, "글내용", "2024-07-04"),
-    createData(12, "글내용", "2024-07-04"),
-    createData(13, "글내용", "2024-07-04"),
-  ];
+  const navigate = useNavigate();
+  const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
 
-  const [rows, setRows] = React.useState(rowsData);
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/myPage/${user_id}/getPosts`)
+      .then(response => {
+        const data = response.data.posts; // 서버 응답에서 posts 배열 추출
+        if (Array.isArray(data)) {
+          setPosts(data);
+        } else {
+          setError('서버에서 반환된 데이터가 올바르지 않습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('API 호출 실패:', error);
+        setError('데이터를 가져오는 데 실패했습니다.');
+      });
+  }, [user_id]);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -248,13 +256,15 @@ export default function MyList() {
     setPage(0);
   };
 
-  const handleCheckboxChange = (event, number) => {
-    setRows((prevRows) =>
-      prevRows.map((row) =>
-        row.number === number ? { ...row, checked: event.target.checked } : row
+  const handleCheckboxChange = (event, post_id) => {
+    setPosts((prevRows) =>
+      prevRows.map((post) =>
+        post.post_id === post_id ? { ...post, checked: event.target.checked } : post
       )
     );
   };
+
+  if (error) return <p>{error}</p>;
 
   return (
     <>
@@ -269,47 +279,51 @@ export default function MyList() {
         <Table aria-label="custom pagination table">
           <thead>
             <tr>
-              <TableHeaderCell className="writeNum">글번호</TableHeaderCell>
+              <TableHeaderCell className="number">글번호</TableHeaderCell>
               <TableHeaderCell className="title-header">제목</TableHeaderCell>
-              <TableHeaderCell>날짜</TableHeaderCell>
-              <TableHeaderCell>삭제관리</TableHeaderCell>
+              <TableHeaderCell className="date">날짜</TableHeaderCell>
+              <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
             </tr>
           </thead>
           <tbody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row) => (
-              <tr key={row.number}>
-                <TableCell>{row.number}</TableCell>
-                <TableCell style={{ width: 120 }} align="right">
-                  {row.title}
-                </TableCell>
-                <TableCell style={{ width: 120 }} align="right">
-                  {row.date}
-                </TableCell>
-                <TableCell style={{ width: 120 }} align="center">
-                  <SmallCheckbox
-                    className="small-checkbox"
-                    checked={row.checked}
-                    onChange={(event) => handleCheckboxChange(event, row.number)}
-                  />
-                </TableCell>
+          {Array.isArray(posts) && posts.length > 0 ? (
+            posts.map((post) => (
+            <tr key={post.post_id}>
+            <TableCell className="number">{post.post_id}</TableCell>
+            <TableCell className="title">
+            <Link to={`/myPosts/${post.post_id}`}>{post.title}</Link>
+            </TableCell>
+            <TableCell className="date">
+            {new Date(post.created_at).toLocaleString()}
+            </TableCell>
+            <TableCell className="delete">
+              <SmallCheckbox
+                className="small-checkbox"
+                checked={post.checked || false}
+                onChange={(event) => handleCheckboxChange(event, post.post_id)}
+              />
+            </TableCell>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <TableCell colSpan={4}>No data available</TableCell>
+            </tr>
+          )}
 
-            {emptyRows > 0 && (
-              <tr style={{ height: 34 * emptyRows }}>
-                <TableCell colSpan={4} aria-hidden />
-              </tr>
-            )}
+          {emptyRows > 0 && (
+            <tr style={{ height: 34 * emptyRows }}>
+              <TableCell colSpan={4} aria-hidden />
+            </tr>
+          )}
           </tbody>
+
           <tfoot>
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[3, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={4}
-                count={rows.length}
+                count={posts.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 slotProps={{
@@ -339,6 +353,6 @@ export default function MyList() {
   );
 }
 
-function createData(number, title, date, checked = false) {
-  return { number, title, date, checked };
+function createData(post_id, title, created_at, checked = false) {
+  return { post_id, title, created_at, checked };
 }

@@ -20,9 +20,9 @@ function Profile() {
     const navigate = useNavigate();
     const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
     
-    console.log('curr', currentUser)
-    console.log('token', token)
-    console.log('user_id', user_id)
+    console.log('curr', currentUser);
+    console.log('token', token);
+    console.log('user_id', user_id);
     
     useEffect(() => {
         const fetchUserData = async () => {
