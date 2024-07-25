@@ -65,6 +65,7 @@ const useChallengeActions = () => {
       // 기본 진행 상태 설정
       const progress = "not started";
 
+      //참여 데이터 서버에 전송
       const response = await axios.post('http://localhost:5000/participants', {
         user_id: userId,
         challenge_id: challengeId,
@@ -77,6 +78,10 @@ const useChallengeActions = () => {
         }
       });
       dispatch({ type: 'JOIN_CHALLENGE', data: response.data });
+
+      // // 서버에서 최신 챌린지 목록을 가져와 상태를 업데이트
+      // const challengesResponse = await axios.get('http://localhost:5000/challenges');
+      // dispatch({ type: 'INIT_CHALLENGE', data: challengesResponse.data });      
     } catch (error) {
       console.error("Failed to join Challenge:", error);
     }

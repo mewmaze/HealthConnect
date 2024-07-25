@@ -38,7 +38,7 @@ function reducer(state,action) {
       return action.data;
     }
     case "CREATE_CHALLENGE": {
-      return [ action.data,...state ];
+      return [ ...state,action.data ];
     }
     case "UPDATE_CHALLENGE": {
       return state.map((it) =>
@@ -50,7 +50,12 @@ function reducer(state,action) {
     }
     case "JOIN_CHALLENGE": {
       return state.map((it) =>
-        it.challenge_id === parseInt(action.data.challenge_id, 10) ? { ...it, ...action.data } : it
+      it.challenge_id === parseInt(action.data.challenge_id, 10)
+      ? {
+          ...it,
+          participant_count: (parseInt(it.participant_count, 10) || 0) + 1 // 참가자 수 증가
+        }
+      : it
       );
     }
     default: {

@@ -8,23 +8,23 @@ import "./Challenge.css";
 
 function Challenge(){
     const data = useContext(ChallengeStateContext);
-    const dispatch = useContext(ChallengeDispatchContext);
+    // const dispatch = useContext(ChallengeDispatchContext);
     const [search,setSearch] = useState('');
   
-    // 페이지 진입 시 챌린지 데이터 요청
-    useEffect(() => {
+    // // 페이지 진입 시 챌린지 데이터 요청
+    // useEffect(() => {
 
-            const fetchChallenges = async () => {
-                try {
-                  const response = await axios.get('http://localhost:5000/challenges');
-                  dispatch({ type: 'INIT_CHALLENGE', data: response.data });
-                } catch (error) {
-                  console.error('Failed to fetch challenges:', error);
-                }
-              };
-              fetchChallenges();
+    //         const fetchChallenges = async () => {
+    //             try {
+    //               const response = await axios.get('http://localhost:5000/challenges');
+    //               dispatch({ type: 'INIT_CHALLENGE', data: response.data });
+    //             } catch (error) {
+    //               console.error('Failed to fetch challenges:', error);
+    //             }
+    //           };
+    //           fetchChallenges();
 
-    }, [dispatch]); //dispatch함수가 변경될때마다 fetchChallenges함수가 실행
+    // }, [dispatch]); //dispatch함수가 변경될때마다 fetchChallenges함수가 실행
     
     const navigate = useNavigate();
     const goChallengeCreate=()=>{
