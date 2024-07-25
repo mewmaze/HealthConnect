@@ -9,6 +9,7 @@ import Layout from './components/Layout'; // Import Layout
 
 import MyPage from './pages/MyPage';
 import Edit from './pages/ProfileEdit';
+import MyPost from "./pages/MyPost";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -167,6 +168,7 @@ const App = () => {
                 <Route path="/signUp" element={<Signup/>}/>
                 <Route path="/myPage/:user_id" element={<MyPage/>}/> {/*  ... */}
                 <Route path="/myPage/:user_id/edit" element={<Edit/>}/> {/*  ... */}
+                <Route path='/myPosts/:user_id/:postId' element={<MyPost/>}/>
                 <Route path="/exercise" element={<Exercise goal={goal}/>}/>
                 <Route path="/exercisediary" element={<ExerciseDiary/>}/>
                 <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal}/>}/>
