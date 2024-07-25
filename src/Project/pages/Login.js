@@ -59,7 +59,8 @@ const Login = () => {
       setEmail('');
       setPassword('');
 
-      navigate(`/myPage/${user.user_id}`); //로그인 후 마이페이지로 이동
+      navigate('/');
+      // navigate(`/myPage/${user.user_id}`); //로그인 후 마이페이지로 이동
     } catch (error) {
       console.error('Error 로그인 실패', error.response ? error.response.data : error.message);
     }

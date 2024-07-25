@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import axios from "axios";
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { AuthContext } from "../hooks/AuthContext";
-import MyTabs from "../components/myTabs";
 import Modal from "../components/Modal";
 import "./ChallengeDiary.css";
 
@@ -19,14 +17,11 @@ function ChallengeDiary() {
     const [showModal, setShowModal] = useState(false); //모달의 표시 여부를 저장
     const [modalContent, setModalContent] = useState([]); //모달에 표시할 챌린지 데이터를 저장
     const { currentUser, token } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const userId = currentUser ? currentUser.user_id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
     console.log('userId : ',userId);
-    const goHome = () => {
-        navigate(`/`); 
-    }
-
+    
     useEffect(() => {
         console.log('Current user:', currentUser);
         console.log('Token:', token);
@@ -183,14 +178,6 @@ function ChallengeDiary() {
 
  return (
         <div className="ChallengeDiary">
-            <nav className="topNav">
-                <li className="Logo" onClick={goHome}>
-                    <img className="imgLogo" src={require('../img/MainLogo.png')} alt="Logo" />
-                </li>
-                <li>
-                    <MyTabs />
-                </li>
-            </nav>
             <h2>챌린지 기록</h2>
             <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
             <Calendar 
@@ -202,7 +189,7 @@ function ChallengeDiary() {
             />
             <h3>챌린지 목록</h3>
             <div>
-                <label>챌린지 필터:</label>
+                <label>챌린지 필터 </label>
                 <select value={selectedChallenge} onChange={handleChallengeFilterChange}>
                     <option value="all">전체</option>
                     {challenges.map(challenge => (
