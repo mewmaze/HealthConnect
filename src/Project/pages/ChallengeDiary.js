@@ -39,7 +39,7 @@ function ChallengeDiary() {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-                    console.log('Fetched challenges:', response.data);
+                    console.log('challenges:', response.data);
                     setChallenges(response.data.map((challenge, index) => ({ //챌린지에 색상부여
                         ...challenge,
                         color: challengeColors[index % challengeColors.length]
@@ -126,13 +126,18 @@ function ChallengeDiary() {
             const formattedDate = format(date, 'yyyy-MM-dd');
             if (challengeStatus[formattedDate]) {
                 // 특정 날짜에 완료된 챌린지의 ID 목록을 가져옴
-                const completedChallenges = Object.keys(challengeStatus[formattedDate]).filter(challengeId => challengeStatus[formattedDate][challengeId]);
+                const completedChallenges = Object.keys(challengeStatus[formattedDate])
+                    .filter(challengeId => challengeStatus[formattedDate][challengeId]);
+
+                console.log('Completed Challenges:', completedChallenges); // 완료된 챌린지 ID
+
                 if (completedChallenges.length > 0) {
                     return (
                         <div className="tile-content">
                             {completedChallenges.map((challengeId, index) => {
-                                const challenge = challenges.find(ch => ch.challenge_id === challengeId);
-                                console.log('점챌린지:',challenge);
+                                const numericChallengeId = Number(challengeId); // 숫자형으로 변환
+                                const challenge = challenges.find(ch => ch.challenge_id === numericChallengeId);
+                                console.log('Challenge:', challenge);
                                 return (
                                     <div
                                         key={index}
