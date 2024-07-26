@@ -11,7 +11,7 @@ function MyTabs() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const user_id = currentUser ? currentUser.user_id : null;
   const nickname = currentUser ? currentUser.username : '닉네임';
-  const profileImage = currentUser ? currentUser.profile_img : '';
+  // const profileImage = currentUser ? currentUser.profile_img : '';
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
@@ -64,7 +64,6 @@ function MyTabs() {
                 onMouseLeave={() => setDropdownOpen(false)}
               >
                 {nickname} 님
-                {profileImage}
                 {dropdownOpen && (
                   <DropdownMenu>
                     <DropdownItem onClick={() => navigate(`/myPage/${currentUser.user_id}`)}>마이페이지</DropdownItem>

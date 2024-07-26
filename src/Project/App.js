@@ -177,7 +177,6 @@ const App = () => {
                 <Route path="/community/:communityId" element={<Community communities={communities} />} />
                 <Route path="/community/:communityId/new-post" element={<NewPostPage addPost={addPost} />} />
                 <Route path="/community/:communityId/post/:postId" element={<PostDetail communities={communities} addComment={addComment} />} />
-                <Route path="/postDetail/:postId" element={<PostDetail />} />
               </Routes>
               </Layout>
             </div>

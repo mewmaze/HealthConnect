@@ -32,27 +32,30 @@ function Home(){
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
             <input className="HomeSearch" placeholder="검색어를 입력하세요"></input>
-            <div>인기있는 챌린지</div>
-            <ul>
-                {challenges.map(challenge => (
-                    <li key={challenge.challenge_id}>
-                    <Link to={`/challengeDetail/${challenge.challenge_id}`}>
-                        <div>{challenge.challenge_name}</div>
-                    </Link>
-                </li>
-                ))}
-            </ul>
-            <div>커뮤니티</div>
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>
-                        <Link to={`/postDetail/${post.id}`}>
-                            <div>{post.title}</div>
+            <div className="Home-box">
+                <div className="Home-title">인기있는 챌린지</div>
+                <ul>
+                    {challenges.map(challenge => (
+                        <li key={challenge.challenge_id}>
+                        <Link to={`/challengeDetail/${challenge.challenge_id}`}>
+                            <div>{challenge.challenge_name}</div>
                         </Link>
                     </li>
-                ))}
-            </ul>
+                    ))}
+                </ul>                
+            </div>
+            <div className="Home-box">
+            <div className="Home-title">커뮤니티</div>
+                <ul>
+                    {posts.map(post => (
+                        <li key={post.id}>
+                            <div>{post.title}</div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
+
 
     )
 }
