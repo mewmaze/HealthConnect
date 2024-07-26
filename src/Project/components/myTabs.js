@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { Tabs } from '@mui/base/Tabs';
 import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
@@ -7,9 +7,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 
 function MyTabs() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const user_id = currentUser ? currentUser.user_id : null;
-
+  const nickname = currentUser ? currentUser.username : '닉네임';
+console.log('mytab :', currentUser);
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
@@ -28,6 +30,22 @@ function MyTabs() {
     }
   };
 
+  const handleLogout = () => {
+    try {
+      // 로컬 스토리지에서 JWT와 사용자 정보 삭제
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+  
+      // AuthContext 상태 초기화
+      logout();
+      
+      // 로그아웃 후 메인 페이지로 리다이렉션
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <Tabs value={selectedTab} onChange={(e, newValue) => handleTabChange(newValue)}>
       <TabsContainer>
@@ -37,23 +55,48 @@ function MyTabs() {
           <Tab value="/challenge">챌린지</Tab>
         </TabsList>
         <MyInfoTabsList>
-          <Tab value="/exercise">나의 운동 기록</Tab>
-          <Tab value="/myPage">닉네임 님</Tab>
+          {user_id ? (
+            <>
+              <Tab value="/exercise">나의 운동 기록</Tab>
+              <Tab
+                value="/myPage"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
+              >
+                {nickname} 님
+                {dropdownOpen && (
+                  <DropdownMenu>
+                    <DropdownItem onClick={() => navigate(`/myPage/${currentUser.user_id}`)}>마이페이지</DropdownItem>
+                    <DropdownItem onClick={() => navigate(`/myPage/${currentUser.user_id}`)}>프로필 보기</DropdownItem> 
+                    <DropdownItem onClick={() => navigate('/myPosts')}>작성 글 보기</DropdownItem>
+                    <DropdownItem onClick={handleLogout}>로그아웃</DropdownItem>
+                  </DropdownMenu>
+                )}
+              </Tab>
+            </>
+          ) : (
+            <>
+              <Tab value="/login">로그인</Tab>
+              <Tab value="/signUp">회원가입</Tab>
+            </>
+          )}
         </MyInfoTabsList>
       </TabsContainer>
     </Tabs>
   );
 }
 
-export default function UnstyledTabsRouting() {
-  const user_id = null; // Replace with actual user_id fetching logic
 
-  return (
-      <TabsWrapper>
-        <MyTabs />
-      </TabsWrapper>
-  );
-}
+
+// export default function UnstyledTabsRouting() {
+//   const user_id = null; // Replace with actual user_id fetching logic
+
+//   return (
+//       <TabsWrapper>
+//         <MyTabs />
+//       </TabsWrapper>
+//   );
+// }
 
 const blue = {
   50: '#F0F7FF',
@@ -68,7 +111,29 @@ const blue = {
   900: '#003A75',
 };
 
+const DropdownMenu = styled('div')`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  color: #000;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  z-index: 1000;
+`;
+
+const DropdownItem = styled('div')`
+  padding: 8px 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
 const Tab = styled(BaseTab)`
+  position: relative;  // 드롭다운 메뉴가 탭의 절대 위치에 위치하도록 설정
   font-family: 'IBM Plex Sans', sans-serif;
   color: #fff;
   cursor: pointer;
@@ -105,10 +170,10 @@ const Tab = styled(BaseTab)`
   }
 `;
 
-const TabsWrapper = styled('div')`
-  background-color: ${blue[500]};
-  border-radius: 12px;
-`;
+// const TabsWrapper = styled('div')`
+//   background-color: ${blue[500]};
+//   border-radius: 12px;
+// `;
 
 const TabsContainer = styled('div')`
   display: inline-flex;
@@ -142,3 +207,5 @@ const MyInfoTabsList = styled(BaseTabsList)`
   margin-left: 6%;
   padding: 10px;
 `;
+
+export default MyTabs;
