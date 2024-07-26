@@ -11,7 +11,7 @@ function MyTabs() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const user_id = currentUser ? currentUser.user_id : null;
   const nickname = currentUser ? currentUser.username : '닉네임';
-console.log('mytab :', currentUser);
+  // const profileImage = currentUser ? currentUser.profile_img : '';
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState('/myPage');
@@ -57,7 +57,7 @@ console.log('mytab :', currentUser);
         <MyInfoTabsList>
           {user_id ? (
             <>
-              <Tab value="/exercise">나의 운동 기록</Tab>
+              <Tab value="/exercise">나의 운동 / 챌린지 기록</Tab>
               <Tab
                 value="/myPage"
                 onMouseEnter={() => setDropdownOpen(true)}

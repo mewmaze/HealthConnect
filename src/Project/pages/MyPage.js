@@ -8,6 +8,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 
 export default function MyPage() {
+    const myPageNavItems = [
+        "프로필",
+        "나의 챌린지",
+        "작성 글 목록",
+        "작성 댓글 목록",
+        "내 정보"
+    ];
+
     const navigate = useNavigate();
     const { user_id } = useParams();
     const [userProfile, setUserProfile] = useState(null);
@@ -42,7 +50,7 @@ export default function MyPage() {
     return (
         <div className="myPage">
             <div className="main-content">
-                <LeftNav />
+                <LeftNav items={myPageNavItems} />
                 <div className="profile-section">
                     <Profile userProfile={userProfile} />
                 </div>
