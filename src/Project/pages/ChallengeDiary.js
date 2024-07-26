@@ -20,7 +20,6 @@ function ChallengeDiary() {
     // const navigate = useNavigate();
 
     const userId = currentUser ? currentUser.user_id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
-    console.log('userId : ',userId);
     
     useEffect(() => {
         console.log('Current user:', currentUser);
@@ -51,32 +50,72 @@ function ChallengeDiary() {
     }, [userId, token]);
 
     useEffect(() => {
+        // 전체 챌린지 기록을 가져와서 상태를 초기화
+        const fetchAllChallengeRecords = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status`, {
+                    params: { user_id: userId },
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const allRecords = response.data;
+
+                // 전체 기록을 날짜별로 그룹화
+                const formattedRecords = allRecords.reduce((acc, record) => {
+                    const date = format(new Date(record.completion_date), 'yyyy-MM-dd');
+                    if (!acc[date]) acc[date] = {};
+                    acc[date][record.challenge_id] = true;
+                    return acc;
+                }, {});
+
+                setChallengeStatus(formattedRecords);
+            } catch (error) {
+                console.error('Failed to fetch all challenge records:', error);
+            }
+        };
+
+        if (userId && token) {
+            fetchAllChallengeRecords();
+        }
+    }, [userId, token]);
+
+    useEffect(() => {
         // 날짜가 변경될 때마다 해당 날짜의 챌린지 완료 여부를 불러온다
         const fetchChallengeStatus = async () => {
             try {
-                const formattedDate = format(date, 'yyyy-MM-dd');
-                const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status?date=${formattedDate}`);
-                console.log('Fetched challenge status:', response.data);
+                const formattedDate = format(date, 'yyyy-MM-dd'); // 'date' 값을 'yyyy-MM-dd' 형식으로 포맷팅
 
-                // 서버 데이터로 로컬 상태 초기화 (서버 데이터가 로컬 상태를 덮어쓰지 않도록)
-                setChallengeStatus(prevStatus => {
-                    const newStatus = {
+                // 날짜에 해당하는 기록이 challengeStatus에 없으면 fetch
+                if (!challengeStatus[formattedDate]) {
+                    const response = await axios.get(`http://localhost:5000/challengerecords/challenge-status`, {
+                        params: { user_id: userId },
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const allRecords = response.data;
+                    const newStatus = allRecords.reduce((acc, curr) => {
+                        const date = format(new Date(curr.completion_date), 'yyyy-MM-dd');
+                        if (!acc[date]) acc[date] = {};
+                        acc[date][curr.challenge_id] = true;
+                        return acc;
+                    }, {});
+
+                    setChallengeStatus(prevStatus => ({
                         ...prevStatus,
-                        [formattedDate]: response.data.reduce((acc, curr) => { //배열을 객체 형태로 변환
-                            acc[curr.challenge_id] = true; // 서버에서 가져온 완료 상태
-                            return acc;
-                        }, {...(prevStatus[formattedDate] || {})}) // 현재 날짜에 대한 로컬 상태를 가져옴. 기존 상태 유지
-                    };
-                    console.log('Updated challenge status with server data:', newStatus);
-                    return newStatus;
-                });
+                        ...newStatus
+                    }));
+                }
             } catch (error) {
                 console.error('Failed to fetch challenge status:', error);
             }
         };
 
         fetchChallengeStatus();
-    }, [date]);
+    }, [date, userId, token]);
+
 
     // 체크박스 상태가 변경되면 서버에 상태를 업데이트하고 로컬 상태를 업데이트
     const handleChallengeCheck = async (challengeId, participantId, checked) => {
