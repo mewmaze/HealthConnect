@@ -71,13 +71,6 @@ function ExerciseSet({goal,setGoal}){
                         value={tempGoal.weight}
                         onChange={handleChangeWeight}
                     />
-                    <label htmlFor="BMI">BMI</label>
-                    <input 
-                        id="BMI"
-                        placeholder="BMI"
-                        value={tempGoal.BMI}
-                        onChange={handleChangeBMI}
-                    />
             </div>
             <button onClick={onSetGoal}>등록</button>
             <button onClick={goBack}>취소</button>
