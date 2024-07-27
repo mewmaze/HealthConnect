@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import "./profile.css";
 import axios from "axios";
 import { AuthContext } from "../hooks/AuthContext";
 
 function Profile() {
-    const {user_id} = useParams();
+    const { user_id } = useParams();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,12 +18,12 @@ function Profile() {
         profile_picture_url: ''
     });
     const navigate = useNavigate();
-    const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
-    
+    const { currentUser, token } = useContext(AuthContext);
+
     console.log('curr', currentUser);
     console.log('token', token);
     console.log('user_id', user_id);
-    
+
     useEffect(() => {
         const fetchUserData = async () => {
             if (!user_id) {
@@ -36,18 +36,18 @@ function Profile() {
                 setError('로그인 정보가 없습니다.');
                 setLoading(false);
                 return;
-            } //추가
+            }
 
             try {
                 const response = await axios.get(`http://localhost:5000/api/myPage/${user_id}`, {
                     headers: { Authorization: `Bearer ${token}` }
-                }); //수정
+                });
                 setUserData(response.data);
                 setFormData({
                     nickname: response.data.nickname,
                     intro: response.data.intro,
                     profile_picture: null,
-                    profile_picture_url: response.data.profile_picture_url
+                    profile_picture_url: response.data.profile_picture
                 });
             } catch (error) {
                 setError('사용자 정보를 가져오는 데 실패했습니다.');
@@ -55,9 +55,9 @@ function Profile() {
             } finally {
                 setLoading(false);
             }
-            
-        console.log('Current User:', currentUser);
-        console.log('user_id', user_id)
+
+            console.log('Current User:', currentUser);
+            console.log('user_id', user_id);
         };
 
         fetchUserData();
@@ -86,7 +86,7 @@ function Profile() {
             if (formData.profile_picture) {
                 form.append('profile_picture', formData.profile_picture);
             }
-    
+
             const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -94,26 +94,22 @@ function Profile() {
                 }
             });
             console.log('업데이트 성공 응답:', response.data);
-    
+
             setUserData(response.data);
         } catch (error) {
             if (error.response) {
-                // The request was made, and the server responded with a status code
-                // that falls out of the range of 2xx
                 console.error('Error response:', error.response.data);
                 setError(`프로필 업데이트 실패: ${error.response.data.message}`);
             } else if (error.request) {
-                // The request was made, but no response was received
                 console.error('Error request:', error.request);
                 setError('프로필 업데이트에 실패했습니다. 서버로부터 응답이 없습니다.');
             } else {
-                // Something happened in setting up the request that triggered an Error
                 console.error('Error message:', error.message);
                 setError(`프로필 업데이트에 실패했습니다: ${error.message}`);
             }
         }
-    };    
-    
+    };
+
     const handleUpdateClick = async () => {
         await handleSubmit();
 
@@ -123,13 +119,13 @@ function Profile() {
     if (loading) return <p>로딩 중...</p>;
     if (error) return <p>{error}</p>;
 
-    const picture_source = previewSrc || (userData?.profile_picture ? `http://localhost:5000/uploads/${userData.profile_picture}` : '');
+    const pictureSource = previewSrc || (userData?.profile_picture ? `http://localhost:5000/uploads/${userData.profile_picture}` : '');
 
     return (
         <div className="profile-container">
             <div className="profile">
                 <div className="img-container">
-                    {picture_source && <img id="img-prev" className="profile_img" src={picture_source} alt={`${userData.nickname}'s profile`} />}
+                    {pictureSource && <img id="img-prev" className="profile_img" src={pictureSource} alt={`${userData.nickname}'s profile`} />}
                     <input type="file" onChange={handleFileChange} />
                 </div>
                 <div className="profile-details">
