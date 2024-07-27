@@ -78,30 +78,7 @@ function Profile() {
         });
     };
 
-    const handleFileUpload = async () => {
-        if (!selectedFile) return;
-
-        const formData = new FormData();
-        formData.append('profile_picture', selectedFile);
-
-        try {
-            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            console.log('업로드 성공 응답:', response.data);
-
-            setUserData(response.data);
-        } catch (error) {
-            console.error('이미지 업로드 실패:', error);
-            setError('이미지 업로드에 실패했습니다.');
-        }
-    };
-
     const handleSubmit = async () => {
-        
         try {
             const form = new FormData();
             form.append('nickname', formData.nickname);
@@ -110,20 +87,32 @@ function Profile() {
                 form.append('profile_picture', formData.profile_picture);
             }
     
-            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, formData, {
+            const response = await axios.put(`http://localhost:5000/api/update/${user_id}`, form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
                 }
             });
             console.log('업데이트 성공 응답:', response.data);
-
+    
             setUserData(response.data);
         } catch (error) {
-            console.error('프로필 업데이트 실패:', error);
-            setError('프로필 업데이트에 실패했습니다.');
+            if (error.response) {
+                // The request was made, and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error('Error response:', error.response.data);
+                setError(`프로필 업데이트 실패: ${error.response.data.message}`);
+            } else if (error.request) {
+                // The request was made, but no response was received
+                console.error('Error request:', error.request);
+                setError('프로필 업데이트에 실패했습니다. 서버로부터 응답이 없습니다.');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Error message:', error.message);
+                setError(`프로필 업데이트에 실패했습니다: ${error.message}`);
+            }
         }
-    };
+    };    
     
     const handleUpdateClick = async () => {
         await handleSubmit();
@@ -142,7 +131,6 @@ function Profile() {
                 <div className="img-container">
                     {picture_source && <img id="img-prev" className="profile_img" src={picture_source} alt={`${userData.nickname}'s profile`} />}
                     <input type="file" onChange={handleFileChange} />
-                    <button onClick={handleFileUpload}>이미지 업로드</button>
                 </div>
                 <div className="profile-details">
                     <p className="nickname">닉네임: 
