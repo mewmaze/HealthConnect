@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import "./Home.css";
 
+
 function Home(){
     const [challenges, setChallenges] = useState([]);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
@@ -26,7 +28,11 @@ function Home(){
         };
 
         fetchChallenges();
+
     }, []);
+
+
+
     return(
         <div className="Home">
             {loading && <div>Loading...</div>}
@@ -48,7 +54,7 @@ function Home(){
             <div className="Home-title">커뮤니티</div>
                 <ul>
                     {posts.map(post => (
-                        <li key={post.id}>
+                        <li key={post.post_id}>
                             <div>{post.title}</div>
                         </li>
                     ))}
