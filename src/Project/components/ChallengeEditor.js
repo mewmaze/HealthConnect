@@ -17,7 +17,7 @@ function ChallengeEditor({initData,onSubmit,text}){
         participant_count: 0,
         challenge_img: null,
         start_date: new Date().toISOString().split('T')[0], // 오늘 날짜를 기본값으로 설정
-        end_date: calculateEndDate(new Date().toISOString().split('T')[0], 1)
+        end_date: calculateEndDate(new Date().toISOString().split('T')[0], 1) , // 초기값은 빈 문자열로 설정
     };
 
     const [state, setState] = useState(initialState); //여기서 폼에 들어오는 내용들 관리.
@@ -26,10 +26,19 @@ function ChallengeEditor({initData,onSubmit,text}){
         if(initData) {// 초기 데이터가 주어지면 상태를 설정 . 챌린지 수정할때
             setState({
                 ...initData,
+                end_date: calculateEndDate(initData.start_date, initData.target_period) // 초기 데이터가 있을 때 end_date 설정
             }); 
         }    
     },[initData, calculateEndDate]);
 
+    useEffect(() => {
+        // target_period 또는 start_date가 변경될 때 end_date를 업데이트
+        const newEndDate = calculateEndDate(state.start_date, state.target_period);
+        setState(prevState => ({
+            ...prevState,
+            end_date: newEndDate
+        }));
+    }, [state.start_date, state.target_period,]);
 
     const handleChange = (e) => { // 모든 입력 필드의 변화 처리
         const { name, value, files } = e.target;
@@ -41,6 +50,8 @@ function ChallengeEditor({initData,onSubmit,text}){
 
     //파일을 보내므로 FormData를 사용함.
     const handleSubmit = async () => {
+        console.log('target_period',state.target_period);
+        console.log('end_',state.end_date);
         const formData = new FormData();
         formData.append("challenge_name", state.challenge_name);
         formData.append("description", state.description);
@@ -89,16 +100,14 @@ function ChallengeEditor({initData,onSubmit,text}){
                     id="targetPeriod"
                     name="target_period"
                     value={state.target_period}
-                    onChange={handleChange}
+                    onChange={(e) => setState(prevState => ({
+                        ...prevState,
+                        target_period: parseInt(e.target.value) // select 변경 시 target_period 업데이트
+                    }))}
                 >
-                    <option value={1}>1주</option>
-                    <option value={2}>2주</option>
-                    <option value={3}>3주</option>
-                    <option value={4}>4주</option>
-                    <option value={5}>5주</option>
-                    <option value={6}>6주</option>
-                    <option value={7}>7주</option>
-                    <option value={8}>8주</option>
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map(period => (
+                        <option key={period} value={period}>{period}주</option>
+                    ))}
                 </select>
 
                 <label htmlFor="targetFrequency">달성조건</label>

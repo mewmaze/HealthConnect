@@ -55,18 +55,10 @@ const useChallengeActions = () => {
       if (!token) {
         throw new Error("Authentication token is missing");
       }
-
-      // 현재 날짜를 시작 날짜로 설정
-      const startDate = new Date().toISOString().split('T')[0];
-
-      // 종료 날짜 계산 (calculateEndDate 함수를 사용)
-      const endDate = calculateEndDate(startDate, target_period);
-
-      // 기본 진행 상태 설정
-      const progress = "not started";
-
-      //참여 데이터 서버에 전송
-      const response = await axios.post('http://localhost:5000/participants', {
+      const startDate = new Date().toISOString().split('T')[0]; // 현재 날짜를 시작 날짜로 설정
+      const endDate = calculateEndDate(startDate, target_period); // 종료 날짜 계산 (calculateEndDate 함수를 사용)
+      const progress = "not started"; // 기본 진행 상태 설정
+      const response = await axios.post('http://localhost:5000/participants', { //참여 데이터 서버에 전송
         user_id: userId,
         challenge_id: challengeId,
         start_date: startDate,
@@ -78,10 +70,6 @@ const useChallengeActions = () => {
         }
       });
       dispatch({ type: 'JOIN_CHALLENGE', data: response.data });
-
-      // // 서버에서 최신 챌린지 목록을 가져와 상태를 업데이트
-      // const challengesResponse = await axios.get('http://localhost:5000/challenges');
-      // dispatch({ type: 'INIT_CHALLENGE', data: challengesResponse.data });      
     } catch (error) {
       console.error("Failed to join Challenge:", error);
     }
