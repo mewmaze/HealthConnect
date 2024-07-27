@@ -1,11 +1,10 @@
-//챌린지랑 운동기록페이지로 이동하는 임시 페이지
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import "./Home.css";
+import BannerSlider from "../components/BannerSlider";
 
-
-function Home(){
+function Home() {
     const [challenges, setChallenges] = useState([]);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,12 +27,9 @@ function Home(){
         };
 
         fetchChallenges();
-
     }, []);
 
-
-
-    return(
+    return (
         <div className="Home">
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
@@ -43,15 +39,18 @@ function Home(){
                 <ul>
                     {challenges.map(challenge => (
                         <li key={challenge.challenge_id}>
-                        <Link to={`/challengeDetail/${challenge.challenge_id}`}>
-                            <div>{challenge.challenge_name}</div>
-                        </Link>
-                    </li>
+                            <Link to={`/challengeDetail/${challenge.challenge_id}`}>
+                                <div>{challenge.challenge_name}</div>
+                            </Link>
+                        </li>
                     ))}
-                </ul>                
+                </ul>
+            </div>
+            <div className="Home-banner">
+                <BannerSlider />
             </div>
             <div className="Home-box">
-            <div className="Home-title">커뮤니티</div>
+                <div className="Home-title">커뮤니티</div>
                 <ul>
                     {posts.map(post => (
                         <li key={post.post_id}>
@@ -61,8 +60,7 @@ function Home(){
                 </ul>
             </div>
         </div>
-
-
-    )
+    );
 }
+
 export default Home;
