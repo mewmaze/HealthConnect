@@ -132,7 +132,7 @@ const App = () => {
   useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/challenges'); {/* http://localhost:5000/challenges */}
+        const response = await axios.get('http://localhost:5000/challenges'); 
         console.log("Fetched Data: ", response.data);
         dispatch({ type: "INIT_CHALLENGE", data: response.data });
       } catch (error) {

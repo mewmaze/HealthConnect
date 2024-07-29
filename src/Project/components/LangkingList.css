@@ -1,17 +1,20 @@
-.LangkingItem{
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(214, 214, 214);
-    border-radius: 4px;
-    justify-content: center;
-    align-items: center;
+
+.LangkingList-lank{
+display: flex;
+flex-direction: row; /* 가로 배치를 설정 */
+gap: 20px;
+align-items: center; /* 세로 정렬 중앙 맞춤 */
+padding: 10px;
+margin-bottom: 10px; /* 각 항목 간 간격 */
+list-style: none;
 }
 
-.LangkingItemimg{
-    width: 60px;
-    height: 60px;
-    margin-bottom: 4px;
-    border-radius: 50%;
+.LangkingList-box{
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    border-radius: 8px;
+    width: 100px;
+    height: 100px;
+
 }
