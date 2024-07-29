@@ -9,21 +9,33 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.react-calendar__tile {
-    height: 50px; /* 날짜 타일의 높이 조절 */
-    max-height: 50px; /* 최대 높이 설정 */
+/* 기본 hover 스타일 제거 */
+.react-calendar__tile:hover {
+    background-color: transparent; /* 기본 hover 배경색 제거 */
+    cursor: default; /* 커서 기본 상태로 설정 */
 }
 
-
-
-.react-calendar__tile.actual-highlight-range {
-    background-color: #d3d3d3;
-
-}
-
+/* 챌린지 범위 색상 */
 .react-calendar__tile.highlight-range {
-    background-color:#ffa07a; /* 기본 회색 */
+    background-color: lightgray; 
 }
+
+/* 테스트 범위 색상 */
+.react-calendar__tile.test-highlight-range {
+    background-color: lightgreen; 
+}
+
+.disabled-date {
+    pointer-events: none; /* 클릭 비활성화 */
+    color: gray !important; /* 비활성화된 날짜 색상 */
+    
+}
+
+/* 달력 타일의 기본 border-radius 제거 */
+.react-calendar__tile {
+    border-radius: 0; /* 기본 border-radius를 0으로 설정 */
+}
+
 .ChallengeInfo{
     display: flex;
     gap: 120px;

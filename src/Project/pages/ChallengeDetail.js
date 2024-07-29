@@ -60,7 +60,7 @@ function ChallengeDetail() {
             <div className="ChallengeTitle-name">{challenge_name}</div>
             <div className="ChallengeContent">
                 <div className="ImageContainer">
-                    <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img" />
+                    <img src={`${challenge_img}`} alt={challenge_name} className="challengeDetail-img" />
                     <div className="ChallengeTitle-count">{participant_count}명 도전중</div>
                 </div>
                 <div className="ChallengeDetails">
@@ -76,9 +76,7 @@ function ChallengeDetail() {
             <div className="ChallengeInfoWrapper">
                 <ChallengeInfo challenge={challenge}/> 
                 <div className="ChallengeActions">
-                    {testDate && (
-                        <button type="button" onClick={handleJoinChallenge}>참여하기</button>
-                    )}
+                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
                 </div>
             </div>
             <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>
