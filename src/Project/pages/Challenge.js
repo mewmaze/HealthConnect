@@ -8,24 +8,8 @@ import "./Challenge.css";
 
 function Challenge(){
     const data = useContext(ChallengeStateContext);
-    // const dispatch = useContext(ChallengeDispatchContext);
     const [search,setSearch] = useState('');
   
-    // // 페이지 진입 시 챌린지 데이터 요청
-    // useEffect(() => {
-
-    //         const fetchChallenges = async () => {
-    //             try {
-    //               const response = await axios.get('http://localhost:5000/challenges');
-    //               dispatch({ type: 'INIT_CHALLENGE', data: response.data });
-    //             } catch (error) {
-    //               console.error('Failed to fetch challenges:', error);
-    //             }
-    //           };
-    //           fetchChallenges();
-
-    // }, [dispatch]); //dispatch함수가 변경될때마다 fetchChallenges함수가 실행
-    
     const navigate = useNavigate();
     const goChallengeCreate=()=>{
         navigate('/challengecreate',{replace:true});
@@ -45,8 +29,7 @@ function Challenge(){
         <div>
             <div className="Challenge">
                 <div className="Challenge-Langking">
-                    <div>챌린지 랭킹</div>
-                    {/* <LangkingList/> */}
+                    <LangkingList/>
                 </div>
                 <div className="Challenge-List">
                     <div>챌린지</div>

@@ -15,8 +15,6 @@ function ChallengeDetail() {
     const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null);
-    const [testDate, setTestDate] = useState(new Date().toISOString().split('T')[0]);
-    const { calculateEndDate } = useChallengeUtils();
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -56,7 +54,6 @@ function ChallengeDetail() {
     }
 
     const { challenge_name, description, participant_count, target_days, challenge_img, target_period, start_date,end_date } = challenge;
-    const formattedTestDate = new Date(testDate).toLocaleDateString();
 
     return (
         <div className="ChallengeDetail">
@@ -77,19 +74,7 @@ function ChallengeDetail() {
             </div>
             <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
             <div className="ChallengeInfoWrapper">
-                <div className="ChallengeInfo-container">
-                    <label>
-                        챌린지 시작 날짜 선택
-                        <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
-                    </label>
-                    {testDate && (
-                        <ChallengeInfo 
-                            challenge={challenge} 
-                            testDate={formattedTestDate}
-                            start_date={new Date(start_date).toLocaleDateString()}
-                        />
-                    )}
-                </div>
+                <ChallengeInfo challenge={challenge}/> 
                 <div className="ChallengeActions">
                     {testDate && (
                         <button type="button" onClick={handleJoinChallenge}>참여하기</button>
