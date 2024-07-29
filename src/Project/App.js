@@ -20,7 +20,6 @@ import ChallengeCreate from "./pages/ChallengeCreate";
 import ChallengeDetail from "./pages/ChallengeDetail";
 import Exercise from "./pages/Exercise";
 import ExerciseDiary from "./pages/ExerciseDiary";
-import ExerciseSet from "./pages/ExerciseSet";
 import ChallengeDiary from './pages/ChallengeDiary';
 
 import CommunityList from './pages/CommunityList';
@@ -171,7 +170,6 @@ const App = () => {
                 <Route path='/myPosts/:user_id/:postId' element={<MyPost/>}/>
                 <Route path="/exercise" element={<Exercise goal={goal}/>}/>
                 <Route path="/exercisediary" element={<ExerciseDiary/>}/>
-                <Route path="/exerciseset" element={<ExerciseSet goal={goal} setGoal={setGoal}/>}/>
                 <Route path="/challengediary" element={<ChallengeDiary />} />
                 <Route path="/communities" element={<CommunityList communities={communities} />} />
                 <Route path="/community/:communityId" element={<Community communities={communities} />} />
