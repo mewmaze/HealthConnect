@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
 import ChallengeInfo from "../components/ChallengeInfo";
 import useChallengeActions from "../hooks/useChallengeActions";
-import useChallengeUtils from "../hooks/useChallengeUtils";
 import { AuthContext } from "../hooks/AuthContext";
 import { ChallengeStateContext } from "../App";
 import './ChallengeDetail.css';
@@ -15,6 +14,7 @@ function ChallengeDetail() {
     const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null);
+    const [isParticipant, setIsParticipant] = useState(false); // 참가 여부 상태 추가
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -35,11 +35,30 @@ function ChallengeDetail() {
         }
     }, [id, challenges, fetchChallenge]);
 
+    // 사용자가 이 챌린지에 참여했는지 확인
+    useEffect(() => {
+        const checkParticipant = async () => {
+            if (currentUser) {
+                try {
+                    const response = await axios.get(`http://localhost:5000/user/${currentUser.user_id}/challenges`);
+                    const participantChallenges = response.data;
+                    const isParticipant = participantChallenges.some(ch => ch.challenge_id === parseInt(id, 10));
+                    setIsParticipant(isParticipant);
+                } catch (error) {
+                    console.error("Failed to check participant:", error);
+                }
+            }
+        };
+
+        checkParticipant();
+    }, [currentUser, id]);
+
     const handleJoinChallenge = async () => {
         try {
             const userId = currentUser.user_id;
             await joinChallenge(parseInt(id, 10), userId, challenge.target_period, token);
             await fetchChallenge();
+            setIsParticipant(true); // 참가 상태로 변경
         } catch (error) {
             console.error("Failed to join challenge:", error);
         }
@@ -74,9 +93,20 @@ function ChallengeDetail() {
             </div>
             <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
             <div className="ChallengeInfoWrapper">
-                <ChallengeInfo challenge={challenge}/> 
+                {isParticipant ? (
+                    // 사용자가 이미 참여한 경우 채팅 기능을 표시
+                    <div className="ChatRoom">
+                        <h3>챌린지 채팅방</h3>
+                        {/* 여기에 채팅 컴포넌트를 추가 */}
+                    </div>
+                ) : (
+                    // 사용자가 참여하지 않은 경우 ChallengeInfo를 표시
+                    <ChallengeInfo challenge={challenge}/>
+                )}
                 <div className="ChallengeActions">
-                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                    {!isParticipant && (
+                        <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                    )}
                 </div>
             </div>
             <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>

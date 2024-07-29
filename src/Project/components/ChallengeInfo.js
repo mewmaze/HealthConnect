@@ -45,10 +45,10 @@ const ChallengeInfo = ({ challenge}) => {
         const [startDate, endDate] = challengeRange;
         const [testDate, testEndDate] = testRange;
     
-        if (!startDate || !endDate || !testDate || !testEndDate) return null;
+        if (!startDate || !endDate) return null; // challengeRange의 시작일 또는 종료일이 없으면 스타일 적용X
     
         const isWithinChallengeRange = date >= startDate && date <= endDate;
-        const isWithinTestRange = date >= testDate && date <= testEndDate;
+        const isWithinTestRange = testDate && testEndDate && date >= testDate && date <= testEndDate;
 
         // ChallengeRange 표시. 즉 챌린지 생성일, 종료일 기간
         if (isWithinChallengeRange) {

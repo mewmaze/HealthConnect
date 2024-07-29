@@ -15,6 +15,16 @@
     cursor: default; /* 커서 기본 상태로 설정 */
 }
 
+.react-calendar__tile:focus {
+    background-color: lightgreen  !important;/* 클릭 시 배경색 */
+    color: white; /* 클릭 시 글자색 */
+}
+
+.react-calendar__tile:hover {
+    background-color: lightgreen  !important;/* 클릭 시 배경색 */
+    color: white; /* 클릭 시 글자색 */
+}
+
 /* 챌린지 범위 색상 */
 .react-calendar__tile.highlight-range {
     background-color: lightgray; 
@@ -25,10 +35,11 @@
     background-color: lightgreen; 
 }
 
-.disabled-date {
+/* 비활성화된 날짜 스타일 */
+.react-calendar__tile.disabled-date {
     pointer-events: none; /* 클릭 비활성화 */
-    color: gray !important; /* 비활성화된 날짜 색상 */
-    
+    color: gray; /* 비활성화된 날짜 색상 */
+    background-color: transparent; /* 기본 배경색 제거 */
 }
 
 /* 달력 타일의 기본 border-radius 제거 */
