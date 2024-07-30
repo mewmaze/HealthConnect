@@ -5,7 +5,7 @@
     align-items: center;
     width: 95%;
     height: 20vh;
-    margin-top: 3%;
+    margin-top: 6%;
     margin-left: 2%;
 }
 
@@ -103,7 +103,7 @@
     padding: 10px 20px;
     cursor: pointer;
     margin-left: 1%;
-    width: 170px;
+    width: 220px;
 }
 
 .update:hover {

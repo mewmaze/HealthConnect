@@ -39,22 +39,29 @@ const Root = styled.div`
 const Filter = styled.div`
   position: relative;
   display: inline-flex;
-  width: 60%;
+  width: 100%;
   margin-top: 1%;
   margin-left: 40%;
   margin-bottom: 5px;
+
+  &.writePost {
+    width: 120px;
+  }
 ;`
 
 const DeleteAllButton = styled.button`
   position: inherit;
   font-size: 0.7rem;
-  margin-left: 28%;
-  margin-right: 3%;
-  width: 90px;
+  margin-left: 8%;
+  margin-right: 1%;
+  width: 100px;
+  height: 35px;
 ;`
 
 const DeleteButton = styled.button`
   font-size: 0.7rem;
+  width: 140px;
+  height: 35px;
 ;`
 
 const StyledSmallCheckbox = styled(Checkbox)`
@@ -193,6 +200,11 @@ const TableCell = styled.td`
     width: 12%;
     text-align: center;
   }
+    
+  &.deleteAll {
+    width: 15%;
+    text-align: center;
+  }
 ;`
 
 const TableHeaderCell = styled.th`
@@ -211,11 +223,6 @@ const TableHeaderCell = styled.th`
 
   &.date {
     width: 15%;
-  }
-
-  &.delete {
-    width: 15%;
-    text-align: center;
   }
 ;`
 
@@ -279,8 +286,8 @@ export default function MyList() {
       <GlobalStyle />
       <Root>
         <Filter>
-          <button onClick={() => setView('posts')}>작성글</button>
-          <button onClick={() => setView('comments')}>작성댓글</button>
+          <button className='writePost' onClick={() => setView('posts')}>작성글</button>
+          <button className='writeComment' onClick={() => setView('comments')}>작성댓글</button>
           <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
           <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
         </Filter>
