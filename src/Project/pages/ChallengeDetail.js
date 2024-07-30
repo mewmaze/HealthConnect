@@ -10,7 +10,7 @@ import './ChallengeDetail.css';
 function ChallengeDetail() {
     const { id } = useParams();
     const challenges = useContext(ChallengeStateContext);
-    const { joinChallenge } = useChallengeActions();
+    const { joinChallenge, checkParticipant } = useChallengeActions();
     const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null);
@@ -35,23 +35,17 @@ function ChallengeDetail() {
         }
     }, [id, challenges, fetchChallenge]);
 
-    // 사용자가 이 챌린지에 참여했는지 확인
     useEffect(() => {
-        const checkParticipant = async () => {
+        const checkParticipation = async () => {
             if (currentUser) {
-                try {
-                    const response = await axios.get(`http://localhost:5000/user/${currentUser.user_id}/challenges`);
-                    const participantChallenges = response.data;
-                    const isParticipant = participantChallenges.some(ch => ch.challenge_id === parseInt(id, 10));
-                    setIsParticipant(isParticipant);
-                } catch (error) {
-                    console.error("Failed to check participant:", error);
-                }
+                const participantStatus = await checkParticipant(parseInt(id, 10), currentUser.user_id, token);
+                setIsParticipant(participantStatus);
+                console.log('participantStatus :',participantStatus)
             }
         };
+        checkParticipation();
+    }, [currentUser, id, checkParticipant, token]);
 
-        checkParticipant();
-    }, [currentUser, id]);
 
     const handleJoinChallenge = async () => {
         try {
@@ -59,6 +53,7 @@ function ChallengeDetail() {
             await joinChallenge(parseInt(id, 10), userId, challenge.target_period, token);
             await fetchChallenge();
             setIsParticipant(true); // 참가 상태로 변경
+            console.log('participant :',isParticipant)
         } catch (error) {
             console.error("Failed to join challenge:", error);
         }
@@ -91,24 +86,20 @@ function ChallengeDetail() {
                     <div>주 {target_days}회</div>
                 </div>
             </div>
-            <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
-            <div className="ChallengeInfoWrapper">
                 {isParticipant ? (
-                    // 사용자가 이미 참여한 경우 채팅 기능을 표시
-                    <div className="ChatRoom">
-                        <h3>챌린지 채팅방</h3>
-                        {/* 여기에 채팅 컴포넌트를 추가 */}
-                    </div>
-                ) : (
-                    // 사용자가 참여하지 않은 경우 ChallengeInfo를 표시
-                    <ChallengeInfo challenge={challenge}/>
-                )}
-                <div className="ChallengeActions">
-                    {!isParticipant && (
-                        <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                    <div>참여중인 챌린지 입니다</div>
+                    ) : (
+                        <>
+                            <div className="ChallengeInfoWrapper">
+                                <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
+                                <ChallengeInfo challenge={challenge} />
+                                <div className="ChallengeActions">
+                                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                                </div>
+                            </div>
+                        </>
                     )}
-                </div>
-            </div>
+
             <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>
         </div>
     );

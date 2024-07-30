@@ -1,6 +1,5 @@
 import { useNavigate, Link } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
-import axios from 'axios';
 import { ChallengeStateContext, ChallengeDispatchContext } from '../App';
 import LangkingList from "../components/LangkingList";
 import ChallengeItem from "../components/ChallengeItem";
@@ -29,10 +28,10 @@ function Challenge(){
         <div>
             <div className="Challenge">
                 <div className="Challenge-Langking">
+                    <h2>챌린지 랭킹</h2>
                     <LangkingList/>
                 </div>
                 <div className="Challenge-List">
-                    <div>챌린지</div>
                     <div className="ChallengeSearchContainer">
                         <input className="ChallengeSearch" placeholder="챌린지를 찾아보세요" value={search} onChange={handleSearchChange}/>
                         {search && ( //검색결과가 있을시에만 렌더링

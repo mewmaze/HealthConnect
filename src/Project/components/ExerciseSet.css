@@ -4,6 +4,9 @@
     justify-content: center; /*의미가 있나????*/
     align-items: center; 
 }
+.exerciseSet {
+    gap: 40px;
+}
 
 .exerciseSet-content {
     display: flex;
@@ -16,9 +19,15 @@
 }
 
 .Now{
-    border: 1px solid black; 
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 300px;
 }
 
 .Goal{
-    border: 1px solid black;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 300px;
 }
