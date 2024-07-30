@@ -32,6 +32,11 @@ function MyTabs() {
     }
   };
 
+  const handleDropdownClick = (path) => {
+    handleTabChange(path);
+    setDropdownOpen(false);
+  };
+
   const handleLogout = () => {
     try {
       // 로컬 스토리지에서 JWT와 사용자 정보 삭제
@@ -68,9 +73,9 @@ function MyTabs() {
                 {nickname} 님
                 {dropdownOpen && (
                   <DropdownMenu>
-                    <DropdownItem onClick={() => navigate(`/myPage/${currentUser.user_id}`)}>마이페이지</DropdownItem>
-                    <DropdownItem onClick={() => navigate(`/myPage/${currentUser.user_id}`)}>프로필 보기</DropdownItem> 
-                    <DropdownItem onClick={() => navigate('/myPosts')}>작성 글 보기</DropdownItem>
+                    <DropdownItem onClick={() => handleDropdownClick(`/myPage/${user_id}`)}>마이페이지</DropdownItem>
+                    <DropdownItem onClick={() => handleDropdownClick(`/myPage/${user_id}`)}>프로필 보기</DropdownItem> 
+                    <DropdownItem onClick={() => handleDropdownClick('/myPosts')}>작성 글 보기</DropdownItem>
                     <DropdownItem onClick={handleLogout}>로그아웃</DropdownItem>
                   </DropdownMenu>
                 )}
@@ -87,18 +92,6 @@ function MyTabs() {
     </Tabs>
   );
 }
-
-
-
-// export default function UnstyledTabsRouting() {
-//   const user_id = null; // Replace with actual user_id fetching logic
-
-//   return (
-//       <TabsWrapper>
-//         <MyTabs />
-//       </TabsWrapper>
-//   );
-// }
 
 const blue = {
   50: '#F0F7FF',
