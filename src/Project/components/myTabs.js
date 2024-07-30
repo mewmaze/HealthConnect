@@ -14,7 +14,7 @@ function MyTabs() {
   // const profileImage = currentUser ? currentUser.profile_img : '';
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState('/myPage');
+  const [selectedTab, setSelectedTab] = useState(location.pathname || '/login');
 
   useEffect(() => {
     setSelectedTab(location.pathname);
@@ -24,6 +24,8 @@ function MyTabs() {
     if (newValue === '/myPage' && !user_id) {
       console.log("로그인을 하셔야 합니다.");
       navigate('/login');
+    } else if (newValue === '/myPage') {
+      navigate(`/myPage/${user_id}`);
     } else {
       setSelectedTab(newValue);
       navigate(newValue);
