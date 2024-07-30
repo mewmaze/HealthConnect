@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
 import ChallengeInfo from "../components/ChallengeInfo";
 import useChallengeActions from "../hooks/useChallengeActions";
-import useChallengeUtils from "../hooks/useChallengeUtils";
 import { AuthContext } from "../hooks/AuthContext";
 import { ChallengeStateContext } from "../App";
 import './ChallengeDetail.css';
@@ -11,12 +10,11 @@ import './ChallengeDetail.css';
 function ChallengeDetail() {
     const { id } = useParams();
     const challenges = useContext(ChallengeStateContext);
-    const { joinChallenge } = useChallengeActions();
+    const { joinChallenge, checkParticipant } = useChallengeActions();
     const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
     const [challenge, setChallenge] = useState(null);
-    const [testDate, setTestDate] = useState(new Date().toISOString().split('T')[0]);
-    const { calculateEndDate } = useChallengeUtils();
+    const [isParticipant, setIsParticipant] = useState(false); // 참가 여부 상태 추가
 
     const fetchChallenge = useCallback(async () => {
         try {
@@ -37,11 +35,25 @@ function ChallengeDetail() {
         }
     }, [id, challenges, fetchChallenge]);
 
+    useEffect(() => {
+        const checkParticipation = async () => {
+            if (currentUser) {
+                const participantStatus = await checkParticipant(parseInt(id, 10), currentUser.user_id, token);
+                setIsParticipant(participantStatus);
+                console.log('participantStatus :',participantStatus)
+            }
+        };
+        checkParticipation();
+    }, [currentUser, id, checkParticipant, token]);
+
+
     const handleJoinChallenge = async () => {
         try {
             const userId = currentUser.user_id;
             await joinChallenge(parseInt(id, 10), userId, challenge.target_period, token);
             await fetchChallenge();
+            setIsParticipant(true); // 참가 상태로 변경
+            console.log('participant :',isParticipant)
         } catch (error) {
             console.error("Failed to join challenge:", error);
         }
@@ -56,14 +68,13 @@ function ChallengeDetail() {
     }
 
     const { challenge_name, description, participant_count, target_days, challenge_img, target_period, start_date,end_date } = challenge;
-    const formattedTestDate = new Date(testDate).toLocaleDateString();
 
     return (
         <div className="ChallengeDetail">
             <div className="ChallengeTitle-name">{challenge_name}</div>
             <div className="ChallengeContent">
                 <div className="ImageContainer">
-                    <img src={`http://localhost:5000/${challenge_img}`} alt={challenge_name} className="challengeDetail-img" />
+                    <img src={`${challenge_img}`} alt={challenge_name} className="challengeDetail-img" />
                     <div className="ChallengeTitle-count">{participant_count}명 도전중</div>
                 </div>
                 <div className="ChallengeDetails">
@@ -75,27 +86,20 @@ function ChallengeDetail() {
                     <div>주 {target_days}회</div>
                 </div>
             </div>
-            <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
-            <div className="ChallengeInfoWrapper">
-                <div className="ChallengeInfo-container">
-                    <label>
-                        챌린지 시작 날짜 선택
-                        <input type="date" value={testDate} onChange={(e) => setTestDate(e.target.value)} />
-                    </label>
-                    {testDate && (
-                        <ChallengeInfo 
-                            challenge={challenge} 
-                            testDate={formattedTestDate}
-                            start_date={new Date(start_date).toLocaleDateString()}
-                        />
+                {isParticipant ? (
+                    <div>참여중인 챌린지 입니다</div>
+                    ) : (
+                        <>
+                            <div className="ChallengeInfoWrapper">
+                                <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
+                                <ChallengeInfo challenge={challenge} />
+                                <div className="ChallengeActions">
+                                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                                </div>
+                            </div>
+                        </>
                     )}
-                </div>
-                <div className="ChallengeActions">
-                    {testDate && (
-                        <button type="button" onClick={handleJoinChallenge}>참여하기</button>
-                    )}
-                </div>
-            </div>
+
             <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>
         </div>
     );

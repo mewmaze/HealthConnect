@@ -1,0 +1,33 @@
+.exerciseSet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /*의미가 있나????*/
+    align-items: center; 
+}
+.exerciseSet {
+    gap: 40px;
+}
+
+.exerciseSet-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.exerciseSet-Top{
+    display: flex;
+    gap: 50px;
+}
+
+.Now{
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.Goal{
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 300px;
+}

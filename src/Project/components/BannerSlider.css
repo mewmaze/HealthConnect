@@ -1,0 +1,26 @@
+.banner-slider {
+    position: relative; /* slick-dots가 이 컨테이너의 위치를 기준으로 함 */
+    width: 600px;
+    height: 100px;
+    background-color: #f07474; /* 회색 배경색 */
+}
+
+.slider-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 100%;
+}
+
+.slick-dots {
+    position: absolute; /* 부모 요소인 .banner-slider에 상대적 위치 */
+    bottom: 0;
+    bottom: -70px; /*왜 이런지 모르겠네,,,,,,*/
+}
+
+.slick-dots li button:before {
+    font-size: 12px; /* 점의 크기 */
+    color: #333; /* 점의 색상 */
+}
+

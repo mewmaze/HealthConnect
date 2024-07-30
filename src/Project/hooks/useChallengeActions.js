@@ -50,7 +50,7 @@ const useChallengeActions = () => {
     }
   };
 
-  const joinChallenge = async (challengeId, userId,target_period) => {
+  const joinChallenge = async (challengeId, userId,target_period, token) => {
     try {
       if (!token) {
         throw new Error("Authentication token is missing");
@@ -75,11 +75,29 @@ const useChallengeActions = () => {
     }
   };
 
+  const checkParticipant = async (challengeId, userId, token) => {
+    try {
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+      const response = await axios.get(`http://localhost:5000/participants/${challengeId}/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // 토큰을 헤더에 추가
+        }
+      });
+      return response.data.isParticipant;
+    } catch (error) {
+      console.error("Failed to check participant status:", error);
+      return false;
+    }
+  };
+
   return {
     addChallenge,
     updateChallenge,
     deleteChallenge,
-    joinChallenge
+    joinChallenge,
+    checkParticipant
   };
 };
 
