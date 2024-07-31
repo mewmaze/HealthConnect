@@ -18,8 +18,8 @@
 
 .Challenge-Info {
     display: inline-block;
-    background-color: #007BFF;
-    color: white;
+    background-color: black;
+    color: #FFAA46;
     border-radius: 100px;
     padding: 4px 12px;
     margin-top: 10px;
@@ -31,7 +31,7 @@
     gap: 80px;
     align-items: flex-start;
     justify-content: center; /* 수평 가운데 정렬 */
-    margin-bottom: 50px;   
+    margin-bottom: 100px;   
 }
 
 .ImageContainer {
@@ -49,8 +49,8 @@
     position: absolute;
     bottom: -10px; /* 부모 요소의 하단에서 10px */
     right: -30px;
-    background-color: #007BFF;
-    color: white;
+    background-color: black;
+    color: #FFAA46;
     border-radius: 100px;
     padding: 4px 12px;
 }
@@ -58,10 +58,17 @@
 .ChallengeDetails {
     display: inline-block;
     flex: 1; /* 남은 공간을 차지 */
+    font-weight: bold;
+    font-size: 17px;
+}
+.ChallengeDetail-alert{
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 100px;
 }
 
 .period_week{
-    border: 2px solid #007BFF;
+    border: 2px solid black;
     border-radius: 100px;
     padding: 3px 10px;
     margin-right: 10px;
@@ -73,12 +80,13 @@
 }
 
 .testChallengeBox{
-    background-color: #007BFF;
+    background-color: #FFAA46;
     color: white;
     padding: 14px 26px;
     border-radius: 4px;
     position: relative; /* 또는 absolute */
     z-index: 10; 
+    border: 3px solid black;
 }
 
 .ChallengeInfoWrapper {
@@ -87,12 +95,13 @@
     align-items: center;
     gap: 20px; /* ChallengeInfo와 버튼 사이의 여백 */
     padding-bottom: 60px;
-    width: 100%;
+    width: 85%;
     background-color: white;
     border-radius: 8px;
     margin-top: -50px;
     position: relative; /* 또는 absolute */
     z-index: 1;
+    border: 3px solid black;
 }
 
 .ChallengeInfo-container {
@@ -117,4 +126,23 @@ label {
 
 input[type="date"] {
     margin-left: 10px;
+}
+
+.ChallengeActions button {
+    padding: 8px 14px;
+    font-size: 16px;
+}
+.ChallengeActions button:hover {
+    color: #FFAA46;
+}
+
+
+.golistbtn{
+    padding: 8px 14px;
+    font-size: 16px;
+    margin-bottom: 100px;
+}
+
+.golistbtn:hover{
+    color: #FFAA46;
 }

@@ -4,7 +4,10 @@ import axios from "axios";
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { AuthContext } from "../hooks/AuthContext";
+import LeftNav from '../components/leftNav';
+import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
+import { FaPenAlt } from "react-icons/fa";
 import "./ChallengeDiary.css";
 
 const challengeColors = ["#FF6B6B", "#4ECDC4", "#556270", "#FFD700", "#C71585"]; // 챌린지별 색상 배열
@@ -17,10 +20,24 @@ function ChallengeDiary() {
     const [showModal, setShowModal] = useState(false); //모달의 표시 여부를 저장
     const [modalContent, setModalContent] = useState([]); //모달에 표시할 챌린지 데이터를 저장
     const { currentUser, token } = useContext(AuthContext); // 로그인 사용자 정보 가져오기
-    // const navigate = useNavigate();
+    
 
     const userId = currentUser ? currentUser.user_id : null; // 사용자 ID를 현재 로그인한 사용자 정보에서 가져옴
     
+    const navigate = useNavigate();
+    const exerciseNavItems = [
+        { name: "운동 기록", path: "/exercise" },
+        { name: "챌린지 기록", path: "/challengeDiary" },
+        { name: "목표 설정", path: "/exerciseset" }
+    ];
+
+    const handleNavItemClick = (itemName) => {
+        const item = exerciseNavItems.find(navItem => navItem.name === itemName);
+        if (item) {
+            navigate(item.path, { replace: true });
+        }
+    };
+
     useEffect(() => {
         console.log('Current user:', currentUser);
         console.log('Token:', token);
@@ -217,51 +234,58 @@ function ChallengeDiary() {
 
  return (
         <div className="ChallengeDiary">
-            <h2>챌린지 기록</h2>
-            <p>{format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}</p>
-            <Calendar 
-                onChange={setDate} 
-                value={date} 
-                tileContent={tileContent} 
-                onClickDay={handleDateClick} 
-                className="react-calendar" 
-            />
-            <h3>챌린지 목록</h3>
-            <div>
-                <label>챌린지 필터 </label>
-                <select value={selectedChallenge} onChange={handleChallengeFilterChange}>
-                    <option value="all">전체</option>
-                    {challenges.map(challenge => (
-                        <option key={challenge.challenge_id} value={challenge.challenge_id}>{challenge.challenge_name}</option>
-                    ))}
-                </select>
+            <div className="ChallengeDiary-nav">
+                <LeftNav items={exerciseNavItems.map(item => item.name)} onNavItemClick={handleNavItemClick} />
             </div>
-            <div className="challenge-list">
-                {getFilteredChallenges().map(challenge => (
-                    <div key={challenge.challenge_id} className="challenge-item">
-                        <label style={{color: challenge.color}}>
-                            {challenge.challenge_name}
-                            <input
-                                type="checkbox"
-                                checked={(challengeStatus[format(date, 'yyyy-MM-dd')] && challengeStatus[format(date, 'yyyy-MM-dd')][challenge.challenge_id]) || false}
-                                onChange={(e) => handleChallengeCheck(challenge.challenge_id, challenge.participant_id, e.target.checked)}
-                            />
-                        </label>
+            <div className="ChallengeDiary-content">
+                <div className="Challenge-filter">
+                    <div className="Challenge-filter-top">
+                        <label>챌린지별 기록 보기</label>
+                        <select value={selectedChallenge} onChange={handleChallengeFilterChange}>
+                            <option value="all">전체</option>
+                            {challenges.map(challenge => (
+                                <option key={challenge.challenge_id} value={challenge.challenge_id}>{challenge.challenge_name}</option>
+                            ))}
+                        </select>
                     </div>
-                ))}
-            </div>
-            {showModal && (
-                <Modal onClose={() => setShowModal(false)}>
-                    <h3>{format(date, 'yyyy년 M월 d일', { locale: ko })}의 완료된 챌린지</h3>
-                    <ul>
-                        {modalContent.map(challenge => (
-                            <li key={challenge.challenge_id} style={{color: challenge.color}}>
+                    <div className="Challenge-filter-calendar">
+                        <Calendar 
+                            onChange={setDate} 
+                            value={date} 
+                            tileContent={tileContent} 
+                            onClickDay={handleDateClick} 
+                            className="react-calendar" 
+                        />
+                    </div>
+                </div>
+
+                <div className="challenge-list">
+                    <p>{format(date, 'yyyy. M. d', { locale: ko })} 챌린지 기록하기</p>
+                    {getFilteredChallenges().map(challenge => (
+                        <div key={challenge.challenge_id} className="challenge-item">
+                            <label style={{color: challenge.color}}>
                                 {challenge.challenge_name}
-                            </li>
-                        ))}
-                    </ul>
-                </Modal>
-            )}
+                            </label>
+                            <FaPenAlt
+                                className={`record-icon ${challengeStatus[format(date, 'yyyy-MM-dd')] && challengeStatus[format(date, 'yyyy-MM-dd')][challenge.challenge_id] ? 'checked' : ''}`}
+                                onClick={() => handleChallengeCheck(challenge.challenge_id, challenge.participant_id, !(challengeStatus[format(date, 'yyyy-MM-dd')] && challengeStatus[format(date, 'yyyy-MM-dd')][challenge.challenge_id]))}
+                            />
+                        </div>
+                    ))}
+                </div>
+                {showModal && (
+                    <Modal onClose={() => setShowModal(false)}>
+                        <h3>{format(date, 'yyyy. M. d', { locale: ko })} 완료된 챌린지</h3>
+                        <ul>
+                            {modalContent.map(challenge => (
+                                <li key={challenge.challenge_id} style={{color: challenge.color}}>
+                                    {challenge.challenge_name}
+                                </li>
+                            ))}
+                        </ul>
+                    </Modal>
+                )}
+            </div>
         </div>
     );
 }

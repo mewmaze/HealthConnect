@@ -13,33 +13,57 @@
     align-items: center;  /* 자식 요소를 수평으로 가운데 정렬 */
     min-height: 100vh;  /* 화면 전체 높이를 차지하도록 설정 */
     gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto; /* 화면 중앙에 위치하도록 */
 
 }
 .Home-box{
-    width: 600px;
-    height: auto;
+
+    width: 800px; /* 최대 너비 설정 */
     margin-bottom: 40px;
+    border-radius: 12px;
+    border: 3px solid black;
+    height: 400px;
+    padding: 30px 40px;
+    box-sizing: border-box; /* 패딩을 너비에 포함시켜 정확한 너비 유지 */
 }
 
 .Home-banner{
-    margin-bottom: 60px;
+    width: 900px;
+    max-width: 900px; /* 슬라이더와 동일한 최대 너비 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+    margin-bottom: 20px;
 }
 .Home-title {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: bolder;
+    text-align: left; /* 왼쪽 정렬 */
+    width: 800px;
 }
-.HomeSearch{
-    width: 400px;
-    height: 36px;
-    border-radius: 100px;
-    text-indent: 14px; /* 텍스트 시작 위치를 왼쪽으로 이동 */
-    margin-top: 40px;
+
+.Home-challenge-title{
+    position: relative;
+    display: inline-block;
+    font-weight: bolder;
+    font-size: 24px;
+    text-align: left; /* 왼쪽 정렬 */
+    width: 900px;
+}
+
+.hot-label{
+    position: absolute;
+    color: red;
+    top: -6px;
+    font-size: 20px;
+    margin-left: 6px;
+    
 }
 
 .Home-challenge{
-    width: 800px;
-    height: 300px;
-    display: flex;
-    gap: 10px;
-    justify-content: center;  /*가운데정렬*/
+    width: 900px;
+
+}
+
+.Home-Langking{
+    margin: 40px 0px;
 }

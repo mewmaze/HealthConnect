@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../hooks/AuthContext';
 import '../components/styles.css';
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -71,10 +72,10 @@ const Login = () => {
   };
 
   return (
-      <div className="container">
+      <div className="login-container">
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
-          <div className="form-group">
+          <div className="login-form-group">
             <label htmlFor="email">이메일</label>
             <input
               type="email"
@@ -82,9 +83,9 @@ const Login = () => {
               onChange={handleEmailChange}
               required
             />
-            {emailError && <p className="error">{emailError}</p>}
           </div>
-          <div className="form-group">
+          {emailError && <p className="error">{emailError}</p>}
+          <div className="login-form-group">
             <label htmlFor="password">비밀번호</label>
             <input
               type="password"
@@ -92,12 +93,14 @@ const Login = () => {
               onChange={handlePasswordChange}
               required
             />
-            {passwordError && <p className="error">{passwordError}</p>}
           </div>
-          <button type="submit">로그인</button>
-        </form>
-        <p>아직 계정이 없으신가요?</p>
-        <button onClick={handleSignup}>회원가입 하기</button>
+          {passwordError && <p className="error">{passwordError}</p>}
+          <button className='login-btn' type="submit">로그인</button>
+          </form>
+        <div className='gosignUp'>
+          <p>아직 계정이 없으신가요?</p>
+          <button className='gosignUp-btn' onClick={handleSignup}>회원가입 하기</button>
+        </div>
       </div>
   );
 };

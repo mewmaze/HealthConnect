@@ -16,6 +16,9 @@
 .exerciseSet-Top{
     display: flex;
     gap: 50px;
+    border: 2px solid black;
+    margin-top: 30px;
+    justify-content: center;
 }
 
 .Now{
@@ -30,4 +33,29 @@
     padding: 10px;
     border-radius: 8px;
     width: 300px;
+}
+.exerciseSet-Top {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 800px;
+}
+
+.exerciseSet-btn {
+    background-color: #FFAA46; /* 색상 값 앞에 #을 붙입니다 */
+    color: white; /* 버튼 텍스트 색상을 지정합니다 */
+    border: none; /* 기본 테두리를 제거합니다 */
+    border-radius: 4px; /* 버튼 모서리를 둥글게 합니다 */
+    padding: 10px 20px; /* 버튼 안쪽 여백을 설정합니다 */
+    cursor: pointer; /* 마우스를 올렸을 때 커서를 포인터로 변경합니다 */
+}
+
+.exerciseSet-btn:hover {
+    background-color: #e69939; /* 마우스를 올렸을 때 버튼 색상을 조금 어둡게 변경합니다 */
+}
+
+.exerciseSet-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 60px;
 }

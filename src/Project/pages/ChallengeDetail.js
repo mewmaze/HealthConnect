@@ -87,11 +87,11 @@ function ChallengeDetail() {
                 </div>
             </div>
                 {isParticipant ? (
-                    <div>참여중인 챌린지 입니다</div>
+                    <div className="ChallengeDetail-alert">참여중인 챌린지 입니다</div>
                     ) : (
                         <>
+                            <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
                             <div className="ChallengeInfoWrapper">
-                                <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
                                 <ChallengeInfo challenge={challenge} />
                                 <div className="ChallengeActions">
                                     <button type="button" onClick={handleJoinChallenge}>참여하기</button>
@@ -100,7 +100,7 @@ function ChallengeDetail() {
                         </>
                     )}
 
-            <button type="button" onClick={handleGoList}>챌린지 목록 보기</button>
+            <button className="golistbtn" type="button" onClick={handleGoList}>챌린지 목록 보기</button>
         </div>
     );
 }

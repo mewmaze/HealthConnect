@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     text-decoration: none;
     color: inherit;
     height: 300px; /* 전체 높이 사용 */
@@ -11,8 +10,8 @@
 
 
 .ChallengeItem-img img {
-    width: 260px; /* 이미지가 컨테이너의 너비에 맞게 조정됨 */
-    height: 180px; /* 이미지가 컨테이너의 높이에 맞게 조정됨 */
+    width: 240px; /* 이미지가 컨테이너의 너비에 맞게 조정됨 */
+    height: 160px; /* 이미지가 컨테이너의 높이에 맞게 조정됨 */
     object-fit: cover; /* 이미지 비율 유지하면서 컨테이너를 채우기 */
     border-radius: 8px;
     transition: transform 0.3s ease;
@@ -27,14 +26,16 @@
 }
 
 .challengeItem-name {
-    font-size: 18px; /* 적절한 폰트 사이즈로 수정 */
+    font-size: 20px; /* 적절한 폰트 사이즈로 수정 */
     padding: 5px; /* 패딩 추가 (선택 사항) */
+    font-weight: bold;
 }
 
 .challengeItem-participant {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
     border-radius: 100px;
-    padding: 2px 8px;
-    margin-top: 5px; /* 상단 여백 추가 (선택 사항) */
+    color: #FFAA46;
+    padding: 4px 12px;
     margin-bottom: 14px;
 }
+

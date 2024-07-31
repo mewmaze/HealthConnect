@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MyTabs from './myTabs';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from './NavigationBar';
 import './Layout.css';
 import PopupAd from "./PopupAd"
 
@@ -38,6 +39,7 @@ const Layout = ({ children }) => {
                         <MyTabs />
                     </li>
                 </nav>
+                <NavigationBar />
             </header>
             <main>
                 {children}

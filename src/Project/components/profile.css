@@ -17,7 +17,7 @@
     width: 100%;
     max-width: 800px;
     padding: 20px;
-    background-color: white;
+    background-color: #FFAA46;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -87,7 +87,7 @@
     text-align: left;
     font-size: 0.9rem;
     background-color: white;
-    border: 1px solid #007FFF;
+    border: 2px solid #000000;
     border-radius: 5px;
     padding: 10px;
     resize: none;
@@ -98,8 +98,8 @@
     font-weight: 600;
     border: none;
     border-radius: 5px;
-    background-color: #007FFF;
-    color: white;
+    background-color: #000000;
+    color: #ffffff;
     padding: 10px 20px;
     cursor: pointer;
     margin-left: 1%;
@@ -107,7 +107,19 @@
 }
 
 .update:hover {
-    color: #007FFF;
-    background-color: white;
-    border: 1px solid #007FFF;
+    color: #FFAA46;
+    background-color: #333333;
+    border: 1px solid #000000;
+}
+
+.profile-nickname {
+margin-bottom: 4px;
+}
+
+.profile-input {
+    border: 2px solid black;
+    width: 130px;
+    height: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
 }

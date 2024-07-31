@@ -4,6 +4,7 @@ import FormSelect from '../components/FormSelect';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
 import axios from 'axios';
+import './signupForm.css';
 
 const SignupForm = () => {
   // 회원가입 성공 시 라우팅
@@ -92,8 +93,9 @@ const SignupForm = () => {
   ];
 
   return (
-    <div className="container">
+    <div className="signupForm">
       <h2>회원가입</h2>
+      <div className='signup-container'>
       <form onSubmit={handleSignup}>
         <div className="form-group">
           <label htmlFor="name">이름</label>
@@ -199,8 +201,9 @@ const SignupForm = () => {
             required
           />
         </div>
-        <button type="submit">회원가입</button>
+        <button className='signup-btn' type="submit">회원가입</button>
       </form>
+    </div>
     </div>
   );
 };

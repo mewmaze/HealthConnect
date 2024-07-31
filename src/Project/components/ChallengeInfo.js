@@ -82,10 +82,10 @@ const ChallengeInfo = ({ challenge}) => {
                 />
             </div>
             <div className="ChallengeInfo-container">
-                <div>챌린지 생성일 : {formattedChallengeStartDate}</div> 
-                <div>챌린지 종료일 : {formattedChallengeEndDate}</div>
-                <div>오늘부터 챌린지 시작일 : {formattedTestStartDate}</div> 
-                <div>오늘부터 챌린지 종료일 : {formattedTestEndDate}</div>
+                {/* <div>챌린지 생성일 : {formattedChallengeStartDate}</div> 
+                <div>챌린지 종료일 : {formattedChallengeEndDate}</div> */}
+                <div>챌린지 시작일 : {formattedTestStartDate}</div> 
+                <div>챌린지 종료일 : {formattedTestEndDate}</div>
                 <div>얻을 수 있는 뱃지 개수 : {badges}</div>
             </div>
         </div>

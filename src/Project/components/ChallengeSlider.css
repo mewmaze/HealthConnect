@@ -1,0 +1,40 @@
+/* ChallengeSlider.css */
+
+/* 슬라이더 컨테이너 스타일 */
+.ChallengeSlider {
+    width: 100%;
+    max-width: 1000px; /* 최대 너비를 설정하여 너무 넓어지지 않도록 함 */
+    margin: 0 auto; /* 중앙 정렬 */
+    position: relative; /* 슬라이더 내부 요소를 위한 상대적 위치 설정 */
+}
+
+/* 슬라이더 아이템의 스타일 */
+.ChallengeSlider .slick-slide {
+    display: flex;
+    justify-content: center; /* 슬라이드 내부 아이템을 가운데 정렬 */
+}
+
+/* 슬라이더 화살표 스타일 */
+.ChallengeSlider .slick-prev,
+.ChallengeSlider .slick-next {
+    width: 40px; /* 화살표 너비 */
+    height: 40px; /* 화살표 높이 */
+
+    border-radius: 50%; /* 원형 화살표 버튼 */
+    z-index: 1000; /* 다른 요소 위에 위치하도록 설정 */
+}
+
+.ChallengeSlider .slick-prev {
+    left: 10px; /* 왼쪽 화살표 위치 */
+}
+
+.ChallengeSlider .slick-next {
+    right: 10px; /* 오른쪽 화살표 위치 */
+}
+
+/* 화살표 아이콘 스타일 */
+.ChallengeSlider .slick-prev::before,
+.ChallengeSlider .slick-next::before {
+    color: #fff; /* 화살표 아이콘 색상 */
+    font-size: 40px; /* 아이콘 크기 */
+}

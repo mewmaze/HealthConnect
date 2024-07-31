@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from 'axios';
-import { ChallengeStateContext} from '../App';
+import { ChallengeStateContext } from "../App";
 import "./Home.css";
 import BannerSlider from "../components/BannerSlider";
-import ChallengeItem from "../components/ChallengeItem";
+import ChallengeSlider from "../components/ChallengeSlider";
 import LangkingList from "../components/LangkingList";
 
 function Home() {
+    const data = useContext(ChallengeStateContext);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const data = useContext(ChallengeStateContext);
 
     useEffect(() => {
         const fetchChallenges = async () => {
@@ -34,10 +34,11 @@ function Home() {
         <div className="Home">
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
-            <input className="HomeSearch" placeholder="검색어를 입력하세요"></input>
-            <LangkingList/>
+            <div className="Home-Langking">
+                <LangkingList/>
+            </div>
+            <div className="Home-title">커뮤니티</div>
             <div className="Home-box">
-                <div className="Home-title">커뮤니티</div>
                 <ul>
                     {posts.map(post => (
                         <li key={post.post_id}>
@@ -49,13 +50,12 @@ function Home() {
             <div className="Home-banner">
                 <BannerSlider />
             </div>
-            <div className="Home-box">
-                <div className="Home-title">인기있는 챌린지</div>
-                <div className="Home-challenge">
-                    {data.map((it)=>(
-                        <ChallengeItem key={it.challenge_id} {...it} />
-                    ))}
-                </div>
+            <div className="Home-challenge-title">
+                    챌린지
+                <span className="hot-label">HOT!</span>
+            </div>
+            <div className="Home-challenge">
+                <ChallengeSlider/>
             </div>
         </div>
     );

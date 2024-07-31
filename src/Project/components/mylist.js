@@ -34,6 +34,7 @@ const Root = styled.div`
   background-color: white;
   padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
 ;`
 
 const Filter = styled.div`

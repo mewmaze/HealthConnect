@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext} from 'react';
 import { Tabs } from '@mui/base/Tabs';
 import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
-import { styled } from '@mui/system';
+import { color, styled } from '@mui/system';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../hooks/AuthContext';
 
@@ -14,13 +14,25 @@ function MyTabs() {
   // const profileImage = currentUser ? currentUser.profile_img : '';
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState(location.pathname || '/login');
+
+  const validTabs = [
+    "/exercise",
+    user_id ? `/myPage/${user_id}` : "/myPage",
+    "/login",
+    "/signUp"
+  ];
+
+  // `initialTab`을 로그인 상태에 따라 업데이트
+  const initialTab = validTabs.includes(location.pathname) ? location.pathname : '/login';
+  const [selectedTab, setSelectedTab] = useState(initialTab);
 
   useEffect(() => {
-    setSelectedTab(location.pathname);
-  }, [location.pathname]);
+    const newTab = validTabs.includes(location.pathname) ? location.pathname : '/login';
+    setSelectedTab(newTab);
+  }, [location.pathname, user_id]);
 
-  const handleTabChange = (newValue) => {
+  console.log('Current selectedTab:', selectedTab); // 추가된 로그
+  const handleTabChange = (event, newValue) => {
     if (newValue === '/myPage' && !user_id) {
       console.log("로그인을 하셔야 합니다.");
       navigate('/login');
@@ -33,7 +45,7 @@ function MyTabs() {
   };
 
   const handleDropdownClick = (path) => {
-    handleTabChange(path);
+    handleTabChange(null, path);
     setDropdownOpen(false);
   };
 
@@ -48,23 +60,19 @@ function MyTabs() {
       
       // 로그아웃 후 메인 페이지로 리다이렉션
       navigate('/login');
+      setSelectedTab('/login');
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
 
   return (
-    <Tabs value={selectedTab} onChange={(e, newValue) => handleTabChange(newValue)}>
+    <Tabs value={selectedTab} onChange={handleTabChange}>
       <TabsContainer>
-        <TabsList>
-          <Tab value="/bests/:id">BEST</Tab>
-          <Tab value="/communities">커뮤니티</Tab>
-          <Tab value="/challenge">챌린지</Tab>
-        </TabsList>
         <MyInfoTabsList>
           {user_id ? (
             <>
-              <Tab value="/exercise">나의 운동 / 챌린지 기록</Tab>
+              <Tab value="/exercise">나의 기록</Tab>
               <Tab
                 value="/myPage"
                 onMouseEnter={() => setDropdownOpen(true)}
@@ -83,7 +91,7 @@ function MyTabs() {
             </>
           ) : (
             <>
-              <Tab value="/login">로그인</Tab>
+              <LoginTab value="/login">로그인</LoginTab>
               <Tab value="/signUp">회원가입</Tab>
             </>
           )}
@@ -110,12 +118,14 @@ const DropdownMenu = styled('div')`
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #fff;
+  background-color: #FBFAFA;
   color: #000;
   border-radius: 4px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   min-width: 160px;
-  z-index: 1000;
+  z-index: 1005;
+  padding: 8px 0;
+  min-width: 180px;
 `;
 
 const DropdownItem = styled('div')`
@@ -130,13 +140,13 @@ const DropdownItem = styled('div')`
 const Tab = styled(BaseTab)`
   position: relative;  // 드롭다운 메뉴가 탭의 절대 위치에 위치하도록 설정
   font-family: 'IBM Plex Sans', sans-serif;
-  color: #fff;
+  color: #000;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  background-color: transparent;
-  width: 100%;
+  background-color: #fff;
+  width: 130px;
   padding: 8px 10px;
   margin: 6px;
   margin-top: -5px;
@@ -146,23 +156,29 @@ const Tab = styled(BaseTab)`
   display: inline-flex;
   justify-content: center;
 
-  &:hover {
-    background-color: ${blue[400]};
-    padding: -6px;
-    margin-top: -5px;
-    margin-bottom: -5px;
-  }
-
-  &:focus {
-    color: #fff;
-    outline: 3px solid ${blue[200]};
-    padding: -6px;
-  }
-
-  &.${tabClasses.selected} {
+  // 기본 상태
+  &:not(.${tabClasses.selected}) {
     background-color: #fff;
-    color: ${blue[600]};
+    color: #000;
   }
+
+  // 선택된 상태
+  &.${tabClasses.selected} {
+    background-color: #000;
+    color: white;
+  }
+
+  // 호버 상태
+  &:hover {
+    // background-color: #f0f0f0;
+    color: #FFAA46;
+    background-color: #000;
+  }
+`;
+
+const LoginTab = styled(Tab)`
+  color: white;
+  background-color: black;
 `;
 
 // const TabsWrapper = styled('div')`
@@ -172,35 +188,35 @@ const Tab = styled(BaseTab)`
 
 const TabsContainer = styled('div')`
   display: inline-flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: left;
-  width: 80%;
+  width: 100%;
+  height: 64px;
   position: inherit;
-  background-color: ${blue[500]};
+  background-color: #fff;
+  
 `;
 
-const TabsList = styled(BaseTabsList)`
-  min-width: 600px;
-  background-color: ${blue[500]};
-  position: inherit;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-`;
+// const TabsList = styled(BaseTabsList)`
+//   min-width: 600px;
+//   background-color: #fff;
+//   position: inherit;
+//   border-radius: 12px;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   align-content: space-between;
+// `;
 
 const MyInfoTabsList = styled(BaseTabsList)`
   min-width: 600px;
-  background-color: ${blue[500]};
+  background-color: #fff;
   position: inherit;
   border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   align-content: space-between;
-  margin-left: 6%;
-  padding: 10px;
 `;
 
 export default MyTabs;
