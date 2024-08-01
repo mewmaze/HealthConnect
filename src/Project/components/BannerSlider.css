@@ -15,15 +15,11 @@
 .slick-dots {
     position: absolute; /* 부모 요소인 .banner-slider에 상대적 위치 */
     bottom: 0;
-    bottom: -70px; /*왜 이런지 모르겠네,,,,,,*/
+    bottom: -70px;
 }
 
 .slick-dots li button:before {
     font-size: 12px; /* 점의 크기 */
     color: #333; /* 점의 색상 */
-}
-/* 화살표 숨기기 */
-.slick-prev, .slick-next {
-    display: none !important; /* 화살표를 숨깁니다 */
 }
 
