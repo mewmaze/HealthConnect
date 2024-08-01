@@ -168,6 +168,7 @@ const SignupForm = () => {
           <FormInput
             type="number"
             name="height"
+            className="form-height"
             value={formData.height}
             onChange={handleChange}
             required
