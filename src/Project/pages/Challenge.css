@@ -117,6 +117,8 @@ li {
 .FilterContainer select {
     width: 120px;
     height: 40px;
+    border: 2px solid black;
+    color: black;
 }
 .goChallengeCreate {
     padding: 10px 20px; /* 버튼에 padding을 추가 */

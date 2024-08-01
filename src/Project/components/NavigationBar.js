@@ -77,7 +77,7 @@ const StyledTab = styled(BaseTab)(({ theme }) => ({
     },
     '&:focus': {
         color: '#000',
-        outline: '3px solid #80BFFF', // 포커스 아웃라인 색상
+        outline: 'none', // 포커스 아웃라인 색상
     },
 }));
 
