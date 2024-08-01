@@ -71,3 +71,11 @@
 .comments-list .timestamp {
   font-style: italic;
 }
+
+.new-comment{
+  background-color: #0056b3;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+}
