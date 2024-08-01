@@ -1,9 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import Comment from '../components/Comment';
-import NewComment from '../components/NewComment';
-import { jwtDecode } from 'jwt-decode';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import './PostDetail.css';
 
 const PostDetail = ({ communities, addComment }) => {
@@ -130,21 +128,25 @@ const PostDetail = ({ communities, addComment }) => {
         ) : (
           <>
             <h2>{post.title}</h2>
-            <p>{post.content}</p>
-            <p>작성자: {post.user_id}</p>
-            <p>작성 시간: {new Date(post.created_at).toLocaleString()}</p>
+            <div className="post-meta">
+              <p className="author-info">작성자: {post.user_id}</p>
+              <p className="timestamp">작성 시간: {new Date(post.created_at).toLocaleString()}</p>
+            </div>
+            <p className="content">{post.content}</p>
             <button onClick={() => setEditMode(true)}>수정</button>
             <button onClick={handleDelete}>삭제</button>
           </>
         )}
 
         <h3>댓글</h3>
-        <ul>
+        <ul className="comments-list">
           {comments.map(comment => (
             <li key={comment.comment_id}>
               <p>{comment.content}</p>
-              <p>작성자: {comment.user_id}</p>
-              <p>작성 시간: {new Date(comment.created_at).toLocaleString()}</p>
+              <div className="comment-meta">
+                <p className="author-info">작성자: {comment.user_id}</p>
+                <p className="timestamp">작성 시간: {new Date(comment.created_at).toLocaleString()}</p>
+              </div>
             </li>
           ))}
         </ul>
