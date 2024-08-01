@@ -22,4 +22,8 @@
     font-size: 12px; /* 점의 크기 */
     color: #333; /* 점의 색상 */
 }
+/* 화살표 숨기기 */
+.slick-prev, .slick-next {
+    display: none !important; /* 화살표를 숨깁니다 */
+}
 

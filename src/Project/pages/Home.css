@@ -9,12 +9,12 @@
 }
 
 .Home-box {
-    width: 800px; /* 최대 너비 설정 */
+    width: 760px; /* 최대 너비 설정 */
     margin-bottom: 40px;
     border-radius: 12px;
     border: 3px solid black;
-    height: 400px;
-    padding: 30px 40px;
+    height: 410px;
+    padding: 10px 40px;;
     box-sizing: border-box; /* 패딩을 너비에 포함시켜 정확한 너비 유지 */
     overflow-y: auto; /* 콘텐츠가 너무 많을 경우 스크롤 가능 */
 }
@@ -31,19 +31,31 @@
     display: flex; /* 리스트 항목을 flex 컨테이너로 변경 */
     justify-content: space-between; /* 제목과 작성 시간을 양 끝으로 배치 */
     align-items: center; /* 수직 가운데 정렬 */
+    width: 670px;
 }
 
 .Home-box .post-title {
     font-size: 1rem; /* 제목의 폰트 크기 */
     font-weight: bold;
-    flex: 1; /* 제목이 가능한 공간을 차지하게 설정 */
+    flex: 7; /* 제목이 더 많은 공간을 차지하도록 설정 */
+    padding-left: 30px;
+    margin-right: 10px; /* 제목과 작성자 사이의 간격 */
+}
+
+.Home-box .post-author {
+    font-size: 0.875rem; /* 닉네임의 폰트 크기 */
+    color: #333; /* 닉네임 색상 */
+    flex: 1; /* 닉네임이 일정한 공간을 차지하도록 설정 */
+    margin-right: 10px; /* 닉네임과 작성일 사이의 간격 */
 }
 
 .Home-box .post-date {
     font-size: 0.875rem; /* 날짜의 폰트 크기 */
     color: #666; /* 날짜 색상 */
-    margin-left: 10px; /* 제목과 날짜 사이의 간격 설정 */
+    flex: 1; /* 날짜가 일정한 공간을 차지하도록 설정 */
+    text-align: right; /* 오른쪽 정렬 */
 }
+
 
 .Home-banner {
     width: 829px;
@@ -56,7 +68,7 @@
     font-size: 24px;
     font-weight: bolder;
     text-align: left; /* 왼쪽 정렬 */
-    width: 800px;
+    width: 760px;
 }
 
 .Home-challenge-title {
@@ -88,6 +100,8 @@
     border: none;
     background-color: white;
     font-size: 18px;
+    padding: 0px;
+    font-weight: bold;
 }
 
 .category-buttons:hover {

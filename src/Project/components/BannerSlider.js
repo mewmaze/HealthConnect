@@ -7,7 +7,7 @@ import './BannerSlider.css'; // 슬라이더의 스타일
 
 const BannerSlider = () => {
     const settings = {
-        dots: true, //밑에 점 표시할건지
+        dots:false, //밑에 점 표시할건지
         infinite: true, // 끝에서 처음으로 이어지게 할건지
         speed: 300,
         slidesToShow: 1, // 한번에 보여줄 슬라이드 개수
@@ -20,22 +20,13 @@ const BannerSlider = () => {
         <div className='banner-slider'>
             <Slider {...settings}>
                 <div>
-                    <img src="/banner.jpg" alt="Slide 1" className="slider-image" />
+                    <img src="/banner1.png" alt="Slide 1" className="slider-image" />
                 </div>
                 <div>
-                    <h3>2</h3>
+                    <img src="/banner2.png" alt="Slide 2" className="slider-image" />
                 </div>
                 <div>
-                    <h3>3</h3>
-                </div>
-                <div>
-                    <h3>4</h3>
-                </div>
-                <div>
-                    <h3>5</h3>
-                </div>
-                <div>
-                    <h3>6</h3>
+                    <img src="/banner3.jpg" alt="Slide 3" className="slider-image" />
                 </div>
             </Slider>
         </div>

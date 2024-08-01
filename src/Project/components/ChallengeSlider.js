@@ -1,14 +1,28 @@
-import { useContext } from 'react';
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import ChallengeItem from './ChallengeItem';
-import { ChallengeStateContext } from '../App';
 import './ChallengeSlider.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
 const ChallengeSlider = () => {
-    const data = useContext(ChallengeStateContext);
+    const [challenges, setChallenges] = useState([]);
+
+    useEffect(() => {
+        const fetchChallenges = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/challenges');
+                const data = await response.json();
+                setChallenges(data.slice(0, 8));
+            } catch (error) {
+                console.error('Failed to fetch challenges:', error);
+            }
+        };
+
+        fetchChallenges();
+    }, []);
+
 
     const settings = {
         dots: false,
@@ -45,7 +59,7 @@ const ChallengeSlider = () => {
     return (
         <div className='ChallengeSlider'>
             <Slider {...settings}>
-                {data.slice(0,8).map((item) => (
+                {challenges.slice(0,8).map((item) => (
                     <ChallengeItem key={item.challenge_id} {...item}/>
                 ))}
             </Slider>
