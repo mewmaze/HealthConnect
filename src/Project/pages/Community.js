@@ -38,7 +38,7 @@ const Community = () => {
               <td>
                 <Link to={`/community/${communityId}/post/${post.post_id}`}>{post.title}</Link>
               </td>
-              <td>{post.user_id}</td>
+              <td>{post.user.nickname}</td>
               <td>{new Date(post.created_at).toLocaleString()}</td>
             </tr>
           ))}

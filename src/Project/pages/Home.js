@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState} from "react";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ChallengeStateContext } from "../App";
 import "./Home.css";
 import BannerSlider from "../components/BannerSlider";
 import ChallengeSlider from "../components/ChallengeSlider";
 import LangkingList from "../components/LangkingList";
 
 function Home() {
-    const data = useContext(ChallengeStateContext);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,20 +14,20 @@ function Home() {
     const [selectedCategory, setSelectedCategory] = useState(''); // 클릭된 카테고리 상태 추가
 
     useEffect(() => {
-        const fetchChallenges = async () => {
+        const fetchPosts = async () => {
             try {
-                const postsResponse = await axios.get('http://localhost:5000/posts');
-                console.log('Fetched posts:', postsResponse.data); // 데이터 구조 확인
+                const params = selectedCategory ? { communityId: selectedCategory } : {};
+                const postsResponse = await axios.get('http://localhost:5000/posts', { params });
                 setPosts(postsResponse.data);
             } catch (error) {
-                setError('Failed to fetch challenges.');
+                setError('Failed to fetch posts.');
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchChallenges();
-    }, []);
+        fetchPosts();
+    }, [selectedCategory]);
 
     const handleCategoryClick = (category) => {
         setCategory(category);
@@ -53,40 +52,44 @@ function Home() {
                         전체
                     </button>
                     <button 
-                        className={`category-buttons ${selectedCategory === '런닝' ? 'active' : ''}`} 
-                        onClick={() => handleCategoryClick('런닝')}
+                        className={`category-buttons ${selectedCategory === '1' ? 'active' : ''}`} 
+                        onClick={() => handleCategoryClick('1')}
                     >
                         런닝
                     </button>
                     <button 
-                        className={`category-buttons ${selectedCategory === '자전거' ? 'active' : ''}`} 
-                        onClick={() => handleCategoryClick('자전거')}
+                        className={`category-buttons ${selectedCategory === '2' ? 'active' : ''}`} 
+                        onClick={() => handleCategoryClick('2')}
                     >
                         자전거
                     </button>
                     <button 
-                        className={`category-buttons ${selectedCategory === '헬스' ? 'active' : ''}`} 
-                        onClick={() => handleCategoryClick('헬스')}
+                        className={`category-buttons ${selectedCategory === '3' ? 'active' : ''}`} 
+                        onClick={() => handleCategoryClick('3')}
                     >
                         헬스
                     </button>
                     <button 
-                        className={`category-buttons ${selectedCategory === '다이어트' ? 'active' : ''}`} 
-                        onClick={() => handleCategoryClick('다이어트')}
+                        className={`category-buttons ${selectedCategory === '4' ? 'active' : ''}`} 
+                        onClick={() => handleCategoryClick('4')}
                     >
                         다이어트
                     </button>
                     <button 
-                        className={`category-buttons ${selectedCategory === '자유' ? 'active' : ''}`} 
-                        onClick={() => handleCategoryClick('자유')}
+                        className={`category-buttons ${selectedCategory === '5' ? 'active' : ''}`} 
+                        onClick={() => handleCategoryClick('5')}
                     >
                         자유
                     </button>
                 </div>
                 <ul>
-                    {posts.filter(post => !category || post.category === category).map(post => (
+                    {posts.slice(0, 7).map(post => (
                         <li key={post.post_id}>
-                            <div className="post-title">{post.title}</div>
+                            {/* Link 컴포넌트로 감싸서 상세 페이지로 이동하도록 설정 */}
+                            <Link to={`/community/${post.community_id}/post/${post.post_id}`} className="post-title">
+                                {post.title}
+                            </Link>
+                            <div className="post-author">{post.user ? post.user.nickname : 'Unknown'}</div>
                             <div className="post-date">{new Date(post.created_at).toLocaleDateString()}</div>
                         </li>
                     ))}
