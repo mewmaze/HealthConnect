@@ -1,6 +1,6 @@
 .signupForm{
     border: 2px solid black;
-    width: 600px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -24,4 +24,20 @@
     align-items: center;
     width: 100%;
     margin-bottom: 10px;
+}
+.height-weight-group input[type="number"] {
+    width: 150px; /* 키와 몸무게 입력 필드의 너비 조정 */
+}
+.signup-btn{
+    border: none;
+}
+.signup-btn:hover{
+    border: none;
+    border: 2px solid black;
+}
+.form-height{
+    margin-right: 20px;
+}
+.form-group input {
+    margin-right: 20px; /* 모든 input 요소에 오른쪽 마진 추가 */
 }
