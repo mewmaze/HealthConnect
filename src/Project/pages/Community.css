@@ -26,7 +26,7 @@ body {
 }
 
 .posts-list th {
-  background-color: #007bff;
+  background-color: black;
   color: white;
 }
 
@@ -43,7 +43,7 @@ body {
   bottom: 20px;
   right: 20px;
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: black;
   color: white;
   text-align: center;
   text-decoration: none;
@@ -54,7 +54,7 @@ body {
 }
 
 .new-post-button:hover {
-  background-color: #0056b3;
+  background-color: black;
   transform: translateY(-2px);
 }
 
