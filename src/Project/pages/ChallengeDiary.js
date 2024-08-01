@@ -111,7 +111,6 @@ function ChallengeDiary() {
                             'Authorization': `Bearer ${token}`
                         }
                     });
-                    
                     const allRecords = response.data;
                     const newStatus = allRecords.reduce((acc, curr) => {
                         const date = format(new Date(curr.completion_date), 'yyyy-MM-dd');
