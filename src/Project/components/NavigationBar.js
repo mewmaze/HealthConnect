@@ -99,9 +99,10 @@ const SearchInput = styled('input')`
     border-radius: 100px;
     outline: none;
     transition: border-color 0.3s ease;
-
+    box-sizing: border-box; /* 패딩과 보더를 포함하여 전체 크기를 유지 */
+    padding-left: 16px; /* 왼쪽 패딩 조정 */
     &:focus {
-        border-color: #0072E5;
+        border-color: #FFAA46;
     }
 `;
 

@@ -141,8 +141,22 @@ input[type="date"] {
     padding: 8px 14px;
     font-size: 16px;
     margin-bottom: 100px;
+    background-color: black;
+    border-radius: 4px;
+    color: white;
 }
 
 .golistbtn:hover{
     color: #FFAA46;
+}
+
+.joinbtn{
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.joinbtn:hover{
+    color: rgb(0, 0, 0);
 }

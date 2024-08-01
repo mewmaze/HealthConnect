@@ -141,8 +141,8 @@ function ChallengeEditor({initData,onSubmit,text}){
                     />
                 </div>
                 <div>
-                    <button type="button" onClick={handleSubmit}>{text}</button>
-                    <button type="button" onClick={handleCancel}>취소</button>
+                    <button className="ChallengeEditorbtn" type="button" onClick={handleSubmit}>{text}</button>
+                    <button className="ChallengeEditorbtn" type="button" onClick={handleCancel}>취소</button>
                 </div>
             </div>
         </div>

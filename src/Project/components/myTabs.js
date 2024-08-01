@@ -22,16 +22,15 @@ function MyTabs() {
     "/signUp"
   ];
 
-  // `initialTab`을 로그인 상태에 따라 업데이트
-  const initialTab = validTabs.includes(location.pathname) ? location.pathname : '/login';
-  const [selectedTab, setSelectedTab] = useState(initialTab);
+ // 메인 홈페이지인 경우 아무것도 선택되지 않은 상태로 설정
+ const initialTab = location.pathname === '/' ? null : (validTabs.includes(location.pathname) ? location.pathname : '/login');
+ const [selectedTab, setSelectedTab] = useState(initialTab);
 
-  useEffect(() => {
-    const newTab = validTabs.includes(location.pathname) ? location.pathname : '/login';
-    setSelectedTab(newTab);
-  }, [location.pathname, user_id]);
+ useEffect(() => {
+   const newTab = location.pathname === '/' ? null : (validTabs.includes(location.pathname) ? location.pathname : '/login');
+   setSelectedTab(newTab);
+ }, [location.pathname, user_id]);
 
-  console.log('Current selectedTab:', selectedTab); // 추가된 로그
   const handleTabChange = (event, newValue) => {
     if (newValue === '/myPage' && !user_id) {
       console.log("로그인을 하셔야 합니다.");
@@ -158,14 +157,14 @@ const Tab = styled(BaseTab)`
 
   // 기본 상태
   &:not(.${tabClasses.selected}) {
-    background-color: #fff;
-    color: #000;
+    background-color: #000;
+    color: #fff;
   }
 
   // 선택된 상태
   &.${tabClasses.selected} {
     background-color: #000;
-    color: white;
+    color: #FFAA46;
   }
 
   // 호버 상태

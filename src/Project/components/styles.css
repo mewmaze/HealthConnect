@@ -36,12 +36,12 @@ form {
     flex-direction: column;
     margin-bottom: 15px;
 }
-button {
+/* button {
     background-color: black;
     color: white;
     border: none;
     border-radius: 5px;  
-}
+} */
 label {
     margin-bottom: 5px;
     font-weight: bold;

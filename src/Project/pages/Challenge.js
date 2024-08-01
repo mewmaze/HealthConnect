@@ -1,12 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext, useState } from "react";
+import { useEffect } from "react";
 import { ChallengeStateContext } from '../App';
+import axios from "axios"; // axios 추가
 import LangkingList from "../components/LangkingList";
 import ChallengeItem from "../components/ChallengeItem";
 import "./Challenge.css";
 
 function Challenge() {
-    const data = useContext(ChallengeStateContext);
+    const [data, setData] = useState([]);
     const [search, setSearch] = useState('');
     const [filterTargetDays, setFilterTargetDays] = useState('all');
     const [filterPeriod, setFilterPeriod] = useState('all');
@@ -15,6 +17,20 @@ function Challenge() {
     const itemsPerPage = 6; // 페이지당 표시할 아이템 수
 
     const navigate = useNavigate();
+
+    // 서버에서 데이터 불러오기
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/challenges');
+                setData(response.data);
+            } catch (error) {
+                console.error('Failed to fetch challenges:', error);
+            }
+        };
+        fetchData();
+    }, []); // 빈 배열을 두 번째 인자로 전달하여 컴포넌트 마운트 시 한 번만 실행
+
     const goChallengeCreate = () => {
         navigate('/challengecreate', { replace: true });
     };

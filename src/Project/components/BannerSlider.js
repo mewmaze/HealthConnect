@@ -20,7 +20,7 @@ const BannerSlider = () => {
         <div className='banner-slider'>
             <Slider {...settings}>
                 <div>
-                    <h3>1</h3>
+                    <img src="/banner.jpg" alt="Slide 1" className="slider-image" />
                 </div>
                 <div>
                     <h3>2</h3>

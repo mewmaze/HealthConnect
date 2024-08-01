@@ -9,7 +9,7 @@ import './ChallengeDetail.css';
 
 function ChallengeDetail() {
     const { id } = useParams();
-    const challenges = useContext(ChallengeStateContext);
+    // const challenges = useContext(ChallengeStateContext);
     const { joinChallenge, checkParticipant } = useChallengeActions();
     const { currentUser, token } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -18,8 +18,10 @@ function ChallengeDetail() {
 
     const fetchChallenge = useCallback(async () => {
         try {
+            console.log('Fetching challenge with ID:', id);
             const response = await axios.get(`http://localhost:5000/challenges/${id}`);
             setChallenge(response.data);
+            console.log('챌린지 데이터:', response.data); // response.data로 변경
         } catch (error) {
             console.error("Failed to fetch challenge:", error);
             setChallenge(null);
@@ -27,13 +29,16 @@ function ChallengeDetail() {
     }, [id]);
 
     useEffect(() => {
-        const challengeDetail = challenges.find(challenge => challenge.challenge_id === parseInt(id, 10));
-        if (challengeDetail) {
-            setChallenge(challengeDetail);
-        } else {
-            fetchChallenge();
-        }
-    }, [id, challenges, fetchChallenge]);
+        fetchChallenge(); // 컴포넌트가 마운트될 때 호출
+    }, [fetchChallenge]);
+    // useEffect(() => {
+    //     const challengeDetail = challenges.find(challenge => challenge.challenge_id === parseInt(id, 10));
+    //     if (challengeDetail) {
+    //         setChallenge(challengeDetail);
+    //     } else {
+    //         fetchChallenge();
+    //     }
+    // }, [id, challenges, fetchChallenge]);
 
     useEffect(() => {
         const checkParticipation = async () => {
@@ -68,7 +73,7 @@ function ChallengeDetail() {
     }
 
     const { challenge_name, description, participant_count, target_days, challenge_img, target_period, start_date,end_date } = challenge;
-
+    console.log('챌린지 이미지 URL:', challenge_img);
     return (
         <div className="ChallengeDetail">
             <div className="ChallengeTitle-name">{challenge_name}</div>
@@ -94,7 +99,7 @@ function ChallengeDetail() {
                             <div className="ChallengeInfoWrapper">
                                 <ChallengeInfo challenge={challenge} />
                                 <div className="ChallengeActions">
-                                    <button type="button" onClick={handleJoinChallenge}>참여하기</button>
+                                    <button className="joinbtn" type="button" onClick={handleJoinChallenge}>참여하기</button>
                                 </div>
                             </div>
                         </>

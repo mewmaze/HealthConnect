@@ -1,13 +1,4 @@
-.title {
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.5rem;
-}
-
-.Home{
+.Home {
     display: flex;
     flex-direction: column;
     align-items: center;  /* 자식 요소를 수평으로 가운데 정렬 */
@@ -15,9 +6,9 @@
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto; /* 화면 중앙에 위치하도록 */
-
 }
-.Home-box{
+
+.Home-box {
     width: 800px; /* 최대 너비 설정 */
     margin-bottom: 40px;
     border-radius: 12px;
@@ -25,17 +16,42 @@
     height: 400px;
     padding: 30px 40px;
     box-sizing: border-box; /* 패딩을 너비에 포함시켜 정확한 너비 유지 */
-}
-.Home-box li{
-    margin-bottom: 15px;
+    overflow-y: auto; /* 콘텐츠가 너무 많을 경우 스크롤 가능 */
 }
 
-.Home-banner{
-    width: 900px;
-    max-width: 900px; /* 슬라이더와 동일한 최대 너비 설정 */
+.Home-box ul {
+    list-style: none; /* 기본 목록 스타일 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+.Home-box li {
+    margin-bottom: 2px;
+    padding: 10px 0;
+    display: flex; /* 리스트 항목을 flex 컨테이너로 변경 */
+    justify-content: space-between; /* 제목과 작성 시간을 양 끝으로 배치 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.Home-box .post-title {
+    font-size: 1rem; /* 제목의 폰트 크기 */
+    font-weight: bold;
+    flex: 1; /* 제목이 가능한 공간을 차지하게 설정 */
+}
+
+.Home-box .post-date {
+    font-size: 0.875rem; /* 날짜의 폰트 크기 */
+    color: #666; /* 날짜 색상 */
+    margin-left: 10px; /* 제목과 날짜 사이의 간격 설정 */
+}
+
+.Home-banner {
+    width: 829px;
+    max-width: 829px; /* 슬라이더와 동일한 최대 너비 설정 */
     margin: 0 auto; /* 중앙 정렬 */
     margin-bottom: 20px;
 }
+
 .Home-title {
     font-size: 24px;
     font-weight: bolder;
@@ -43,7 +59,7 @@
     width: 800px;
 }
 
-.Home-challenge-title{
+.Home-challenge-title {
     position: relative;
     display: inline-block;
     font-weight: bolder;
@@ -52,20 +68,50 @@
     width: 900px;
 }
 
-.hot-label{
+.hot-label {
     position: absolute;
     color: red;
     top: -6px;
     font-size: 20px;
     margin-left: 6px;
-    
 }
 
-.Home-challenge{
+.Home-challenge {
     width: 900px;
-
 }
 
-.Home-Langking{
+.Home-Langking {
     margin: 40px 0px;
+}
+
+.category-buttons {
+    border: none;
+    background-color: white;
+    font-size: 18px;
+}
+
+.category-buttons:hover {
+    color: #FFAA46;
+}
+
+.Home-filter{
+    margin-bottom: 10px;
+}
+
+.category-buttons {
+    border: none;
+    color: black; /* 기본 글자색 */
+    font-size: 18px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-buttons:hover {
+    color: #FFAA46; /* 호버 상태 배경색 */
+}
+
+.category-buttons.active {
+    color:  #FFAA46; /* 선택된 버튼의 배경색 */
 }
