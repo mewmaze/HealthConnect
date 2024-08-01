@@ -8,7 +8,7 @@
 }
 
 .post-detail h2 {
-  border-bottom: 3px solid #0056b3;
+  border-bottom: 3px solid black;
   padding-bottom: 12px;
   margin-bottom: 15px;
   color: #333;
@@ -35,7 +35,7 @@
 .post-detail .content {
   margin: 20px 0;
   padding: 15px;
-  border-left: 3px solid #0056b3;
+  border-left: 3px solid black;
   border-radius: 4px;
   background-color: #f9f9f9;
   line-height: 1.6;
@@ -73,7 +73,7 @@
 }
 
 .new-comment{
-  background-color: #0056b3;
+  background-color: black;
   color: white;
   padding: 10px;
   border-radius: 4px;
