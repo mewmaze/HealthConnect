@@ -56,7 +56,7 @@ function ExerciseSet() {
             <div className="exerciseSet">
                 <div className='exerciseSet-Top'>
                     <div className='Now'>
-                        <div>현재 나의 상태</div>
+                        <div className='exerciseSet-title'>현재 나의 상태</div>
                         {editing ? (
                             <div>
                                 <input 
@@ -87,13 +87,14 @@ function ExerciseSet() {
                         )}
                     </div>
                     <div className='Goal'>
-                        <div>목표</div>
+                        <div className='exerciseSet-title'>목표</div>
                         {editing ? (
                             <div>
                                 <input 
                                     type="text" 
                                     name="height" 
                                     value={goal.height} 
+
                                     placeholder='목표 키를 입력해주세요'
                                     onChange={(e) => handleInputChange(e, 'goal')} 
                                 />
@@ -122,7 +123,7 @@ function ExerciseSet() {
                     </div>
                 </div>
 
-                <button onClick={() => setEditing(!editing)}>
+                <button className='exerciseSet-btn' onClick={() => setEditing(!editing)}>
                     {editing ? '저장' : '수정'}
                 </button>
             </div>

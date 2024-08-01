@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 1200px;
+    width: 900px;
     margin: 0 auto;
     margin-top: 100px;
 }
@@ -31,14 +31,30 @@
 }
 .ChallengeSearch{
     width: 400px;
-    height: 36px;
+    height: 46px;
     border-radius: 100px;
     text-indent: 14px; /* 텍스트 시작 위치를 왼쪽으로 이동 */
+    font-size: 16px;
+}
+.ChallengeSearchContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; /* 세로 정렬 */
+    width: 100%;
+    margin-bottom: 60px;
+}
+.search-container{
+    position: relative; /* 자식 요소의 절대 위치를 기준으로 함 */
+    width: 400px; 
+}
+.ChallengeSearchContainer span{
+    font-size: 36px;
+    font-weight: bolder;
+    margin-right: 40px;
 }
 
 .ChallengeSearchResults {
-    position: absolute; 
-    margin: 0px;
+    margin-top: 0px;
     width: 400px;
     list-style-type: none;
     padding: 0;
@@ -55,7 +71,7 @@
 }
 
 .ChallengeSearchResults li:hover {
-    color: #007FFF;
+    color: #FFAA46;
 }
 
 a {
@@ -85,4 +101,56 @@ a {
 li {
     margin-left: -5px;
     list-style: none;
+}
+
+.FilterContainer{
+    border: 2px solid black;
+    padding: 4px 0px;
+    width: 900px;
+    height: 50px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-around;
+    gap: 6px;
+    align-items: center;
+}
+.FilterContainer select {
+    width: 120px;
+    height: 40px;
+    border: 2px solid black;
+    color: black;
+}
+.goChallengeCreate {
+    padding: 10px 20px; /* 버튼에 padding을 추가 */
+    color: white;
+    background-color: black;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.goChallengeCreate:hover{
+    color: #FFAA46;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.pagination li:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination li.active {
+    background-color: #FFAA46;
+    color: white;
+    border: 2px solid black;
 }

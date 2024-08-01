@@ -1,24 +1,16 @@
-.ChallengeCreate{
+.ChallengeCreate {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
+    align-items: center; /* 수평 중앙 정렬 */
     gap: 10px;
+    width: 100%; /* 부모 컨테이너의 너비를 100%로 설정 */
 }
 
-.ChallengeCreate-Form{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    align-items: center;
-}
-#ChallengeCreate-Name{
-    width: 939px;
-    height: 20px;
-}
-#ChallengeCreate-content{
-    width: 939px;
-    height: 80px;
-}
-#targetFrequency{
-    width: 80px;
-    height: 30px;
+.challengeCreate-title {
+    width: 700px; /* 원하는 너비 */
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    /* align-self: flex-start; /* 이 속성은 제거해야 합니다 */
 }

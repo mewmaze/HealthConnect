@@ -2,16 +2,16 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 .topNav {
-    background-color: #007FFF;
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 5px;
-    height: 59px;
+    height: 64px;
     justify-content: space-between;
+    border-bottom: 1px solid #dcdcdc;
 }
 
 li {
@@ -24,15 +24,15 @@ li {
 }
 
 .imgLogo {
-    width: 50px;
+    width: 120px;
     height: auto;
     transform: scale(1.2);
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .logout-btn {
     padding: 10px 20px;
-    background-color: #007FFF;
+    background-color: #feffff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -49,3 +49,4 @@ main {
     display: flex;
     flex-direction: column;
 }
+

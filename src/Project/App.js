@@ -27,6 +27,7 @@ import Community from './pages/Community';
 import PostDetail from './pages/PostDetail';
 import NewPostPage from './pages/NewPostPage';
 
+
 // 챌린지 Context 생성
 export const ChallengeStateContext = React.createContext();
 export const ChallengeDispatchContext = React.createContext();

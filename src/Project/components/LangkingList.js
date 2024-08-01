@@ -25,10 +25,10 @@ function LangkingList (){
                 <ul className='LangkingList-lank' >
                     {profiles.map((profile, index) => (
                         <li key={profile.id} className='LangkingList-box'>
-                            <div>{index +1}</div>
+                            <div className='Langking-number'>{index +1}</div>
                             <div className='LangkingList-content'>
                                 <img src={`http://localhost:5000/uploads/${profile.User.profile_picture}`} alt={`${profile.User.nickname}'s profile`} width="50" height="50" />
-                                <div>{profile.User.nickname}</div>
+                                <div className='Langking-name'>{profile.User.nickname}</div>
                             </div>
                         </li>
                     ))}

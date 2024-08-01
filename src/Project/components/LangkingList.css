@@ -24,6 +24,8 @@ list-style: none;
     border-radius: 50%; 
     object-fit: cover; 
     margin-right: 10px; 
+    /* border: 2px solid black; */
+    box-shadow: 0 4px 8px rgba(100, 100, 100, 0.5);
 }
 .LangkingList-content{
     display: flex;
@@ -31,4 +33,13 @@ list-style: none;
     gap: 10px;
 
     align-items: center;
+}
+.Langking-number{
+    font-weight: bolder;
+    font-size: 26px;
+    text-shadow: 2px 2px 4px rgba(68, 67, 67, 0.5);
+}
+.Langking-name{
+    font-weight: bold;
+    font-size: 14px;
 }

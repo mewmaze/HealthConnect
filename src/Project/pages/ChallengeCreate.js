@@ -19,7 +19,7 @@ function ChallengeCreate() {
 
     return (
         <div className="ChallengeCreate">
-            <div>챌린지 만들기</div>
+            <div className="challengeCreate-title">챌린지 만들기</div>
             <ChallengeEditor onSubmit={onSubmit} text={"등록"}></ChallengeEditor>
         </div>
     );

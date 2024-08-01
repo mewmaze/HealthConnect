@@ -1,8 +1,7 @@
 .banner-slider {
     position: relative; /* slick-dots가 이 컨테이너의 위치를 기준으로 함 */
-    width: 600px;
-    height: 100px;
-    background-color: #f07474; /* 회색 배경색 */
+    height: 120px;
+    background-color: #c0c0c0; /* 회색 배경색 */
 }
 
 .slider-item {

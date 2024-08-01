@@ -13,9 +13,26 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 8px 9px rgba(17, 0, 255, 0.1);
+    border: 2px solid black;
 }
 
-li {
-    padding: 5px;
-    margin-bottom: 5px;
+.left ul {
+    list-style: none; /* 기본 목록 스타일 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.left li {
+    padding: 8px 0; /* 각 목록 항목의 위아래 여백 */
+    cursor: pointer;
+    transition: color 0.3s ease; /* 색상 변경에 부드러운 전환 효과 추가 */
+}
+
+.left li.active {
+    color: #FFAA46; /* 클릭된 항목의 색상 */
+    font-weight: bold; /* 클릭된 항목을 강조하기 위해 글씨 두껍게 */
+}
+
+.left li:hover {
+    color: #FFAA46; /* Hover 상태의 색상 */
 }

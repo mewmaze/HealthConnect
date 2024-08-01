@@ -129,9 +129,9 @@ function Profile() {
                     <input type="file" onChange={handleFileChange} />
                 </div>
                 <div className="profile-details">
-                    <p className="nickname">닉네임: 
+                    <p className="profile-nickname">닉네임
                         <input 
-                            value={formData.nickname || ""} 
+                            value={formData.nickname || ""} className="profile-input"
                             onChange={(e) => setFormData({ ...formData, nickname: e.target.value })} 
                         />
                     </p>

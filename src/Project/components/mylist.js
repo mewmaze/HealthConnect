@@ -34,6 +34,7 @@ const Root = styled.div`
   background-color: white;
   padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid black;
 ;`
 
 const Filter = styled.div`
@@ -49,20 +50,43 @@ const Filter = styled.div`
   }
 ;`
 
-const DeleteAllButton = styled.button`
-  position: inherit;
+const Button = styled.button`
   font-size: 0.7rem;
-  margin-left: 8%;
-  margin-right: 1%;
-  width: 100px;
   height: 35px;
-;`
-
-const DeleteButton = styled.button`
-  font-size: 0.7rem;
   width: 140px;
-  height: 35px;
-;`
+  border: none;
+  border-radius: 8px;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.3s ease;
+
+  &:active {
+    color: #FFAA46;
+  }
+
+  &:hover {
+    color: #FFAA46; /* Hover color */
+    background-color: #000; /* Keep background color on hover */
+  }
+`;
+
+const WritePostButton = styled(Button)`
+  width: 80px;
+`;
+
+const WriteCommentButton = styled(Button)`
+  width: 80px;
+`;
+
+const DeleteAllButton = styled(Button)`
+  width: 100px;
+`;
+
+const DeleteButton = styled(Button)`
+  width: 140px;
+`;
 
 const StyledSmallCheckbox = styled(Checkbox)`
   transform: scale(0.9);
@@ -286,8 +310,8 @@ export default function MyList() {
       <GlobalStyle />
       <Root>
         <Filter>
-          <button className='writePost' onClick={() => setView('posts')}>작성글</button>
-          <button className='writeComment' onClick={() => setView('comments')}>작성댓글</button>
+          <WritePostButton  className='writePost' onClick={() => setView('posts')}>작성글</WritePostButton >
+          <WriteCommentButton className='writeComment' onClick={() => setView('comments')}>작성댓글</WriteCommentButton>
           <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
           <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
         </Filter>
