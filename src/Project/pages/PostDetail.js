@@ -133,8 +133,8 @@ const PostDetail = ({ communities, addComment }) => {
               <p className="timestamp">작성 시간: {new Date(post.created_at).toLocaleString()}</p>
             </div>
             <p className="content">{post.content}</p>
-            <button className='new-comment' onClick={() => setEditMode(true)}>수정</button>
-            <button className='new-comment' onClick={handleDelete}>삭제</button>
+            <button className="edit-button" onClick={() => setEditMode(true)}>수정</button>
+            <button className="delete-button" onClick={handleDelete}>삭제</button>
           </>
         )}
 
@@ -158,7 +158,7 @@ const PostDetail = ({ communities, addComment }) => {
             placeholder="댓글을 입력하세요"
             required
           ></textarea>
-          <button className='new-comment' type="submit">댓글 작성</button>
+          <button className="comment-submit-button" type="submit">댓글 작성</button>
           {errorMessage && <p className="error">{errorMessage}</p>}
         </form>
       </div>

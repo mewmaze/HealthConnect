@@ -72,10 +72,58 @@
   font-style: italic;
 }
 
-.new-comment{
-  background-color: black;
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
+/* 수정 버튼 스타일 */
+.edit-button {
+  padding: 8px 15px;
   border: none;
+  border-radius: 4px;
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95em;
+  margin-right: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: rgba(0, 0, 0, 0.678);
+}
+
+/* 삭제 버튼 스타일 */
+.delete-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: rgba(0, 0, 0, 0.678);
+}
+
+/* 댓글 작성 버튼 스타일 */
+.comment-submit-button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.comment-submit-button:hover {
+  background-color: rgba(0, 0, 0, 0.678);
+}
+
+/* 오류 메시지 스타일 */
+.post-detail .error {
+  color: #dc3545;
+  margin-top: 10px;
+  font-weight: 500;
 }
