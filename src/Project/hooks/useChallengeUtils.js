@@ -15,7 +15,6 @@ const useChallengeUtils = () => {
             // 시작일 이전에는 뱃지 수가 0이어야 함
             return 0;
         }
-
         const daysDiff = Math.floor((today - start) / (1000 * 60 * 60 * 24)); // 챌린지 시작일부터 오늘까지의 일수 차이 계산
 
         const currentWeek = Math.floor(daysDiff / 7) + 1; // 현재 주차 계산

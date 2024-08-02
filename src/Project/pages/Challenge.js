@@ -57,24 +57,20 @@ function Challenge() {
 
     const filterChallenges = (challenges) => {
         let filtered = challenges;
-
         // 달성 조건 필터링
         if (filterTargetDays !== 'all') {
             filtered = filtered.filter(challenge => challenge.target_days === parseInt(filterTargetDays));
         }
-
         // 기간 필터링
         if (filterPeriod !== 'all') {
             filtered = filtered.filter(challenge => challenge.target_period === parseInt(filterPeriod));
         }
-
         // 정렬 옵션 적용
         if (sortOption === 'latest') {
             filtered = filtered.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
         } else if (sortOption === 'popular') {
             filtered = filtered.sort((a, b) => b.participant_count - a.participant_count);
         }
-
         return filtered;
     };
 
