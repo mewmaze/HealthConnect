@@ -61,8 +61,6 @@ function ChallengeEditor({initData,onSubmit,text}){
         formData.append("challenge_img", state.challenge_img);
         formData.append("start_date", state.start_date);
         formData.append("end_date", state.end_date);
-
-
         try {
             await onSubmit(formData);
             console.log("Form submitted successfully");
