@@ -83,7 +83,7 @@ function Home() {
                     </button>
                 </div>
                 <ul>
-                    {posts.slice(0, 7).map(post => (
+                    {posts.slice(0, 6 ).map(post => (
                         <li key={post.post_id}>
                             {/* Link 컴포넌트로 감싸서 상세 페이지로 이동하도록 설정 */}
                             <Link to={`/community/${post.community_id}/post/${post.post_id}`} className="post-title">

@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;  /* 자식 요소를 수평으로 가운데 정렬 */
     min-height: 100vh;  /* 화면 전체 높이를 차지하도록 설정 */
-    gap: 30px;
+    gap: 10px;
     max-width: 1200px;
     margin: 0 auto; /* 화면 중앙에 위치하도록 */
 }
@@ -13,7 +13,7 @@
     margin-bottom: 40px;
     border-radius: 12px;
     border: 3px solid black;
-    height: 410px;
+    height: auto;
     padding: 10px 40px;;
     box-sizing: border-box; /* 패딩을 너비에 포함시켜 정확한 너비 유지 */
     overflow-y: auto; /* 콘텐츠가 너무 많을 경우 스크롤 가능 */
@@ -31,7 +31,6 @@
     display: flex; /* 리스트 항목을 flex 컨테이너로 변경 */
     justify-content: space-between; /* 제목과 작성 시간을 양 끝으로 배치 */
     align-items: center; /* 수직 가운데 정렬 */
-    width: 670px;
 }
 
 .Home-box .post-title {
@@ -39,7 +38,6 @@
     font-weight: bold;
     flex: 7; /* 제목이 더 많은 공간을 차지하도록 설정 */
     padding-left: 30px;
-    margin-right: 10px; /* 제목과 작성자 사이의 간격 */
 }
 
 .Home-box .post-author {
