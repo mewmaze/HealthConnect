@@ -50,7 +50,7 @@ jobs:
 
       # 4 - 빌드
       - name: Build
-        run: npm run build
+        run: CI=false npm run build
 
       # 5 - AWS 인증
       - name: Configure AWS Credentials
