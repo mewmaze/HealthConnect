@@ -40,7 +40,7 @@ function ChallengeEditor({ initData, onSubmit, text }) {
       ...prevState,
       end_date: newEndDate,
     }));
-  }, [state.start_date, state.target_period]);
+  }, [state.start_date, state.target_period, calculateEndDate]);
 
   const handleChange = (e) => {
     // 모든 입력 필드의 변화 처리

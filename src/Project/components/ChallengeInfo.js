@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import useChallengeUtils from "../hooks/useChallengeUtils";
 import Calendar from "react-calendar";
 import "./ChallengeInfo.css";
