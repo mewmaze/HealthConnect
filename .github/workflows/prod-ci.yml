@@ -63,7 +63,7 @@ jobs:
       # 6 - AWS S3에 빌드 결과물 배포
       ## CRA로 생성한 React App은 build 폴더에 빌드 결과물이 들어있습니다. (dist 폴더가 아님!)
       - name: Deploy to S3
-        run: aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
+        run: aws s3 sync ./build s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
 
       # 7 - CloudFront 캐시 무효화
       - name: Invalidate CloudFront Cache
