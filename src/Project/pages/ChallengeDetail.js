@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback, useContext } from "react";
-import axios from "axios";
+import api from "../api/api";
 import ChallengeInfo from "../components/ChallengeInfo";
 import useChallengeActions from "../hooks/useChallengeActions";
 import { AuthContext } from "../hooks/AuthContext";
@@ -20,9 +20,7 @@ function ChallengeDetail() {
   const fetchChallenge = useCallback(async () => {
     try {
       console.log("Fetching challenge with ID:", id);
-      const response = await axios.get(
-        `http://localhost:5000/challenges/${id}`
-      );
+      const response = await api.get(`/challenges/${id}`);
       setChallenge(response.data);
       console.log("챌린지 데이터:", response.data); // response.data로 변경
     } catch (error) {

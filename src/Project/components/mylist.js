@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import api from "../api/api";
 import { AuthContext } from "../hooks/AuthContext";
-import { createGlobalStyle } from 'styled-components';
-import { TablePagination } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import styled from 'styled-components';
-import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
+import { createGlobalStyle } from "styled-components";
+import { TablePagination } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import styled from "styled-components";
+import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 
 // Global styles including CSS variables
 const GlobalStyle = createGlobalStyle`
@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     --focus-outline-color: #dae2ed;
     --focus-border-color: #3399ff;
   }
-;`
+;`;
 
 // Styled components
 const Root = styled.div`
@@ -35,7 +35,7 @@ const Root = styled.div`
   padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px solid black;
-;`
+`;
 
 const Filter = styled.div`
   position: relative;
@@ -48,7 +48,7 @@ const Filter = styled.div`
   &.writePost {
     width: 120px;
   }
-;`
+`;
 
 const Button = styled.button`
   font-size: 0.7rem;
@@ -63,11 +63,11 @@ const Button = styled.button`
   transition: color 0.3s ease, background-color 0.3s ease;
 
   &:active {
-    color: #FFAA46;
+    color: #ffaa46;
   }
 
   &:hover {
-    color: #FFAA46; /* Hover color */
+    color: #ffaa46; /* Hover color */
     background-color: #000; /* Keep background color on hover */
   }
 `;
@@ -90,7 +90,7 @@ const DeleteButton = styled(Button)`
 
 const StyledSmallCheckbox = styled(Checkbox)`
   transform: scale(0.9);
-;`
+`;
 
 const CustomTablePagination = styled(TablePagination)`
   .tablePagination-spacer {
@@ -121,7 +121,7 @@ const CustomTablePagination = styled(TablePagination)`
   .tablePagination-select {
     position: inherit;
     margin-left: 10px;
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: "IBM Plex Sans", sans-serif;
     padding: 2px 0 2px 4px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -191,16 +191,16 @@ const CustomTablePagination = styled(TablePagination)`
     border: 1px solid var(--border-color);
     background-color: transparent;
   }
-;`
+`;
 
 const Table = styled.table`
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 0.875rem;
   border-collapse: collapse;
   border: none;
   width: 98%;
   margin: 10px;
-;`
+`;
 
 const TableCell = styled.td`
   border: 1px solid var(--border-color);
@@ -224,12 +224,12 @@ const TableCell = styled.td`
     width: 12%;
     text-align: center;
   }
-    
+
   &.deleteAll {
     width: 15%;
     text-align: center;
   }
-;`
+`;
 
 const TableHeaderCell = styled.th`
   border: 1px solid var(--border-color);
@@ -248,7 +248,7 @@ const TableHeaderCell = styled.th`
   &.date {
     width: 15%;
   }
-;`
+`;
 
 export default function MyList() {
   const { user_id, postId } = useParams();
@@ -256,33 +256,36 @@ export default function MyList() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
-  const [view, setView] = useState('posts'); // Default to 'posts'
+  const [view, setView] = useState("posts"); // Default to 'posts'
   const navigate = useNavigate();
   const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
 
   useEffect(() => {
-    const endpoint = view === 'posts'
-      ? `http://localhost:5000/api/myPage/${user_id}/getPosts`
-      : `http://localhost:5000/api/myPage/${user_id}/${postId}/getComments`;
-  
-    axios.get(endpoint)
-      .then(response => {
+    const endpoint =
+      view === "posts"
+        ? `http://localhost:5000/api/myPage/${user_id}/getPosts`
+        : `http://localhost:5000/api/myPage/${user_id}/${postId}/getComments`;
+
+    api
+      .get(endpoint)
+      .then((response) => {
         const data = response.data[view];
         if (Array.isArray(data)) {
           setPosts(data);
         } else {
           setPosts([]);
-          setError('Server returned invalid data.');
+          setError("Server returned invalid data.");
         }
       })
-      .catch(error => {
-        console.error('API call failed:', error);
+      .catch((error) => {
+        console.error("API call failed:", error);
         setPosts([]);
-        setError('Failed to fetch data.');
+        setError("Failed to fetch data.");
       });
-  }, [user_id, view]);  
+  }, [user_id, view]);
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -296,22 +299,32 @@ export default function MyList() {
   const handleCheckboxChange = (event, id) => {
     setPosts((prevRows) =>
       prevRows.map((item) =>
-        item[view === 'posts' ? 'post_id' : 'comment_id'] === id
+        item[view === "posts" ? "post_id" : "comment_id"] === id
           ? { ...item, checked: event.target.checked }
           : item
       )
     );
   };
 
-  if (error) return <p>{error}</p>;  
+  if (error) return <p>{error}</p>;
 
   return (
     <>
       <GlobalStyle />
       <Root>
         <Filter>
-          <WritePostButton  className='writePost' onClick={() => setView('posts')}>작성글</WritePostButton >
-          <WriteCommentButton className='writeComment' onClick={() => setView('comments')}>작성댓글</WriteCommentButton>
+          <WritePostButton
+            className="writePost"
+            onClick={() => setView("posts")}
+          >
+            작성글
+          </WritePostButton>
+          <WriteCommentButton
+            className="writeComment"
+            onClick={() => setView("comments")}
+          >
+            작성댓글
+          </WriteCommentButton>
           <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
           <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
         </Filter>
@@ -324,7 +337,9 @@ export default function MyList() {
             ) : (
               <tr>
                 <TableHeaderCell className="number">번호</TableHeaderCell>
-                <TableHeaderCell className="title-header">{view === 'posts' ? '제목' : '댓글 내용'}</TableHeaderCell>
+                <TableHeaderCell className="title-header">
+                  {view === "posts" ? "제목" : "댓글 내용"}
+                </TableHeaderCell>
                 <TableHeaderCell className="date">작성일</TableHeaderCell>
                 <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
               </tr>
@@ -333,10 +348,12 @@ export default function MyList() {
           <tbody>
             {posts.length > 0 ? (
               posts.map((item) => (
-                <tr key={view === 'posts' ? item.post_id : item.comment_id}>
-                  <TableCell className="number">{view === 'posts' ? item.post_id : item.comment_id}</TableCell>
+                <tr key={view === "posts" ? item.post_id : item.comment_id}>
+                  <TableCell className="number">
+                    {view === "posts" ? item.post_id : item.comment_id}
+                  </TableCell>
                   <TableCell className="title">
-                    {view === 'posts' ? (
+                    {view === "posts" ? (
                       <Link to={`/myPosts/${user_id}/${item.post_id}`}>
                         {item.title}
                       </Link>
@@ -351,7 +368,12 @@ export default function MyList() {
                     <StyledSmallCheckbox
                       className="small-checkbox"
                       checked={item.checked || false}
-                      onChange={(event) => handleCheckboxChange(event, view === 'posts' ? item.post_id : item.comment_id)}
+                      onChange={(event) =>
+                        handleCheckboxChange(
+                          event,
+                          view === "posts" ? item.post_id : item.comment_id
+                        )
+                      }
                     />
                   </TableCell>
                 </tr>
@@ -370,14 +392,14 @@ export default function MyList() {
           <tfoot>
             <tr>
               <CustomTablePagination
-                rowsPerPageOptions={[3, 10, 25, { label: 'All', value: -1 }]}
+                rowsPerPageOptions={[3, 10, 25, { label: "All", value: -1 }]}
                 colSpan={4}
                 count={posts.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 slotProps={{
                   select: {
-                    'aria-label': 'rows per page',
+                    "aria-label": "rows per page",
                   },
                   actions: {
                     showFirstButton: true,
