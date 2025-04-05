@@ -259,12 +259,12 @@ export default function MyList() {
   const [view, setView] = useState("posts"); // Default to 'posts'
   const navigate = useNavigate();
   const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const endpoint =
       view === "posts"
-        ? `http://localhost:5000/api/myPage/${user_id}/getPosts`
-        : `http://localhost:5000/api/myPage/${user_id}/${postId}/getComments`;
+        ? `${API_BASE_URL}/api/myPage/${user_id}/getPosts`
+        : `${API_BASE_URL}/api/myPage/${user_id}/${postId}/getComments`;
 
     api
       .get(endpoint)
