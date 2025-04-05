@@ -48,13 +48,11 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
-      # - .env 파일 생성 (React 환경변수)
-      - name: Create .env file for React
+        # 4 - 빌드
+      - name: Install dependencies & Build React app (Inject Env Variables)
         run: |
-          echo "REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }}" > .env
-      # 4 - 빌드
-      - name: Build
-        run: CI=false npm run build
+          npm ci
+          npx cross-env REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }} CI=false npm run build
 
       # 5 - AWS 인증
       - name: Configure AWS Credentials
