@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import axios from "axios";
+import api from "./api/api";
 import { AuthContextProvider } from "./hooks/AuthContext";
 
 import "./App.css";
@@ -137,7 +137,7 @@ const App = () => {
   useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/challenges");
+        const response = await api.get("/challenges");
         console.log("Fetched Data: ", response.data);
         dispatch({ type: "INIT_CHALLENGE", data: response.data });
       } catch (error) {
