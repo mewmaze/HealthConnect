@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './Community.css';
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import api from "../api/api";
+import "./Community.css";
 
 const Community = () => {
   const { communityId } = useParams();
@@ -9,11 +9,14 @@ const Community = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/posts', {
-      params: { communityId } // 커뮤니티 ID를 쿼리 파라미터로 전달
-    })
-    .then(response => setPosts(response.data))
-    .catch(error => console.error('게시글을 불러오는 데 실패했습니다:', error));
+    api
+      .get("/posts", {
+        params: { communityId }, // 커뮤니티 ID를 쿼리 파라미터로 전달
+      })
+      .then((response) => setPosts(response.data))
+      .catch((error) =>
+        console.error("게시글을 불러오는 데 실패했습니다:", error)
+      );
   }, [communityId]);
 
   const handleNewPost = () => {
@@ -36,7 +39,9 @@ const Community = () => {
             <tr key={post.post_id}>
               <td>{index + 1}</td>
               <td>
-                <Link to={`/community/${communityId}/post/${post.post_id}`}>{post.title}</Link>
+                <Link to={`/community/${communityId}/post/${post.post_id}`}>
+                  {post.title}
+                </Link>
               </td>
               <td>{post.user.nickname}</td>
               <td>{new Date(post.created_at).toLocaleString()}</td>
@@ -44,7 +49,9 @@ const Community = () => {
           ))}
         </tbody>
       </table>
-      <button className="new-post-button" onClick={handleNewPost}>글쓰기</button>
+      <button className="new-post-button" onClick={handleNewPost}>
+        글쓰기
+      </button>
     </div>
   );
 };

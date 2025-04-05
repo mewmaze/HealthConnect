@@ -3,7 +3,7 @@ import FormInput from "../components/FormInput";
 import FormSelect from "../components/FormSelect";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
-import axios from "axios";
+import api from "../api/api";
 import "./signupForm.css";
 
 const SignupForm = () => {
@@ -84,7 +84,7 @@ const SignupForm = () => {
         profile_picture,
         interest,
       } = formData;
-      const response = await axios.post("http://localhost:5000/auth/register", {
+      const response = await api.post("/auth/register", {
         name,
         nickname,
         email,

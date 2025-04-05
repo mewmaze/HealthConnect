@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { ChallengeStateContext } from "../App";
-import axios from "axios";
+import api from "../api/api";
 import ChallengeItem from "../components/ChallengeItem";
 import "./Challenge.css";
 
@@ -20,7 +20,7 @@ function Challenge() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/challenges");
+        const response = await api.get("/challenges");
         setData(response.data);
       } catch (error) {
         console.error("Failed to fetch challenges:", error);
