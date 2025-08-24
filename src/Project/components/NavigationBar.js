@@ -1,12 +1,20 @@
 // src/Project/components/NavigationBar.js
 import React from "react";
-import { Tabs as BaseTabs, Tab as BaseTab } from "@mui/material";
+import {
+  Tabs,
+  Tab,
+  Box,
+  TextField,
+  InputAdornment,
+  useTheme,
+} from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { styled } from "@mui/system";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
 
   // 현재 경로를 탭의 value로 설정
   const currentTabValue = location.pathname;
@@ -16,90 +24,88 @@ const NavigationBar = () => {
   };
 
   return (
-    <StyledTabs
-      value={currentTabValue} // 현재 경로를 value로 설정
-      onChange={handleTabChange} // 탭이 변경될 때 호출
-      aria-label="navigation tabs"
-      TabIndicatorProps={{
-        style: {
-          backgroundColor: "#FFAA46", // 인디케이터 색상
-          height: "3px", // 인디케이터 두께
-        },
+    <Box
+      sx={{
+        backgroundColor: "background.paper",
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        px: 3,
+        py: 1,
       }}
     >
-      <StyledTab value="/bests" label="BEST" />
-      <StyledTab value="/communities" label="커뮤니티" />
-      <StyledTab value="/challenge" label="챌린지" />
-      <SearchContainer>
-        <SearchInput placeholder="검색..." />
-      </SearchContainer>
-    </StyledTabs>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: "lg",
+          mx: "auto",
+        }}
+      >
+        <Tabs
+          value={currentTabValue}
+          onChange={handleTabChange}
+          aria-label="navigation tabs"
+          sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: theme.palette.primary.main,
+              height: 3,
+            },
+            "& .MuiTab-root": {
+              minHeight: 48,
+              textTransform: "none",
+              fontWeight: 600,
+              fontSize: "0.875rem",
+              color: theme.palette.text.primary,
+              "&.Mui-selected": {
+                color: theme.palette.primary.main,
+              },
+              "&:hover": {
+                color: theme.palette.primary.main,
+                backgroundColor: theme.palette.action.hover,
+              },
+            },
+          }}
+        >
+          <Tab value="/bests" label="BEST" />
+          <Tab value="/communities" label="커뮤니티" />
+          <Tab value="/challenge" label="챌린지" />
+        </Tabs>
+
+        <TextField
+          placeholder="검색..."
+          variant="outlined"
+          size="small"
+          sx={{
+            width: 320,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 25,
+              "& fieldset": {
+                borderColor: theme.palette.text.primary,
+                borderWidth: 2,
+              },
+              "&:hover fieldset": {
+                borderColor: theme.palette.primary.main,
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: theme.palette.primary.main,
+              },
+            },
+            "& .MuiInputBase-input": {
+              paddingLeft: 2,
+              paddingRight: 2,
+            },
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: theme.palette.text.secondary }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
-
-const StyledTabs = styled(BaseTabs)`
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  height: 40px; /* 원하는 높이로 설정 */
-  min-height: 40px; /* 최소 높이 설정 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-  z-index: 1000; /* 높은 z-index 값으로 설정하여 다른 요소들 위에 표시 */
-  position: relative; /* z-index가 작동하도록 설정 */
-  padding-left: 180px;
-`;
-
-const StyledTab = styled(BaseTab)(({ theme }) => ({
-  fontFamily: "IBM Plex Sans, sans-serif",
-  color: "#000",
-  cursor: "pointer",
-  fontSize: "0.875rem",
-  fontWeight: 600,
-  height: "40px",
-  maxHeight: "40px",
-  minHeight: "40px",
-  backgroundColor: "transparent",
-  padding: "6px 22px",
-  borderRadius: "7px",
-  display: "inline-flex",
-  justifyContent: "center",
-  margin: "0 20px",
-  "&:hover": {
-    backgroundColor: "transparent",
-  },
-  "&.Mui-selected": {
-    color: "#000", // 선택된 탭의 글자색
-  },
-  "&:focus": {
-    color: "#000",
-    outline: "none", // 포커스 아웃라인 색상
-  },
-}));
-
-// 검색창을 감싸는 컨테이너
-const SearchContainer = styled("div")`
-  display: flex;
-  align-items: center;
-  margin-left: auto; /* 검색창을 오른쪽으로 이동 */
-  margin-right: 110px;
-`;
-
-// 검색창 스타일
-const SearchInput = styled("input")`
-  width: 320px;
-  padding: 8px;
-  font-size: 0.875rem;
-  border: 2px solid #000;
-  border-radius: 100px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box; /* 패딩과 보더를 포함하여 전체 크기를 유지 */
-  padding-left: 16px; /* 왼쪽 패딩 조정 */
-  &:focus {
-    border-color: #ffaa46;
-  }
-`;
 
 export default NavigationBar;

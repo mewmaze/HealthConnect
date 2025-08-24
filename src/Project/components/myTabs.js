@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Tabs } from "@mui/base/Tabs";
-import { Tab as BaseTab, tabClasses } from "@mui/base/Tab";
-import { TabsList as BaseTabsList } from "@mui/base/TabsList";
-import { styled } from "@mui/system";
+import {
+  Tabs,
+  Tab,
+  Box,
+  Menu,
+  MenuItem,
+  Button,
+  useTheme,
+} from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthContext";
 
 function MyTabs() {
   const { currentUser, logout } = useContext(AuthContext);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const user_id = currentUser ? currentUser.user_id : null;
   const nickname = currentUser ? currentUser.username : "닉네임";
-  // const profileImage = currentUser ? currentUser.profile_img : '';
   const navigate = useNavigate();
   const location = useLocation();
+  const theme = useTheme();
 
   const validTabs = [
     "/exercise",
@@ -53,9 +58,17 @@ function MyTabs() {
     }
   };
 
-  const handleDropdownClick = (path) => {
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuClick = (path) => {
     handleTabChange(null, path);
-    setDropdownOpen(false);
+    handleMenuClose();
   };
 
   const handleLogout = () => {
@@ -76,167 +89,125 @@ function MyTabs() {
   };
 
   return (
-    <Tabs value={selectedTab} onChange={handleTabChange}>
-      <TabsContainer>
-        <MyInfoTabsList>
-          {user_id ? (
-            <>
-              <Tab value="/exercise">나의 기록</Tab>
-              <Tab
-                value="/myPage"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                {nickname} 님
-                {dropdownOpen && (
-                  <DropdownMenu>
-                    <DropdownItem
-                      onClick={() => handleDropdownClick(`/myPage/${user_id}`)}
-                    >
-                      마이페이지
-                    </DropdownItem>
-                    <DropdownItem
-                      onClick={() => handleDropdownClick(`/myPage/${user_id}`)}
-                    >
-                      프로필 보기
-                    </DropdownItem>
-                    <DropdownItem
-                      onClick={() => handleDropdownClick("/myPosts")}
-                    >
-                      작성 글 보기
-                    </DropdownItem>
-                    <DropdownItem onClick={handleLogout}>로그아웃</DropdownItem>
-                  </DropdownMenu>
-                )}
-              </Tab>
-            </>
-          ) : (
-            <>
-              <LoginTab value="/login">로그인</LoginTab>
-              <Tab value="/signUp">회원가입</Tab>
-            </>
-          )}
-        </MyInfoTabsList>
-      </TabsContainer>
-    </Tabs>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      {user_id ? (
+        <>
+          <Button
+            variant={selectedTab === "/exercise" ? "contained" : "outlined"}
+            onClick={() => handleTabChange(null, "/exercise")}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              minWidth: 120,
+              ...(selectedTab === "/exercise" && {
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark,
+                },
+              }),
+            }}
+          >
+            나의 기록
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={handleMenuOpen}
+            endIcon={<span>▼</span>}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              minWidth: 140,
+              borderColor: theme.palette.primary.main,
+              color: theme.palette.primary.main,
+              "&:hover": {
+                borderColor: theme.palette.primary.dark,
+                backgroundColor: theme.palette.primary.light + "10",
+              },
+            }}
+          >
+            {nickname} 님
+          </Button>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            PaperProps={{
+              sx: {
+                mt: 1,
+                minWidth: 180,
+                boxShadow: theme.shadows[3],
+                borderRadius: 2,
+              },
+            }}
+          >
+            <MenuItem onClick={() => handleMenuClick(`/myPage/${user_id}`)}>
+              마이페이지
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuClick(`/myPage/${user_id}`)}>
+              프로필 보기
+            </MenuItem>
+            <MenuItem onClick={() => handleMenuClick("/myPosts")}>
+              작성 글 보기
+            </MenuItem>
+            <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
+              로그아웃
+            </MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <>
+          <Button
+            variant="contained"
+            onClick={() => handleTabChange(null, "/login")}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              minWidth: 100,
+              backgroundColor: theme.palette.primary.main,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              },
+            }}
+          >
+            로그인
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => handleTabChange(null, "/signUp")}
+            sx={{
+              borderRadius: 2,
+              textTransform: "none",
+              fontWeight: 600,
+              minWidth: 100,
+              borderColor: theme.palette.secondary.main,
+              color: theme.palette.secondary.main,
+              "&:hover": {
+                borderColor: theme.palette.secondary.dark,
+                backgroundColor: theme.palette.secondary.light + "10",
+              },
+            }}
+          >
+            회원가입
+          </Button>
+        </>
+      )}
+    </Box>
   );
 }
-
-const blue = {
-  50: "#F0F7FF",
-  100: "#C2E0FF",
-  200: "#80BFFF",
-  300: "#66B2FF",
-  400: "#3399FF",
-  500: "#007FFF",
-  600: "#0072E5",
-  700: "#0059B2",
-  800: "#004C99",
-  900: "#003A75",
-};
-
-const DropdownMenu = styled("div")`
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #fbfafa;
-  color: #000;
-  border-radius: 4px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 160px;
-  z-index: 1005;
-  padding: 8px 0;
-  min-width: 180px;
-`;
-
-const DropdownItem = styled("div")`
-  padding: 8px 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
-
-const Tab = styled(BaseTab)`
-  position: relative; // 드롭다운 메뉴가 탭의 절대 위치에 위치하도록 설정
-  font-family: "IBM Plex Sans", sans-serif;
-  color: #000;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  background-color: #fff;
-  width: 130px;
-  padding: 8px 10px;
-  margin: 6px;
-  margin-top: -5px;
-  margin-bottom: -5px;
-  border: none;
-  border-radius: 7px;
-  display: inline-flex;
-  justify-content: center;
-
-  // 기본 상태
-  &:not(.${tabClasses.selected}) {
-    background-color: #000;
-    color: #fff;
-  }
-
-  // 선택된 상태
-  &.${tabClasses.selected} {
-    background-color: #000;
-    color: #ffaa46;
-  }
-
-  // 호버 상태
-  &:hover {
-    // background-color: #f0f0f0;
-    color: #ffaa46;
-    background-color: #000;
-  }
-`;
-
-const LoginTab = styled(Tab)`
-  color: white;
-  background-color: black;
-`;
-
-// const TabsWrapper = styled('div')`
-//   background-color: ${blue[500]};
-//   border-radius: 12px;
-// `;
-
-const TabsContainer = styled("div")`
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: left;
-  width: 100%;
-  height: 64px;
-  position: inherit;
-  background-color: #fff;
-`;
-
-// const TabsList = styled(BaseTabsList)`
-//   min-width: 600px;
-//   background-color: #fff;
-//   position: inherit;
-//   border-radius: 12px;
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   align-content: space-between;
-// `;
-
-const MyInfoTabsList = styled(BaseTabsList)`
-  min-width: 600px;
-  background-color: #fff;
-  position: inherit;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-`;
 
 export default MyTabs;
