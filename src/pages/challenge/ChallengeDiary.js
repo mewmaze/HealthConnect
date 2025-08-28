@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Calendar from "react-calendar";
-import api from "../api/api";
+import api from "../../api/api";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { AuthContext } from "../hooks/AuthContext";
-import LeftNav from "../components/leftNav";
+import { AuthContext } from "../../hooks/AuthContext";
+import LeftNav from "../../components/leftNav";
 import { useNavigate } from "react-router-dom";
-import Modal from "../components/Modal";
+import Modal from "../../components/Modal";
 import { FaPenAlt } from "react-icons/fa";
 import "./ChallengeDiary.css";
 

@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useContext } from "react";
-import api from "../api/api";
+import api from "../../api/api";
 import "./MyPost.css";
-import { AuthContext } from "../hooks/AuthContext";
+import { AuthContext } from "../../hooks/AuthContext";
 
 const MyPost = () => {
   const { user_id, postId } = useParams();

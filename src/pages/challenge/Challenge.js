@@ -1,9 +1,9 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { useEffect } from "react";
-import { ChallengeStateContext } from "../App";
-import api from "../api/api";
-import ChallengeItem from "../components/ChallengeItem";
+import { ChallengeStateContext } from "../../App";
+import api from "../../api/api";
+import ChallengeItem from "../../components/ChallengeItem";
 import "./Challenge.css";
 
 function Challenge() {

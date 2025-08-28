@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./profile.css";
-import api from "../api/api";
-import { AuthContext } from "../hooks/AuthContext";
+import api from "../../api/api";
+import { AuthContext } from "../../hooks/AuthContext";
 
 function Profile() {
   const { user_id } = useParams();

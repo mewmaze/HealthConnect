@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
-import useChallengeUtils from "../hooks/useChallengeUtils";
+import useChallengeUtils from "../../hooks/useChallengeUtils";
 import "./ChallengeEditor.css";
 
 //initData는 챌린지를 수정할 때 기존 챌린지 데이터를 전달받아 미리 폼에 채울때 사용

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import api from "../api/api";
+import api from "../../api/api";
 import { jwtDecode } from "jwt-decode";
 import "./PostDetail.css";
 

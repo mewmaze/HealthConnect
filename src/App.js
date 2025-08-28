@@ -22,8 +22,8 @@ import Exercise from "./pages/Exercise";
 import ExerciseDiary from "./pages/ExerciseDiary";
 import ChallengeDiary from "./pages/ChallengeDiary";
 
-import CommunityList from "./pages/CommunityList";
-import Community from "./pages/Community";
+import CommunityList from "./pages/community/CommunityList";
+import Community from "./pages/community/Community";
 import PostDetail from "./pages/PostDetail";
 import NewPostPage from "./pages/NewPostPage";
 

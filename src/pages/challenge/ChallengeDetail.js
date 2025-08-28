@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback, useContext } from "react";
-import api from "../api/api";
-import ChallengeInfo from "../components/ChallengeInfo";
-import useChallengeActions from "../hooks/useChallengeActions";
-import { AuthContext } from "../hooks/AuthContext";
+import api from "../../api/api";
+import ChallengeInfo from "../../components/ChallengeInfo";
+import useChallengeActions from "../../hooks/useChallengeActions";
+import { AuthContext } from "../../hooks/AuthContext";
 import { DateTime } from "luxon";
-import { ChallengeStateContext } from "../App";
+import { ChallengeStateContext } from "../../App";
 import "./ChallengeDetail.css";
 
 function ChallengeDetail() {
