@@ -52,7 +52,7 @@
 
 .edit-img-preview {
     position: relative;
-    background-image: url(../img/cute.jpg);
+    background-image: url(../../img/cute.jpg);
     background-color: white;
     width: 180px; /* Adjust width */
     height: 180px; /* Adjust height */

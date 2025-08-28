@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../api/api";
 import "./Home.css";
 import BannerSlider from "../components/BannerSlider";
-import ChallengeSlider from "../components/ChallengeSlider";
+import ChallengeSlider from "../components/challenge/ChallengeSlider";
 import LangkingList from "../components/LangkingList";
 
 function Home() {

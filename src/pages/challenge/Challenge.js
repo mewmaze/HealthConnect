@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { ChallengeStateContext } from "../../App";
 import api from "../../api/api";
-import ChallengeItem from "../../components/ChallengeItem";
+import ChallengeItem from "../../components/challenge/ChallengeItem";
 import "./Challenge.css";
 
 function Challenge() {

@@ -86,7 +86,7 @@ export default function ProfileEdit({ profiles }) {
           <li className="edit-Logo" onClick={goHome}>
             <img
               className="edit-imgLogo"
-              src={require("../img/MainLogo.png")}
+              src={require("../../img/MainLogo.png")}
               alt="Logo"
             />
           </li>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import FormInput from "../components/FormInput";
-import FormSelect from "../components/FormSelect";
+import FormInput from "../FormInput";
+import FormSelect from "../FormSelect";
 import { useNavigate } from "react-router-dom";
-import "./styles.css";
-import api from "../api/api";
+import "../styles.css";
+import api from "../../api/api";
 import "./signupForm.css";
 
 const SignupForm = () => {

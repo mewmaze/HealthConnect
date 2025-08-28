@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import ChallengeEditor from "../../components/ChallengeEditor";
+import ChallengeEditor from "../../components/challenge/ChallengeEditor";
 import useChallengeActions from "../../hooks/useChallengeActions";
 import "./ChallengeCreate.css";
 

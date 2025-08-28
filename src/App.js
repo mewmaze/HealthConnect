@@ -7,25 +7,33 @@ import "./App.css";
 
 import Layout from "./layout/Layout";
 
-import MyPage from "./pages/MyPage";
-import Edit from "./pages/ProfileEdit";
-import MyPost from "./pages/MyPost";
+// MyPage 관련
+import MyPage from "./pages/mypage/MyPage";
+import Edit from "./pages/profile/ProfileEdit";
+import MyPost from "./pages/post/MyPost";
 
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+// Auth 관련
+import Login from "./pages/login/Login";
+import Signup from "./pages/sigup/Signup";
 
-import Challenge from "./pages/Challenge";
+// Challenge 관련
+import Challenge from "./pages/challenge/Challenge";
 import Home from "./pages/Home";
-import ChallengeCreate from "./pages/ChallengeCreate";
-import ChallengeDetail from "./pages/ChallengeDetail";
-import Exercise from "./pages/Exercise";
-import ExerciseDiary from "./pages/ExerciseDiary";
-import ChallengeDiary from "./pages/ChallengeDiary";
+import ChallengeCreate from "./pages/challenge/ChallengeCreate";
+import ChallengeDetail from "./pages/challenge/ChallengeDetail";
+import ChallengeDiary from "./pages/challenge/ChallengeDiary";
 
+// Exercise 관련
+import Exercise from "./pages/exercise/Exercise";
+import ExerciseDiary from "./pages/exercise/ExerciseDiary";
+
+// Community 관련
 import CommunityList from "./pages/community/CommunityList";
 import Community from "./pages/community/Community";
-import PostDetail from "./pages/PostDetail";
-import NewPostPage from "./pages/NewPostPage";
+
+// Post 관련
+import PostDetail from "./pages/post/PostDetail";
+import NewPostPage from "./pages/post/NewPostPage";
 
 // 챌린지 Context 생성
 export const ChallengeStateContext = React.createContext();
