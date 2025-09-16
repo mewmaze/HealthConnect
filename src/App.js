@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import api from "./api/api";
 import { AuthContextProvider } from "./hooks/AuthContext";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import customTheme from "./theme/theme";
 import "./App.css";
 
 import Layout from "./layout/Layout";
@@ -73,7 +74,7 @@ function reducer(state, action) {
     }
   }
 }
-const theme = createTheme();
+const theme = customTheme;
 const App = () => {
   const [communities, setCommunities] = useState([
     {
