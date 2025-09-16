@@ -38,7 +38,7 @@ function UserAuth({ mobile = false }) {
       {user_id ? (
         <>
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={goExercise}
             sx={{
               borderRadius: 2,
@@ -47,12 +47,6 @@ function UserAuth({ mobile = false }) {
               width: mobile ? "100%" : "auto",
               minWidth: mobile ? "auto" : 120,
               height: mobile ? 48 : "auto",
-              borderColor: theme.palette.primary.main,
-              color: theme.palette.primary.main,
-              "&:hover": {
-                borderColor: theme.palette.primary.dark,
-                backgroundColor: theme.palette.primary.light + "10",
-              },
             }}
           >
             나의 기록
@@ -80,7 +74,8 @@ function UserAuth({ mobile = false }) {
           </Button>
 
           <Button
-            variant="outlined"
+            color="error"
+            variant="contained"
             onClick={handleLogout}
             sx={{
               borderRadius: 2,
@@ -88,13 +83,6 @@ function UserAuth({ mobile = false }) {
               fontWeight: 600,
               width: mobile ? "100%" : "auto",
               minWidth: mobile ? "auto" : 100,
-              height: mobile ? 48 : "auto",
-              borderColor: theme.palette.error.main,
-              color: theme.palette.error.main,
-              "&:hover": {
-                borderColor: theme.palette.error.dark,
-                backgroundColor: theme.palette.error.light + "10",
-              },
             }}
           >
             로그아웃
@@ -112,10 +100,6 @@ function UserAuth({ mobile = false }) {
               width: mobile ? "100%" : "auto",
               minWidth: mobile ? "auto" : 100,
               height: mobile ? 48 : "auto",
-              backgroundColor: theme.palette.primary.main,
-              "&:hover": {
-                backgroundColor: theme.palette.primary.dark,
-              },
             }}
           >
             로그인
@@ -131,12 +115,6 @@ function UserAuth({ mobile = false }) {
               width: mobile ? "100%" : "auto",
               minWidth: mobile ? "auto" : 100,
               height: mobile ? 48 : "auto",
-              borderColor: theme.palette.secondary.main,
-              color: theme.palette.secondary.main,
-              "&:hover": {
-                borderColor: theme.palette.secondary.dark,
-                backgroundColor: theme.palette.secondary.light + "10",
-              },
             }}
           >
             회원가입

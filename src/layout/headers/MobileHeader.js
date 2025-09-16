@@ -6,15 +6,27 @@ import {
   Box,
   IconButton,
   Drawer,
-  Divider,
+  Button,
+  TextField,
+  InputAdornment,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import MainNavigationBar from "../components/MainNavigation";
 import UserAuth from "../components/UserAuth";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Search as SearchIcon } from "@mui/icons-material";
 
 const MobileHeader = () => {
+  const theme = useTheme();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { goHome } = useNavigation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const menuItems = [
+    { path: "/bests", label: "BEST" },
+    { path: "/communities", label: "커뮤니티" },
+    { path: "/challenge", label: "챌린지" },
+  ];
 
   return (
     <>
@@ -22,7 +34,7 @@ const MobileHeader = () => {
       <AppBar
         position="static"
         elevation={1}
-        sx={{ backgroundColor: "background.paper" }}
+        sx={{ backgroundColor: theme.palette.primary.main }}
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box
@@ -50,6 +62,28 @@ const MobileHeader = () => {
         onClose={() => setDrawerOpen(false)}
         slotProps={{ paper: { sx: { width: 200 } } }}
       >
+        <TextField
+          placeholder="검색..."
+          variant="outlined"
+          size="small"
+          sx={{
+            width: "100%",
+            borderRadius: 2,
+            "& .MuiOutlinedInput-root fieldset": {
+              borderColor: "theme.palette.primary.lignt",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "theme.palette.primary.main",
+            },
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: "theme.palette.text.primary" }} />
+              </InputAdornment>
+            ),
+          }}
+        />
         <Box
           sx={{
             display: "flex",
@@ -58,8 +92,38 @@ const MobileHeader = () => {
             justifyContent: "space-between",
           }}
         >
-          {/* 상단: 메인 네비게이션 */}
-          <MainNavigationBar mobile={true} />
+          <Box>
+            {/* 상단: 메인 네비게이션 */}
+            {menuItems.map((item) => (
+              <Button
+                key={item.label}
+                fullWidth
+                onClick={() => {
+                  navigate(item.path);
+                  setDrawerOpen(false);
+                }}
+                sx={{
+                  justifyContent: "flex-start",
+                  minHeight: 56,
+                  backgroundColor:
+                    location.pathname === item.path
+                      ? theme.palette.primary.light + "10"
+                      : "transparent",
+                  color:
+                    location.pathname === item.path
+                      ? theme.palette.primary.main
+                      : theme.palette.text.secondary,
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: theme.palette.primary.light + "10",
+                  },
+                }}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </Box>
+
           {/* 하단: 로그인, 회원가입 인증 버튼들들 */}
           <UserAuth mobile={true} />
         </Box>

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Container, useTheme, useMediaQuery } from "@mui/material";
 import MobileHeader from "./headers/MobileHeader";
-import TabletHeader from "./headers/TabletHeader";
+import DesktopHeader from "./headers/DescktopHeader";
 
 const Layout = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "lg"));
-  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <Box
@@ -20,8 +19,7 @@ const Layout = ({ children }) => {
     >
       {/* 반응형 헤더 */}
       {isMobile && <MobileHeader />}
-      {isTablet && <TabletHeader />}
-      {/* {isDesktop && <DesktopHeader />} */}
+      {isDesktop && <DesktopHeader />}
 
       {/* 메인 컨텐츠 */}
       <Box component="main">
