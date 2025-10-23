@@ -1,100 +1,89 @@
-# 실행하기 전 앞서서 해야할 것
-## npm install (라이브러리 설치)
-### 일부 필요한 리액트 라이브러리
+# Health Connect
 
-    axios
-    react-calendar
-    react-router-dom
+건강 관리 커뮤니티 사이트
 
-### mui, emotion 라이브러리
+웹사이트 : 
 
-    @emotion/react
-    @emotion/styled
-    
-    @mui/base/Tabs
-    @mui/base/Tab
-    @mui/base/TabsList
-    @mui/base/TablePagination
-    
-    @mui/icons-material/FirstPageRounded
-    @mui/icons-material/LastPageRounded
-    @mui/icons-material/ChevronLeftRounded
-    @mui/icons-material/ChevronRightRounded
+## 미리보기
 
-    @mui/styled-engine
-    @mui/system
+## 주요기능
 
-    @mui/material
+🏆 챌린지 시스템
 
-    styled-components
+- 챌린지 참여 & 기록 관리
+- 개인 맞춤 챌린지 생성 (기간, 목표 설정)
+- 뱃지 기반 순위 시스템
 
-# Getting Started with Create React App
+💬 커뮤니티
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- 운동별 게시판 (런닝, 자전거, 헬스, 다이어트, 자유)
+- 게시글 & 댓글 소통 기능
+- 건강 정보 공유
 
-## Available Scripts
+👤 마이페이지
 
-In the project directory, you can run:
+- 프로필 관리 (이미지, 닉네임, 자기소개)
+- 챌린지 현황 조회
+- 작성 글/댓글 관리
 
-### `npm start`
+🏠 메인페이지
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 사용자 순위 확인
+- 최신 게시글 피드
+- 인기 챌린지 추천
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📋 프로젝트 정보
+**팀 프로젝트** (3인) → **개인 리팩토링** 진행
+- 협업 개발 후 개인적으로 코드 개선 및 최적화 작업
 
-### `npm test`
+## 팀원소개
+|팀원|담당 기능|깃허브링크|
+|---|---|---|
+|안예빈|챌린지 시스템, 메인페이지, UI 디자인, 기획, 배포|https://github.com/mewmaze|
+|김동하|로그인/회원가입, 커뮤니티, 기획, 팀장|https://github.com/kdh0825kr|
+|신수민|마이페이지, 프로필 관리, UI 디자인, 기획|https://github.com/StarlightSSM|
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🤝 팀 소통 & 관리
+- **소통**: Zoom, KakaoTalk으로 일정 관리 및 실시간 소통
+- **일정 관리**: [WBS 스케줄표](https://docs.google.com/spreadsheets/d/1fXf6Ovl8LxCDOna9BVicUpL3LJGAyyTx/edit?gid=755731839#gid=755731839)
 
-### `npm run build`
+## 시스템아키텍처
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ERD
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ 기술 스택
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Frontend
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
 
-### `npm run eject`
+- **React 18** - 컴포넌트 기반 UI 개발
+- **Material-UI** - 구글 디자인 시스템 적용
+- **JavaScript (ES6+)** - 모던 자바스크립트
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend
+![Node.js](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Node.js** - 서버사이드 JavaScript 런타임
+- **Express** - 웹 애플리케이션 프레임워크
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Database
+![MySQL](https://img.shields.io/badge/mysql-%2300000f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Design
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 
 ### Deployment
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Amazon S3](https://img.shields.io/badge/Amazon%20S3-FF9900?style=for-the-badge&logo=amazons3&logoColor=white)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## repository
+- **Frontend**: [GitHub 링크](https://github.com/mewmaze/HealthConnect)
+- **Backend**: [GitHub 링크](https://github.com/mewmaze/HC_NodeJS)
 
-### `npm run build` fails to minify
+## 발표자료
+https://www.canva.com/design/DAGMkOO7ivo/18dDIfXf3oW7VAjJowhB1w/edit
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 시연영상
