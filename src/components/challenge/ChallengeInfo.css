@@ -1,66 +1,23 @@
-/* Calendar Wrapper */
-.CalendarWrapper {
-  margin-top: 20px;
-  width: 100%;
-  max-width: 500px; /* 최대 너비 설정 */
-  margin: 0 auto; /* 가운데 정렬 */
+/* 요일 헤더와 날짜 모두 margin 제거 */
+.ChallengeInfo .MuiDateCalendar-root .MuiDayCalendar-header,
+.ChallengeInfo .MuiDateCalendar-root .MuiDayCalendar-weekContainer {
+  gap: 0; /* 간격 제거 */
 }
 
-/* react-calendar 스타일 */
-.react-calendar {
-  width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-}
-/* 날짜 범위 스타일 */
-.react-calendar__tile.past-date {
-  background-color: lightgray; /* 회색 배경 */
-}
-
-.react-calendar__tile.active-challenge {
-  background-color: orange; /* 주황색 배경 */
+/* 요일 헤더의 각 칸 스타일 조정 */
+.ChallengeInfo .MuiDateCalendar-root .MuiDayCalendar-weekDayLabel {
+  width: 36px; /* PickersDay와 같은 크기 */
+  height: 36px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.react-calendar__tile.disabled-date {
-  background-color: #e0e0e0; /* 비활성화된 날짜 (회색) */
+/* 날짜 버튼들 간격 제거 확인 */
+.ChallengeInfo .MuiPickersDay-root {
+  margin: 0;
 }
-
-/* 오늘 날짜 텍스트 색상 */
-.react-calendar__tile--now {
-  color: black; /* 오늘 날짜의 텍스트 색상 */
-  font-weight: bold; /* 오늘 날짜의 글씨 강조 */
-}
-
-/* 기본 hover 스타일 제거 */
-.react-calendar__tile:hover,
-.react-calendar__tile:focus,
-.react-calendar__tile--active {
-  background-color: lightgreen !important; /* 클릭 시 배경색 */
-  color: black !important; /* 클릭 시 글자색 */
-  cursor: default; /* 기본 커서 */
-}
-
-/* 챌린지 범위 색상 */
-.react-calendar__tile.highlight-range {
-  background-color: lightgray; /* 챌린지 기간 동안의 날짜 (회색) */
-}
-
-/* 테스트 범위 색상 */
-.react-calendar__tile.test-highlight-range {
-  background-color: lightgreen; /* 테스트 기간 동안의 날짜 (연두색) */
-}
-
-/* 비활성화된 날짜 스타일 */
-.react-calendar__tile.disabled-date {
-  pointer-events: none; /* 클릭 비활성화 */
-  color: gray; /* 비활성화된 날짜 색상 */
-  background-color: transparent; /* 기본 배경색 제거 */
-}
-
-/* 달력 타일의 기본 border-radius 제거 */
-.react-calendar__tile {
-  border-radius: 0; /* 기본 border-radius를 0으로 설정 */
-}
-
 /* ChallengeInfo 컨테이너 */
 .ChallengeInfo {
   display: flex;

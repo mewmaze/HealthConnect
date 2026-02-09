@@ -15,16 +15,16 @@ import {
 } from "@mui/material";
 import { useNavigation } from "../../hooks/useNavigation";
 
-const pages = ["BEST", "커뮤니티", "챌린지"];
+const pages = ["커뮤니티", "챌린지", "챌린지 기록"];
 const settings = ["마이페이지", "로그아웃"];
 const DesktopHeader = () => {
   const theme = useTheme();
-  const { goHome, goChallenge, goCommunity } = useNavigation();
+  const { goChallenge, goCommunity, goChallengeDiary } = useNavigation();
   //메뉴 클릭 시 이동할 경로 매핑
   const menuHandlers = {
-    BEST: goHome,
     커뮤니티: goCommunity,
     챌린지: goChallenge,
+    "챌린지 기록": goChallengeDiary,
   };
   //메뉴가 붙을 Dom 요소를 저장, 초기값은 null(메뉴가 닫힌 상태태)
   const [anchorElUser, setAnchorElUser] = useState(null);

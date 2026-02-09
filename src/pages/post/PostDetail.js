@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import api from "../../api/api";
-import { jwtDecode } from "jwt-decode";
 import "./PostDetail.css";
 
 const PostDetail = ({ communities, addComment }) => {
@@ -40,9 +39,6 @@ const PostDetail = ({ communities, addComment }) => {
       setErrorMessage("로그인이 필요합니다.");
       return;
     }
-
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
 
     try {
       const response = await api.post(`/posts/${postId}/comments`, {

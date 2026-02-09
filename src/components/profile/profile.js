@@ -9,7 +9,6 @@ function Profile() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [previewSrc, setPreviewSrc] = useState("");
   const [formData, setFormData] = useState({
     nickname: "",
@@ -64,11 +63,11 @@ function Profile() {
     };
 
     fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id, token]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       setPreviewSrc(reader.result);

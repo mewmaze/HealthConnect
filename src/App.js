@@ -2,7 +2,9 @@ import React, { useReducer, useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import api from "./api/api";
 import { AuthContextProvider } from "./hooks/AuthContext";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import customTheme from "./theme/theme";
 import "./App.css";
 
@@ -158,7 +160,7 @@ const App = () => {
   }, []);
 
   //goal은 props로 전달
-  const [goal, setGoal] = useState({
+  const [goal] = useState({
     height: "",
     weight: "",
     BMI: "",
@@ -166,73 +168,81 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthContextProvider>
-        <ChallengeStateContext.Provider value={challenges}>
-          <ChallengeDispatchContext.Provider value={dispatch}>
-            <BrowserRouter>
-              <div className="App">
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/challenge" element={<Challenge />} />
-                    <Route
-                      path="/challengeDetail/:id"
-                      element={<ChallengeDetail />}
-                    />
-                    <Route
-                      path="/challengecreate"
-                      element={<ChallengeCreate />}
-                    />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signUp" element={<Signup />} />
-                    <Route path="/myPage/:user_id" element={<MyPage />} />{" "}
-                    {/*  ... */}
-                    <Route
-                      path="/myPage/:user_id/edit"
-                      element={<Edit />}
-                    />{" "}
-                    {/*  ... */}
-                    <Route
-                      path="/myPosts/:user_id/:postId"
-                      element={<MyPost />}
-                    />
-                    <Route
-                      path="/exercise"
-                      element={<Exercise goal={goal} />}
-                    />
-                    <Route path="/exercisediary" element={<ExerciseDiary />} />
-                    <Route
-                      path="/challengediary"
-                      element={<ChallengeDiary />}
-                    />
-                    <Route
-                      path="/communities"
-                      element={<CommunityList communities={communities} />}
-                    />
-                    <Route
-                      path="/community/:communityId"
-                      element={<Community communities={communities} />}
-                    />
-                    <Route
-                      path="/community/:communityId/new-post"
-                      element={<NewPostPage addPost={addPost} />}
-                    />
-                    <Route
-                      path="/community/:communityId/post/:postId"
-                      element={
-                        <PostDetail
-                          communities={communities}
-                          addComment={addComment}
-                        />
-                      }
-                    />
-                  </Routes>
-                </Layout>
-              </div>
-            </BrowserRouter>
-          </ChallengeDispatchContext.Provider>
-        </ChallengeStateContext.Provider>
-      </AuthContextProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <AuthContextProvider>
+          <ChallengeStateContext.Provider value={challenges}>
+            <ChallengeDispatchContext.Provider value={dispatch}>
+              <BrowserRouter>
+                <div className="App">
+                  <Layout>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/challenge" element={<Challenge />} />
+                      <Route
+                        path="/challengeDetail/:id"
+                        element={<ChallengeDetail />}
+                      />
+                      <Route
+                        path="/challengecreate"
+                        element={<ChallengeCreate />}
+                      />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/signUp" element={<Signup />} />
+                      <Route
+                        path="/myPage/:user_id"
+                        element={<MyPage />}
+                      />{" "}
+                      {/*  ... */}
+                      <Route
+                        path="/myPage/:user_id/edit"
+                        element={<Edit />}
+                      />{" "}
+                      {/*  ... */}
+                      <Route
+                        path="/myPosts/:user_id/:postId"
+                        element={<MyPost />}
+                      />
+                      <Route
+                        path="/exercise"
+                        element={<Exercise goal={goal} />}
+                      />
+                      <Route
+                        path="/exercisediary"
+                        element={<ExerciseDiary />}
+                      />
+                      <Route
+                        path="/challengediary"
+                        element={<ChallengeDiary />}
+                      />
+                      <Route
+                        path="/communities"
+                        element={<CommunityList communities={communities} />}
+                      />
+                      <Route
+                        path="/community/:communityId"
+                        element={<Community communities={communities} />}
+                      />
+                      <Route
+                        path="/community/:communityId/new-post"
+                        element={<NewPostPage addPost={addPost} />}
+                      />
+                      <Route
+                        path="/community/:communityId/post/:postId"
+                        element={
+                          <PostDetail
+                            communities={communities}
+                            addComment={addComment}
+                          />
+                        }
+                      />
+                    </Routes>
+                  </Layout>
+                </div>
+              </BrowserRouter>
+            </ChallengeDispatchContext.Provider>
+          </ChallengeStateContext.Provider>
+        </AuthContextProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 };

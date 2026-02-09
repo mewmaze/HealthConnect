@@ -4,25 +4,20 @@ import api from "../../api/api";
 import ChallengeInfo from "../../components/challenge/ChallengeInfo";
 import useChallengeActions from "../../hooks/useChallengeActions";
 import { AuthContext } from "../../hooks/AuthContext";
-import { DateTime } from "luxon";
-import { ChallengeStateContext } from "../../App";
 import "./ChallengeDetail.css";
 
 function ChallengeDetail() {
   const { id } = useParams();
-  // const challenges = useContext(ChallengeStateContext);
   const { joinChallenge, checkParticipant } = useChallengeActions();
   const { currentUser, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState(null);
-  const [isParticipant, setIsParticipant] = useState(false); // 참가 여부 상태 추가
+  const [isParticipant, setIsParticipant] = useState(false);
 
   const fetchChallenge = useCallback(async () => {
     try {
-      console.log("Fetching challenge with ID:", id);
       const response = await api.get(`/challenges/${id}`);
       setChallenge(response.data);
-      console.log("챌린지 데이터:", response.data); // response.data로 변경
     } catch (error) {
       console.error("Failed to fetch challenge:", error);
       setChallenge(null);
@@ -31,6 +26,8 @@ function ChallengeDetail() {
 
   useEffect(() => {
     fetchChallenge(); // 컴포넌트가 마운트될 때 호출
+    console.log("challenge:", challenge);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchChallenge]);
   // useEffect(() => {
   //     const challengeDetail = challenges.find(challenge => challenge.challenge_id === parseInt(id, 10));
@@ -50,24 +47,18 @@ function ChallengeDetail() {
           token
         );
         setIsParticipant(participantStatus);
-        console.log("participantStatus :", participantStatus);
       }
     };
     checkParticipation();
-  }, [currentUser, id, checkParticipant, token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser?.user_id, id]);
 
   const handleJoinChallenge = async () => {
     try {
       const userId = currentUser.user_id;
-      await joinChallenge(
-        parseInt(id, 10),
-        userId,
-        challenge.target_period,
-        token
-      );
+      await joinChallenge(parseInt(id, 10), userId, challenge, token);
       await fetchChallenge();
-      setIsParticipant(true); // 참가 상태로 변경
-      console.log("participant :", isParticipant);
+      setIsParticipant(true);
     } catch (error) {
       console.error("Failed to join challenge:", error);
     }
@@ -91,17 +82,6 @@ function ChallengeDetail() {
     start_date,
     end_date,
   } = challenge;
-  // UTC로 받은 start_date와 end_date를 로컬 시간대에 맞게 변환
-  const localStartDate = DateTime.fromISO(start_date)
-    .setZone("local")
-    .toLocaleString(DateTime.DATE_MED);
-  const localEndDate = DateTime.fromISO(end_date)
-    .setZone("local")
-    .toLocaleString(DateTime.DATE_MED);
-
-  // React Calendar에서 사용할 수 있도록 "YYYY-MM-DD" 형식으로 변환
-  const calendarStartDate = DateTime.fromISO(start_date).toISODate(); // 2024-05-01 형식
-  const calendarEndDate = DateTime.fromISO(end_date).toISODate(); // 2024-05-01 형식
 
   return (
     <div className="ChallengeDetail">
@@ -123,7 +103,7 @@ function ChallengeDetail() {
           <div className="Challenge-Info">챌린지 기간</div>
           <div>
             <span className="period_week">{target_period}주</span>
-            {localStartDate}~{localEndDate}
+            {start_date}~{end_date}
           </div>
           <div className="Challenge-Info">달성조건</div>
           <div>주 {target_days}회</div>
@@ -135,13 +115,7 @@ function ChallengeDetail() {
         <>
           <div className="testChallengeBox">오늘부터 챌린지에 참여한다면?</div>
           <div className="ChallengeInfoWrapper">
-            <ChallengeInfo
-              challenge={challenge}
-              calendarStartDate={calendarStartDate}
-              calendarEndDate={calendarEndDate}
-              localStartDate={localStartDate}
-              localEndDate={localEndDate}
-            />
+            <ChallengeInfo challenge={challenge} />
             <div className="ChallengeActions">
               <button
                 className="joinbtn"
