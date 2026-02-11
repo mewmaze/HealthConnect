@@ -10,7 +10,6 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [category, setCategory] = useState(""); // 선택한 카테고리 상태 추가
   const [selectedCategory, setSelectedCategory] = useState(""); // 클릭된 카테고리 상태 추가
 
   useEffect(() => {
@@ -32,7 +31,6 @@ function Home() {
   }, [selectedCategory]);
 
   const handleCategoryClick = (category) => {
-    setCategory(category);
     setSelectedCategory(category); // 클릭된 카테고리 업데이트
   };
 

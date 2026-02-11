@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import api from "../api/api";
-import { AuthContext } from "../hooks/AuthContext";
 import { createGlobalStyle } from "styled-components";
 import { TablePagination } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
@@ -257,8 +256,6 @@ export default function MyList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(3);
   const [view, setView] = useState("posts"); // Default to 'posts'
-  const navigate = useNavigate();
-  const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const endpoint =
@@ -282,7 +279,7 @@ export default function MyList() {
         setPosts([]);
         setError("Failed to fetch data.");
       });
-  }, [user_id, view]);
+  }, [user_id, view, API_BASE_URL, postId]);
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;

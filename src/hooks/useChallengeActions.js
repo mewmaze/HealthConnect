@@ -1,13 +1,9 @@
 import { useContext } from "react";
 import api from "../api/api";
 import { ChallengeDispatchContext } from "../App";
-import useChallengeUtils from "./useChallengeUtils";
-import { AuthContext } from "./AuthContext";
 
 const useChallengeActions = () => {
   const dispatch = useContext(ChallengeDispatchContext);
-  const { token } = useContext(AuthContext);
-  const { calculateEndDate } = useChallengeUtils();
 
   console.log("Dispatch: ", dispatch);
 
@@ -50,13 +46,11 @@ const useChallengeActions = () => {
     }
   };
 
-  const joinChallenge = async (challengeId, userId, target_period, token) => {
+  const joinChallenge = async (challengeId, userId, challenge, token) => {
     try {
       if (!token) {
         throw new Error("Authentication token is missing");
       }
-      const startDate = new Date().toISOString().split("T")[0]; // 현재 날짜를 시작 날짜로 설정
-      const endDate = calculateEndDate(startDate, target_period); // 종료 날짜 계산 (calculateEndDate 함수를 사용)
       const progress = "not started"; // 기본 진행 상태 설정
       const response = await api.post(
         "/participants",
@@ -64,8 +58,8 @@ const useChallengeActions = () => {
           //참여 데이터 서버에 전송
           user_id: userId,
           challenge_id: challengeId,
-          start_date: startDate,
-          end_date: endDate,
+          start_date: challenge.start_date,
+          end_date: challenge.end_date,
           progress: progress,
         },
         {

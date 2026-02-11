@@ -6,14 +6,10 @@ const useChallengeUtils = () => {
     return end.toISOString().split("T")[0];
   };
 
-  const calculateBadges = (
-    targetPeriod,
-    calendarStartDate,
-    calendarEndDate
-  ) => {
+  const calculateBadges = (targetPeriod, startDate, endDate) => {
     const today = new Date();
-    const start = new Date(calendarStartDate);
-    const end = new Date(calendarEndDate);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
     if (today > end) {
       return 0;

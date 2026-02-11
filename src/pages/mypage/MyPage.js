@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import LeftNav from "../../components/leftNav";
 import Profile from "../../components/profile/profile";
 import MyList from "../../components/mylist";
 import api from "../../api/api";
 import "./MyPage.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../../hooks/AuthContext";
 
 export default function MyPage() {
   const myPageNavItems = [

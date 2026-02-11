@@ -20,7 +20,7 @@ const ChallengeSlider = () => {
     };
 
     fetchChallenges();
-  }, []);
+  }, [API_BASE_URL]);
 
   const settings = {
     dots: false,

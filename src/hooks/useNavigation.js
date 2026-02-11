@@ -5,6 +5,7 @@ export const useNavigation = () => {
 
   const goHome = () => navigate("/");
   const goChallenge = () => navigate("/challenge");
+  const goChallengeDiary = () => navigate("/challengediary");
   const goCommunity = () => navigate("/communities");
   const goExercise = () => navigate("/exercise");
   const goLogin = () => navigate("/login");
@@ -13,6 +14,7 @@ export const useNavigation = () => {
   return {
     goHome,
     goChallenge,
+    goChallengeDiary,
     goCommunity,
     goExercise,
     goLogin,

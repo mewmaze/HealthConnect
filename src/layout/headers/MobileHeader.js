@@ -23,9 +23,9 @@ const MobileHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const menuItems = [
-    { path: "/bests", label: "BEST" },
     { path: "/communities", label: "커뮤니티" },
     { path: "/challenge", label: "챌린지" },
+    { path: "/challengediary", label: "챌린지 기록" },
   ];
 
   return (

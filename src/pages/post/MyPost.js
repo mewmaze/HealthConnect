@@ -1,16 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
-import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import api from "../../api/api";
 import "./MyPost.css";
-import { AuthContext } from "../../hooks/AuthContext";
 
 const MyPost = () => {
   const { user_id, postId } = useParams();
   const [post, setPost] = useState(null); // Initialize as null
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
-  const { currentUser, token } = useContext(AuthContext); // AuthContext에서 currentUser, token 가져오기
 
   useEffect(() => {
     api
