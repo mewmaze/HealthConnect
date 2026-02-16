@@ -88,31 +88,32 @@ export default function MyList({ view = "posts" }) {
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <Stack
         direction="row"
-        spacing={1}
-        sx={{ p: 2, flexWrap: "wrap", gap: 1 }}
+        sx={{ p: 2 }}
         alignItems="center"
+        justifyContent="space-between"
       >
-        <Typography variant="subtitle1" fontWeight={700}>
+        <Typography variant="subtitle1" fontWeight={700} noWrap>
           {view === "posts" ? "작성 글 목록" : "작성 댓글 목록"}
         </Typography>
-        <Box sx={{ flex: 1 }} />
-        <Button variant="outlined" color="error" size="small">
-          전체삭제
-        </Button>
-        <Button variant="outlined" color="error" size="small">
-          선택 삭제
-        </Button>
+        <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+          <Button variant="outlined" color="error" size="small">
+            전체삭제
+          </Button>
+          <Button variant="outlined" color="error" size="small">
+            선택 삭제
+          </Button>
+        </Stack>
       </Stack>
 
       <TableContainer>
         <Table size="small">
           <TableHead>
             <TableRow sx={{ bgcolor: "grey.100" }}>
-              <TableCell sx={{ width: 60, fontWeight: 700 }}>번호</TableCell>
+              <TableCell sx={{ width: 60, fontWeight: 700, display: { xs: "none", sm: "table-cell" } }}>번호</TableCell>
               <TableCell sx={{ fontWeight: 700 }}>
                 {view === "posts" ? "제목" : "댓글 내용"}
               </TableCell>
-              <TableCell sx={{ width: 160, fontWeight: 700 }}>작성일</TableCell>
+              <TableCell sx={{ width: 160, fontWeight: 700, display: { xs: "none", sm: "table-cell" } }}>작성일</TableCell>
               <TableCell sx={{ width: 60, fontWeight: 700, textAlign: "center" }}>
                 선택
               </TableCell>
@@ -124,7 +125,7 @@ export default function MyList({ view = "posts" }) {
                 const id = view === "posts" ? item.post_id : item.comment_id;
                 return (
                   <TableRow key={id} hover>
-                    <TableCell>{id}</TableCell>
+                    <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>{id}</TableCell>
                     <TableCell>
                       {view === "posts" ? (
                         <Link
@@ -137,7 +138,7 @@ export default function MyList({ view = "posts" }) {
                         item.content
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
                       {new Date(item.created_at).toLocaleString()}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>

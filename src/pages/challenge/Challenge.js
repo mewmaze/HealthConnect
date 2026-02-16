@@ -103,11 +103,11 @@ function Challenge() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 5 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 5 }, px: { xs: 1, sm: 3 } }}>
       <Paper
         elevation={3}
         sx={{
-          p: 4,
+          p: { xs: 2, sm: 4 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -118,8 +118,9 @@ function Challenge() {
             width: "100%",
             mb: 3,
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             gap: 2,
-            alignItems: "center",
+            alignItems: { xs: "stretch", sm: "center" },
           }}
         >
           <Typography variant="h5" fontWeight="bold">챌린지</Typography>

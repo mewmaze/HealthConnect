@@ -1,24 +1,14 @@
 .banner-slider {
   position: relative;
-  height: 120px;
+  width: 100%;
   background-color: #c0c0c0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.slider-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid black;
-  height: 100%;
-}
-
-.slick-dots {
-  position: absolute;
-  bottom: 0;
-  bottom: -70px;
-}
-
-.slick-dots li button:before {
-  font-size: 12px;
-  color: #333;
+.slider-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }

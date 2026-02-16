@@ -21,7 +21,8 @@ function ChallengeCreate() {
     <Container
       maxWidth="sm"
       sx={{
-        mt: 8,
+        mt: { xs: 2, sm: 8 },
+        px: { xs: 1, sm: 3 },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

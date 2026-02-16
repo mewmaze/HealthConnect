@@ -237,7 +237,7 @@ function ChallengeDetail() {
 
   if (!challenge) {
     return (
-      <Container maxWidth="md" sx={{ mt: 12, textAlign: "center" }}>
+      <Container maxWidth="md" sx={{ mt: { xs: 4, sm: 12 }, textAlign: "center" }}>
         <Typography variant="h6" color="text.secondary">
           챌린지를 찾을 수 없습니다.
         </Typography>
@@ -257,12 +257,12 @@ function ChallengeDetail() {
   } = challenge;
 
   return (
-    <Container maxWidth="md" sx={{ mt: 12, pb: 8 }}>
-      <Typography variant="h5" fontWeight="bold" sx={{ mb: 4 }}>
+    <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 12 }, pb: 8, px: { xs: 1, sm: 3 } }}>
+      <Typography variant="h5" fontWeight="bold" sx={{ mb: { xs: 2, sm: 4 } }}>
         {challenge_name}
       </Typography>
 
-      <Paper sx={{ p: 4, mb: 4 }}>
+      <Paper sx={{ p: { xs: 2, sm: 4 }, mb: 4 }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={4}

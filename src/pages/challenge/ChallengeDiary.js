@@ -274,7 +274,7 @@ function ChallengeDiary() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 1, sm: 3 } }}>
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
         챌린지 기록
       </Typography>

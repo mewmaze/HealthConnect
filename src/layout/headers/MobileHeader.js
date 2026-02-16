@@ -7,14 +7,14 @@ import {
   IconButton,
   Drawer,
   Button,
-  TextField,
-  InputAdornment,
   useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import ForumIcon from "@mui/icons-material/Forum";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import UserAuth from "../components/UserAuth";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Search as SearchIcon } from "@mui/icons-material";
 import mainLogo from "../../img/MainLogo.svg";
 
 const MobileHeader = () => {
@@ -24,9 +24,9 @@ const MobileHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const menuItems = [
-    { path: "/communities", label: "커뮤니티" },
-    { path: "/challenge", label: "챌린지" },
-    { path: "/challengediary", label: "챌린지 기록" },
+    { path: "/communities", label: "커뮤니티", icon: <ForumIcon fontSize="small" /> },
+    { path: "/challenge", label: "챌린지", icon: <EmojiEventsIcon fontSize="small" /> },
+    { path: "/challengediary", label: "챌린지 기록", icon: <AutoStoriesIcon fontSize="small" /> },
   ];
 
   return (
@@ -60,30 +60,8 @@ const MobileHeader = () => {
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        slotProps={{ paper: { sx: { width: 200 } } }}
+        slotProps={{ paper: { sx: { width: 240 } } }}
       >
-        <TextField
-          placeholder="검색..."
-          variant="outlined"
-          size="small"
-          sx={{
-            width: "100%",
-            borderRadius: 2,
-            "& .MuiOutlinedInput-root fieldset": {
-              borderColor: "theme.palette.primary.lignt",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "theme.palette.primary.main",
-            },
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: "theme.palette.text.primary" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
         <Box
           sx={{
             display: "flex",
@@ -92,7 +70,7 @@ const MobileHeader = () => {
             justifyContent: "space-between",
           }}
         >
-          <Box>
+          <Box sx={{ px: 1, pt: 2 }}>
             {menuItems.map((item) => (
               <Button
                 key={item.label}
@@ -101,12 +79,17 @@ const MobileHeader = () => {
                   navigate(item.path);
                   setDrawerOpen(false);
                 }}
+                startIcon={item.icon}
                 sx={{
                   justifyContent: "flex-start",
-                  minHeight: 56,
+                  pl: 2,
+                  gap: 0.5,
+                  minHeight: 48,
+                  borderRadius: 1.5,
+                  mb: 0.5,
                   backgroundColor:
                     location.pathname === item.path
-                      ? theme.palette.primary.light + "10"
+                      ? theme.palette.primary.light + "20"
                       : "transparent",
                   color:
                     location.pathname === item.path
@@ -114,7 +97,7 @@ const MobileHeader = () => {
                       : theme.palette.text.secondary,
                   fontWeight: "bold",
                   "&:hover": {
-                    backgroundColor: theme.palette.primary.light + "10",
+                    backgroundColor: theme.palette.primary.light + "20",
                   },
                 }}
               >

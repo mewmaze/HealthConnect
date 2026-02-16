@@ -35,24 +35,24 @@ const Community = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 8, pb: 10 }}>
+    <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 8 }, pb: 10, px: { xs: 1, sm: 3 } }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow sx={{ bgcolor: "primary.main" }}>
-              <TableCell sx={{ color: "white", fontWeight: "bold", width: 60 }}>
+              <TableCell sx={{ color: "white", fontWeight: "bold", width: 60, display: { xs: "none", sm: "table-cell" } }}>
                 번호
               </TableCell>
               <TableCell sx={{ color: "white", fontWeight: "bold" }}>
                 제목
               </TableCell>
               <TableCell
-                sx={{ color: "white", fontWeight: "bold", width: 120 }}
+                sx={{ color: "white", fontWeight: "bold", width: 120, display: { xs: "none", sm: "table-cell" } }}
               >
                 작성자
               </TableCell>
               <TableCell
-                sx={{ color: "white", fontWeight: "bold", width: 160 }}
+                sx={{ color: "white", fontWeight: "bold", width: 160, display: { xs: "none", md: "table-cell" } }}
               >
                 작성일
               </TableCell>
@@ -65,7 +65,7 @@ const Community = () => {
                 hover
                 sx={{ "&:nth-of-type(even)": { bgcolor: "#fafafa" } }}
               >
-                <TableCell>{index + 1}</TableCell>
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>{index + 1}</TableCell>
                 <TableCell>
                   <Link
                     to={`/community/${communityId}/post/${post.post_id}`}
@@ -78,8 +78,8 @@ const Community = () => {
                     {post.title}
                   </Link>
                 </TableCell>
-                <TableCell>{post.user.nickname}</TableCell>
-                <TableCell>
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>{post.user.nickname}</TableCell>
+                <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
                   {new Date(post.created_at).toLocaleString()}
                 </TableCell>
               </TableRow>

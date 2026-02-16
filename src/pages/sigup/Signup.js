@@ -10,8 +10,9 @@ const Signup = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "calc(100vh - 200px)",
-        mt: 4,
+        mt: { xs: 2, sm: 4 },
         pb: 4,
+        px: { xs: 1, sm: 0 },
       }}
     >
       <SignupForm />
