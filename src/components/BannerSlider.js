@@ -26,7 +26,7 @@ const BannerSlider = () => {
           <img src="/banner2.png" alt="Slide 2" className="slider-image" />
         </div>
         <div>
-          <img src="/banner3.jpg" alt="Slide 3" className="slider-image" />
+          <img src="/banner3.JPG" alt="Slide 3" className="slider-image" />
         </div>
       </Slider>
     </div>
