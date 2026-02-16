@@ -1,43 +1,91 @@
 import React, { useEffect, useState } from "react";
-import api from "../api/api";
-import "./LangkingList.css";
+import { Avatar, Typography, Stack } from "@mui/material";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import api, { API_BASE_URL } from "../api/api";
+
+const medalColors = ["#FFD700", "#C0C0C0", "#CD7F32"];
 
 function LangkingList() {
-  const [profiles, setProfiles] = useState([]);
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const [rankings, setRankings] = useState([]);
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchRankings = async () => {
       try {
-        const response = await api.get("/api");
-        console.log("Fetched 프로필들", response.data);
-        setProfiles(response.data.slice(0, 5));
+        const response = await api.get("/api/rankings");
+        setRankings(response.data.slice(0, 5));
       } catch (error) {
-        console.error("Failed to fetch Profiles:", error); // 상위 5개의 프로필만 설정
+        console.error("Failed to fetch rankings:", error);
       }
     };
-    fetchProfiles();
+    fetchRankings();
   }, []);
 
+  if (rankings.length === 0) return null;
+
   return (
-    <div className="LangkingList">
-      <ul className="LangkingList-lank">
-        {profiles.map((profile, index) => (
-          <li key={profile.id} className="LangkingList-box">
-            <div className="Langking-number">{index + 1}</div>
-            <div className="LangkingList-content">
-              <img
-                src={`${API_BASE_URL}/uploads/${profile.User.profile_picture}`}
-                alt={`${profile.User.nickname}'s profile`}
-                width="50"
-                height="50"
+    <Stack
+      direction="row"
+      spacing={3}
+      justifyContent="center"
+      alignItems="flex-end"
+      sx={{ py: 2 }}
+    >
+      {rankings.map((user, index) => (
+        <Stack key={user.user_id} alignItems="center" spacing={0.5}>
+          <Typography
+            variant="caption"
+            fontWeight={700}
+            sx={{
+              color: index < 3 ? medalColors[index] : "text.secondary",
+              fontSize: index === 0 ? "1.1rem" : "0.85rem",
+            }}
+          >
+            {index < 3 && (
+              <EmojiEventsIcon
+                sx={{
+                  fontSize: index === 0 ? 22 : 18,
+                  verticalAlign: "middle",
+                  mr: 0.3,
+                }}
               />
-              <div className="Langking-name">{profile.User.nickname}</div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+            )}
+            {index + 1}
+          </Typography>
+          <Avatar
+            src={
+              user.profile_picture
+                ? `${API_BASE_URL}/uploads/${user.profile_picture}`
+                : undefined
+            }
+            alt={user.nickname}
+            sx={{
+              width: index === 0 ? 64 : 52,
+              height: index === 0 ? 64 : 52,
+              border:
+                index < 3
+                  ? `2px solid ${medalColors[index]}`
+                  : "2px solid #e0e0e0",
+            }}
+          />
+          <Typography
+            variant="caption"
+            fontWeight={600}
+            sx={{ fontSize: "0.8rem" }}
+          >
+            {user.nickname}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: index < 3 ? medalColors[index] : "text.secondary",
+              fontWeight: 700,
+            }}
+          >
+            {user.achievement_count}회 달성
+          </Typography>
+        </Stack>
+      ))}
+    </Stack>
   );
 }
 export default LangkingList;
