@@ -48,6 +48,8 @@ const ChallengeSlider = () => {
       },
     ],
   };
+  if (challenges.length === 0) return null;
+
   return (
     <div className="ChallengeSlider">
       <Slider {...settings}>
