@@ -1,12 +1,21 @@
 import React from "react";
+import { Box } from "@mui/material";
 import SignupForm from "../../components/signup/SignupForm";
-import "./signup.css";
 
 const Signup = () => {
   return (
-    <div className="signup">
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "calc(100vh - 200px)",
+        mt: 4,
+        pb: 4,
+      }}
+    >
       <SignupForm />
-    </div>
+    </Box>
   );
 };
 
