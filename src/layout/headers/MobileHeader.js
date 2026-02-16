@@ -15,6 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import UserAuth from "../components/UserAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search as SearchIcon } from "@mui/icons-material";
+import mainLogo from "../../img/MainLogo.svg";
 
 const MobileHeader = () => {
   const theme = useTheme();
@@ -36,16 +37,17 @@ const MobileHeader = () => {
         elevation={1}
         sx={{ backgroundColor: theme.palette.primary.main }}
       >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar sx={{ justifyContent: "space-between", pl: 2 }}>
           <Box
             component="img"
-            src={require("../../img/MainLogo.png")}
+            src={mainLogo}
             alt="Logo"
             onClick={goHome}
             sx={{
-              width: "80px",
+              width: "68px",
               height: "auto",
               cursor: "pointer",
+              marginTop: "4px",
               "&:hover": { opacity: 0.8 },
             }}
           />
