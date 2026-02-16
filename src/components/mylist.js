@@ -1,267 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../api/api";
-import { createGlobalStyle } from "styled-components";
-import { TablePagination } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import styled from "styled-components";
-import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
-import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
+import {
+  Box,
+  Paper,
+  Button,
+  Stack,
+  Checkbox,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Typography,
+} from "@mui/material";
 
-// Global styles including CSS variables
-const GlobalStyle = createGlobalStyle`
-  :root {
-    --border-color: grey;
-    --text-color: #1c2025;
-    --hover-background-color: #f3f6f9;
-    --hover-border-color: #dae2ed;
-    --focus-outline-color: #dae2ed;
-    --focus-border-color: #3399ff;
-  }
-;`;
-
-// Styled components
-const Root = styled.div`
-  border-radius: 12px;
-  overflow: clip;
-  margin-left: 19%;
-  margin-top: 6%;
-  margin-bottom: 10%;
-  width: 61%;
-  background-color: white;
-  padding: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid black;
-`;
-
-const Filter = styled.div`
-  position: relative;
-  display: inline-flex;
-  width: 100%;
-  margin-top: 1%;
-  margin-left: 40%;
-  margin-bottom: 5px;
-
-  &.writePost {
-    width: 120px;
-  }
-`;
-
-const Button = styled.button`
-  font-size: 0.7rem;
-  height: 35px;
-  width: 140px;
-  border: none;
-  border-radius: 8px;
-  background-color: #000;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.3s ease, background-color 0.3s ease;
-
-  &:active {
-    color: #ffaa46;
-  }
-
-  &:hover {
-    color: #ffaa46; /* Hover color */
-    background-color: #000; /* Keep background color on hover */
-  }
-`;
-
-const WritePostButton = styled(Button)`
-  width: 80px;
-`;
-
-const WriteCommentButton = styled(Button)`
-  width: 80px;
-`;
-
-const DeleteAllButton = styled(Button)`
-  width: 100px;
-`;
-
-const DeleteButton = styled(Button)`
-  width: 140px;
-`;
-
-const StyledSmallCheckbox = styled(Checkbox)`
-  transform: scale(0.9);
-`;
-
-const CustomTablePagination = styled(TablePagination)`
-  .tablePagination-spacer {
-    display: none;
-  }
-
-  .tablePagination-toolbar {
-    position: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 4px 0;
-    margin-left: 10px;
-  }
-
-  @media (min-width: 600px) {
-    .tablePagination-toolbar {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  .tablePagination-selectLabel {
-    margin: 0;
-  }
-
-  .tablePagination-select {
-    position: inherit;
-    margin-left: 10px;
-    font-family: "IBM Plex Sans", sans-serif;
-    padding: 2px 0 2px 4px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background-color: transparent;
-    color: var(--text-color);
-    transition: all 100ms ease;
-  }
-
-  .tablePagination-select:hover {
-    background-color: var(--hover-background-color);
-    border-color: var(--hover-border-color);
-  }
-
-  .tablePagination-select:focus {
-    outline: 3px solid var(--focus-outline-color);
-    border-color: var(--focus-border-color);
-  }
-
-  .tablePagination-displayedRows {
-    margin: 0;
-  }
-
-  @media (min-width: 768px) {
-    .tablePagination-displayedRows {
-      margin-left: auto;
-    }
-  }
-
-  .tablePagination-actions {
-    display: flex;
-    gap: 6px;
-    border: transparent;
-    text-align: center;
-  }
-
-  .tablePagination-actions > button {
-    display: flex;
-    align-items: center;
-    padding: 0;
-    border: transparent;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    transition: all 120ms ease;
-  }
-
-  .tablePagination-actions > button > svg {
-    font-size: 22px;
-  }
-
-  .tablePagination-actions > button:hover {
-    background-color: var(--hover-background-color);
-    border-color: var(--hover-border-color);
-  }
-
-  .tablePagination-actions > button:focus {
-    outline: 3px solid var(--focus-outline-color);
-    border-color: var(--focus-border-color);
-  }
-
-  .tablePagination-actions > button:disabled {
-    opacity: 0.3;
-  }
-
-  .tablePagination-actions > button:disabled:hover {
-    border: 1px solid var(--border-color);
-    background-color: transparent;
-  }
-`;
-
-const Table = styled.table`
-  font-family: "IBM Plex Sans", sans-serif;
-  font-size: 0.875rem;
-  border-collapse: collapse;
-  border: none;
-  width: 98%;
-  margin: 10px;
-`;
-
-const TableCell = styled.td`
-  border: 1px solid var(--border-color);
-  text-align: left;
-  padding: 8px;
-
-  &.number {
-    width: 15%;
-  }
-
-  &.title {
-    width: 48%;
-    font-size: 0.875rem;
-  }
-
-  &.date {
-    width: 20%;
-  }
-
-  &.delete {
-    width: 12%;
-    text-align: center;
-  }
-
-  &.deleteAll {
-    width: 15%;
-    text-align: center;
-  }
-`;
-
-const TableHeaderCell = styled.th`
-  border: 1px solid var(--border-color);
-  text-align: left;
-  padding: 8px;
-
-  &.number {
-    width: 15%;
-  }
-
-  &.title-header {
-    width: 55%;
-    font-size: 0.875rem; /* Set the font size for the "제목" header */
-  }
-
-  &.date {
-    width: 15%;
-  }
-`;
-
-export default function MyList() {
+export default function MyList({ view = "posts" }) {
   const { user_id, postId } = useParams();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
-  const [view, setView] = useState("posts"); // Default to 'posts'
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   useEffect(() => {
     const endpoint =
       view === "posts"
-        ? `${API_BASE_URL}/api/myPage/${user_id}/getPosts`
-        : `${API_BASE_URL}/api/myPage/${user_id}/${postId}/getComments`;
+        ? `/api/myPage/${user_id}/getPosts`
+        : `/api/myPage/${user_id}/${postId}/getComments`;
 
     api
       .get(endpoint)
@@ -279,10 +46,11 @@ export default function MyList() {
         setPosts([]);
         setError("Failed to fetch data.");
       });
-  }, [user_id, view, API_BASE_URL, postId]);
+  }, [user_id, view, postId]);
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - posts.length) : 0;
+  useEffect(() => {
+    setPage(0);
+  }, [view]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -303,120 +71,106 @@ export default function MyList() {
     );
   };
 
-  if (error) return <p>{error}</p>;
+  if (error) {
+    return (
+      <Paper sx={{ p: 3, width: "100%", textAlign: "center", color: "text.secondary" }}>
+        {error}
+      </Paper>
+    );
+  }
+
+  const displayedPosts =
+    rowsPerPage > 0
+      ? posts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : posts;
 
   return (
-    <>
-      <GlobalStyle />
-      <Root>
-        <Filter>
-          <WritePostButton
-            className="writePost"
-            onClick={() => setView("posts")}
-          >
-            작성글
-          </WritePostButton>
-          <WriteCommentButton
-            className="writeComment"
-            onClick={() => setView("comments")}
-          >
-            작성댓글
-          </WriteCommentButton>
-          <DeleteAllButton className="deleteAll">전체삭제</DeleteAllButton>
-          <DeleteButton className="delete">선택한 게시글 삭제</DeleteButton>
-        </Filter>
-        <Table aria-label="custom pagination table">
-          <thead>
-            {posts.length === 0 ? (
-              <tr>
-                <TableCell colSpan={4}>No data available</TableCell>
-              </tr>
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ p: 2, flexWrap: "wrap", gap: 1 }}
+        alignItems="center"
+      >
+        <Typography variant="subtitle1" fontWeight={700}>
+          {view === "posts" ? "작성 글 목록" : "작성 댓글 목록"}
+        </Typography>
+        <Box sx={{ flex: 1 }} />
+        <Button variant="outlined" color="error" size="small">
+          전체삭제
+        </Button>
+        <Button variant="outlined" color="error" size="small">
+          선택 삭제
+        </Button>
+      </Stack>
+
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow sx={{ bgcolor: "grey.100" }}>
+              <TableCell sx={{ width: 60, fontWeight: 700 }}>번호</TableCell>
+              <TableCell sx={{ fontWeight: 700 }}>
+                {view === "posts" ? "제목" : "댓글 내용"}
+              </TableCell>
+              <TableCell sx={{ width: 160, fontWeight: 700 }}>작성일</TableCell>
+              <TableCell sx={{ width: 60, fontWeight: 700, textAlign: "center" }}>
+                선택
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedPosts.length > 0 ? (
+              displayedPosts.map((item) => {
+                const id = view === "posts" ? item.post_id : item.comment_id;
+                return (
+                  <TableRow key={id} hover>
+                    <TableCell>{id}</TableCell>
+                    <TableCell>
+                      {view === "posts" ? (
+                        <Link
+                          to={`/myPosts/${user_id}/${item.post_id}`}
+                          style={{ color: "inherit", textDecoration: "none" }}
+                        >
+                          {item.title}
+                        </Link>
+                      ) : (
+                        item.content
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(item.created_at).toLocaleString()}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: "center" }}>
+                      <Checkbox
+                        size="small"
+                        checked={item.checked || false}
+                        onChange={(event) => handleCheckboxChange(event, id)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             ) : (
-              <tr>
-                <TableHeaderCell className="number">번호</TableHeaderCell>
-                <TableHeaderCell className="title-header">
-                  {view === "posts" ? "제목" : "댓글 내용"}
-                </TableHeaderCell>
-                <TableHeaderCell className="date">작성일</TableHeaderCell>
-                <TableHeaderCell className="delete">삭제관리</TableHeaderCell>
-              </tr>
+              <TableRow>
+                <TableCell colSpan={4} sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>
+                  데이터가 없습니다.
+                </TableCell>
+              </TableRow>
             )}
-          </thead>
-          <tbody>
-            {posts.length > 0 ? (
-              posts.map((item) => (
-                <tr key={view === "posts" ? item.post_id : item.comment_id}>
-                  <TableCell className="number">
-                    {view === "posts" ? item.post_id : item.comment_id}
-                  </TableCell>
-                  <TableCell className="title">
-                    {view === "posts" ? (
-                      <Link to={`/myPosts/${user_id}/${item.post_id}`}>
-                        {item.title}
-                      </Link>
-                    ) : (
-                      item.content
-                    )}
-                  </TableCell>
-                  <TableCell className="date">
-                    {new Date(item.created_at).toLocaleString()}
-                  </TableCell>
-                  <TableCell className="delete">
-                    <StyledSmallCheckbox
-                      className="small-checkbox"
-                      checked={item.checked || false}
-                      onChange={(event) =>
-                        handleCheckboxChange(
-                          event,
-                          view === "posts" ? item.post_id : item.comment_id
-                        )
-                      }
-                    />
-                  </TableCell>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <TableCell colSpan={4}>No data available</TableCell>
-              </tr>
-            )}
-            {emptyRows > 0 && (
-              <tr style={{ height: 34 * emptyRows }}>
-                <TableCell colSpan={4} aria-hidden />
-              </tr>
-            )}
-          </tbody>
-          <tfoot>
-            <tr>
-              <CustomTablePagination
-                rowsPerPageOptions={[3, 10, 25, { label: "All", value: -1 }]}
-                colSpan={4}
-                count={posts.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                slotProps={{
-                  select: {
-                    "aria-label": "rows per page",
-                  },
-                  actions: {
-                    showFirstButton: true,
-                    showLastButton: true,
-                    slots: {
-                      firstPageIcon: FirstPageRoundedIcon,
-                      lastPageIcon: LastPageRoundedIcon,
-                      nextPageIcon: ChevronRightRoundedIcon,
-                      backPageIcon: ChevronLeftRoundedIcon,
-                    },
-                  },
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                className="customTablePagination"
-              />
-            </tr>
-          </tfoot>
+          </TableBody>
         </Table>
-      </Root>
-    </>
+      </TableContainer>
+
+      <TablePagination
+        component="div"
+        rowsPerPageOptions={[5, 10, 25]}
+        count={posts.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="페이지당 행"
+      />
+    </Paper>
   );
 }

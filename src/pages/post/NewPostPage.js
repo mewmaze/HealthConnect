@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  Container,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  Alert,
+} from "@mui/material";
 import api from "../../api/api";
 import { jwtDecode } from "jwt-decode";
-import "./NewPostPage.css";
 
 const NewPostPage = () => {
-  const { communityId } = useParams(); // 커뮤니티 ID 가져오기
+  const { communityId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,12 +39,12 @@ const NewPostPage = () => {
       await api.post("/posts", {
         title,
         content,
-        user_id: userId, // 서버와 일치하도록 수정
-        community_id: communityId, // 서버와 일치하도록 수정
+        user_id: userId,
+        community_id: communityId,
       });
 
       console.log("글이 성공적으로 작성되었습니다.");
-      navigate(`/community/${communityId}`); // 글 작성 후 해당 커뮤니티 페이지로 이동
+      navigate(`/community/${communityId}`);
     } catch (error) {
       console.error("글 작성 실패:", error);
       setErrorMessage("글 작성 중 오류가 발생했습니다.");
@@ -44,29 +52,41 @@ const NewPostPage = () => {
   };
 
   return (
-    <div className="new-post-page">
-      <h2>글쓰기</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form onSubmit={handleSubmit} className="new-post-form">
-        <input
-          type="text"
-          placeholder="제목"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="내용"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        ></textarea>
-        <button type="submit" className="new-post-submit-button">
-          작성
-        </button>{" "}
-        {/* 폼 내부에 버튼 위치 이동 */}
-      </form>
-    </div>
+    <Container maxWidth="sm" sx={{ mt: 8, pb: 4 }}>
+      <Paper sx={{ p: 4 }}>
+        <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
+          글쓰기
+        </Typography>
+        {errorMessage && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMessage}
+          </Alert>
+        )}
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2}>
+            <TextField
+              label="제목"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              fullWidth
+            />
+            <TextField
+              label="내용"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+              fullWidth
+              multiline
+              minRows={6}
+            />
+            <Button type="submit" variant="contained" size="large">
+              작성
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 

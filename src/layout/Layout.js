@@ -17,11 +17,9 @@ const Layout = ({ children }) => {
         backgroundColor: "background.default",
       }}
     >
-      {/* 반응형 헤더 */}
       {isMobile && <MobileHeader />}
       {isDesktop && <DesktopHeader />}
 
-      {/* 메인 컨텐츠 */}
       <Box component="main">
         <Container maxWidth="lg">{children}</Container>
       </Box>

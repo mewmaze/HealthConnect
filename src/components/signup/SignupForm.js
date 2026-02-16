@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import FormInput from "../FormInput";
-import FormSelect from "../FormSelect";
 import { useNavigate } from "react-router-dom";
-import "../styles.css";
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  MenuItem,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import api from "../../api/api";
-import "./signupForm.css";
 
 const SignupForm = () => {
-  // 회원가입 성공 시 라우팅
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -28,6 +33,7 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
   });
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
@@ -40,22 +46,22 @@ const SignupForm = () => {
     });
 
     if (name === "email") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
+      setErrors((prev) => ({
+        ...prev,
         email: emailRegex.test(value)
           ? ""
           : "올바른 이메일 형식을 입력해주세요.",
       }));
     } else if (name === "password") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
+      setErrors((prev) => ({
+        ...prev,
         password: passwordRegex.test(value)
           ? ""
           : "비밀번호는 최소 8자와 영문, 숫자, 특수문자를 포함합니다.",
       }));
     } else if (name === "confirmPassword") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
+      setErrors((prev) => ({
+        ...prev,
         confirmPassword:
           value === formData.password ? "" : "비밀번호가 일치하지 않습니다.",
       }));
@@ -64,10 +70,8 @@ const SignupForm = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("회원가입 버튼이 클릭되었습니다."); // 디버깅을 위한 콘솔 로그
 
     if (Object.values(errors).some((error) => error)) {
-      console.log("폼 유효성 검사 실패"); // 디버깅을 위한 콘솔 로그
       return;
     }
 
@@ -84,7 +88,7 @@ const SignupForm = () => {
         profile_picture,
         interest,
       } = formData;
-      const response = await api.post("/auth/register", {
+      await api.post("/auth/register", {
         name,
         nickname,
         email,
@@ -96,19 +100,24 @@ const SignupForm = () => {
         profile_picture,
         interest,
       });
-      console.log("회원가입 성공!", formData);
-      console.log(response.data);
 
-      navigate(`/login`, { replace: true });
+      setSnackbar({
+        open: true,
+        message: "회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.",
+        severity: "success",
+      });
+      setTimeout(() => {
+        navigate(`/login`, { replace: true });
+      }, 1500);
     } catch (error) {
       console.error("Error 회원가입 실패", error);
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.message || "회원가입에 실패했습니다. 다시 시도해주세요.",
+        severity: "error",
+      });
     }
   };
-
-  const ageOptions = Array.from({ length: 100 }, (_, i) => ({
-    value: i + 1,
-    label: i + 1,
-  }));
 
   const interestOptions = [
     { value: "런닝", label: "런닝" },
@@ -118,123 +127,140 @@ const SignupForm = () => {
   ];
 
   return (
-    <div className="signupForm">
-      <h2>회원가입</h2>
-      <div className="signup-container">
+    <>
+      <Paper sx={{ p: 5, width: "100%", maxWidth: 500 }}>
+        <Typography variant="h5" fontWeight="bold" textAlign="center" sx={{ mb: 3 }}>
+          회원가입
+        </Typography>
         <form onSubmit={handleSignup}>
-          <div className="form-group">
-            <label htmlFor="name">이름</label>
-            <FormInput
-              type="text"
+          <Stack spacing={2.5}>
+            <TextField
+              label="이름"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
+              fullWidth
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="name">닉네임</label>
-            <FormInput
-              type="text"
+            <TextField
+              label="닉네임"
               name="nickname"
               value={formData.nickname}
               onChange={handleChange}
               required
+              fullWidth
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">이메일</label>
-            <FormInput
-              type="email"
+            <TextField
+              label="이메일"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
               required
+              fullWidth
+              error={!!errors.email}
+              helperText={errors.email}
             />
-            {errors.email && <p className="error">{errors.email}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">비밀번호</label>
-            <FormInput
-              type="password"
+            <TextField
+              label="비밀번호"
               name="password"
+              type="password"
               value={formData.password}
               onChange={handleChange}
               required
+              fullWidth
+              error={!!errors.password}
+              helperText={errors.password}
             />
-            {errors.password && <p className="error">{errors.password}</p>}
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirmPassword">비밀번호 확인</label>
-            <FormInput
-              type="password"
+            <TextField
+              label="비밀번호 확인"
               name="confirmPassword"
+              type="password"
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              fullWidth
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword}
             />
-            {errors.confirmPassword && (
-              <p className="error">{errors.confirmPassword}</p>
-            )}
-          </div>
-          <div className="form-group">
-            <label htmlFor="gender">성별</label>
-            <FormSelect
+            <TextField
+              label="성별"
               name="gender"
+              select
               value={formData.gender}
               onChange={handleChange}
-              options={[
-                { value: "남성", label: "남성" },
-                { value: "여성", label: "여성" },
-              ]}
               required
-            />
-          </div>
-          <div className="form-group height-weight-group">
-            <label htmlFor="height">키(cm)</label>
-            <FormInput
-              type="number"
-              name="height"
-              className="form-height"
-              value={formData.height}
-              onChange={handleChange}
-              required
-            />
-            <label htmlFor="weight">몸무게(kg)</label>
-            <FormInput
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="age">나이</label>
-            <FormSelect
+              fullWidth
+            >
+              <MenuItem value="남성">남성</MenuItem>
+              <MenuItem value="여성">여성</MenuItem>
+            </TextField>
+            <Stack direction="row" spacing={2}>
+              <TextField
+                label="키(cm)"
+                name="height"
+                type="number"
+                value={formData.height}
+                onChange={handleChange}
+                required
+                fullWidth
+              />
+              <TextField
+                label="몸무게(kg)"
+                name="weight"
+                type="number"
+                value={formData.weight}
+                onChange={handleChange}
+                required
+                fullWidth
+              />
+            </Stack>
+            <TextField
+              label="나이"
               name="age"
+              type="number"
               value={formData.age}
               onChange={handleChange}
-              options={ageOptions}
               required
+              fullWidth
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="interest">관심 운동</label>
-            <FormSelect
+            <TextField
+              label="관심 운동"
               name="interest"
+              select
               value={formData.interest}
               onChange={handleChange}
-              options={interestOptions}
               required
-            />
-          </div>
-          <button className="signup-btn" type="submit">
-            회원가입
-          </button>
+              fullWidth
+            >
+              {interestOptions.map((opt) => (
+                <MenuItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Button type="submit" variant="contained" size="large" fullWidth>
+              회원가입
+            </Button>
+          </Stack>
         </form>
-      </div>
-    </div>
+      </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

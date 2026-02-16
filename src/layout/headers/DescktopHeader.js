@@ -46,7 +46,6 @@ const DesktopHeader = () => {
             />
           </Box>
 
-          {/* 데스크톱 네비게이션 */}
           <Box
             sx={{
               flexGrow: 1,
@@ -65,7 +64,6 @@ const DesktopHeader = () => {
             ))}
           </Box>
 
-          {/* 로그인/로그아웃 버튼 */}
           <UserAuth />
         </Toolbar>
       </Container>

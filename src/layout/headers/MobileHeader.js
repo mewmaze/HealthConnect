@@ -31,7 +31,6 @@ const MobileHeader = () => {
 
   return (
     <>
-      {/* 상단 바 */}
       <AppBar
         position="static"
         elevation={1}
@@ -57,7 +56,6 @@ const MobileHeader = () => {
         </Toolbar>
       </AppBar>
 
-      {/* 모바일 메뉴 드로어 */}
       <Drawer
         anchor="right"
         open={drawerOpen}
@@ -95,7 +93,6 @@ const MobileHeader = () => {
           }}
         >
           <Box>
-            {/* 상단: 메인 네비게이션 */}
             {menuItems.map((item) => (
               <Button
                 key={item.label}
@@ -126,7 +123,6 @@ const MobileHeader = () => {
             ))}
           </Box>
 
-          {/* 하단: 로그인, 회원가입 인증 버튼들들 */}
           <UserAuth mobile={true} />
         </Box>
       </Drawer>

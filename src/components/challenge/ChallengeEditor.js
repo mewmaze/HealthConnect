@@ -1,8 +1,22 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Paper,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Typography,
+  Stack,
+  Box,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import useChallengeUtils from "../../hooks/useChallengeUtils";
 import dayjs from "dayjs";
-import "./ChallengeEditor.css";
 
 function ChallengeEditor({ initData, onSubmit, text }) {
   const navigate = useNavigate();
@@ -19,6 +33,8 @@ function ChallengeEditor({ initData, onSubmit, text }) {
     startDate: initData?.start_date ?? today,
   }));
 
+  const [fileName, setFileName] = useState("");
+
   const endDate = useMemo(
     () => calculateEndDate(form.startDate, form.targetPeriod),
     [form.startDate, form.targetPeriod, calculateEndDate]
@@ -26,13 +42,26 @@ function ChallengeEditor({ initData, onSubmit, text }) {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setForm((prevState) => ({
-      ...prevState,
-      [name]: files ? files[0] : value,
-    }));
+    if (files) {
+      setForm((prevState) => ({ ...prevState, [name]: files[0] }));
+      setFileName(files[0].name);
+    } else {
+      setForm((prevState) => ({ ...prevState, [name]: value }));
+    }
   };
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async () => {
+    if (!form.challengeImg) {
+      setError("챌린지 이미지를 등록해주세요.");
+      return;
+    }
+    if (!form.challengeName.trim()) {
+      setError("챌린지 이름을 입력해주세요.");
+      return;
+    }
+    setError("");
     const formData = new FormData();
     formData.append("challenge_name", form.challengeName);
     formData.append("description", form.description);
@@ -44,8 +73,8 @@ function ChallengeEditor({ initData, onSubmit, text }) {
     formData.append("end_date", endDate);
     try {
       await onSubmit(formData);
-    } catch (error) {
-      console.error("Failed to submit form:", error);
+    } catch (err) {
+      console.error("Failed to submit form:", err);
     }
   };
 
@@ -54,32 +83,34 @@ function ChallengeEditor({ initData, onSubmit, text }) {
   };
 
   return (
-    <div className="ChallengeEditor">
-      <div className="ChallengeCreate-Form">
-        <div>
-          <label htmlFor="ChallengeCreate-Name">챌린지 이름</label>
-          <textarea
-            id="ChallengeCreate-Name"
-            name="challengeName"
-            placeholder="챌린지 이름을 입력하세요"
-            value={form.challengeName}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="ChallengeCreate-content">챌린지 설명</label>
-          <textarea
-            id="ChallengeCreate-content"
-            name="description"
-            placeholder="상세설명을 입력하세요"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="targetPeriod">기간선택</label>
-          <select
-            id="targetPeriod"
+    <Paper sx={{ p: 4, width: "100%", maxWidth: 600 }}>
+      <Stack spacing={3}>
+        <TextField
+          label="챌린지 이름"
+          name="challengeName"
+          placeholder="챌린지 이름을 입력하세요"
+          value={form.challengeName}
+          onChange={handleChange}
+          fullWidth
+          multiline
+          minRows={1}
+        />
+
+        <TextField
+          label="챌린지 설명"
+          name="description"
+          placeholder="상세설명을 입력하세요"
+          value={form.description}
+          onChange={handleChange}
+          fullWidth
+          multiline
+          minRows={3}
+        />
+
+        <FormControl fullWidth>
+          <InputLabel>기간선택</InputLabel>
+          <Select
+            label="기간선택"
             name="targetPeriod"
             value={form.targetPeriod}
             onChange={(e) =>
@@ -90,61 +121,96 @@ function ChallengeEditor({ initData, onSubmit, text }) {
             }
           >
             {[1, 2, 3, 4, 5, 6, 7, 8].map((period) => (
-              <option key={period} value={period}>
+              <MenuItem key={period} value={period}>
                 {period}주
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="targetFrequency">달성조건</label>
-          <div className="targetFrequency">
-            {[1, 2, 3, 4, 5, 6, 7].map((targetDays) => (
-              <button
-                key={targetDays}
-                className={`targetDays-button ${
-                  form.targetDays === targetDays ? "active" : ""
-                }`}
-                onClick={() =>
-                  setForm((prevState) => ({
-                    ...prevState,
-                    targetDays: targetDays,
-                  }))
-                }
-              >
-                {targetDays}번
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="challengeImg">챌린지 이미지 업로드</label>
-          <input
-            type="file"
-            id="challengeImg"
-            name="challengeImg"
-            accept="image/*"
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button
-            className="ChallengeEditorbtn"
-            type="button"
-            onClick={handleSubmit}
+          </Select>
+        </FormControl>
+
+        <Box>
+          <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+            달성조건
+          </Typography>
+          <ToggleButtonGroup
+            value={form.targetDays}
+            exclusive
+            onChange={(e, newVal) => {
+              if (newVal !== null) {
+                setForm((prevState) => ({
+                  ...prevState,
+                  targetDays: newVal,
+                }));
+              }
+            }}
+            sx={{ flexWrap: "wrap", gap: 1 }}
           >
+            {[1, 2, 3, 4, 5, 6, 7].map((days) => (
+              <ToggleButton
+                key={days}
+                value={days}
+                sx={{
+                  borderRadius: "100px !important",
+                  px: 2,
+                  border: "1px solid #e0e0e0 !important",
+                  "&.Mui-selected": {
+                    bgcolor: "primary.main",
+                    color: "white",
+                    "&:hover": { bgcolor: "primary.dark" },
+                  },
+                }}
+              >
+                {days}번
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Box>
+
+        <Box>
+          <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+            챌린지 이미지 업로드
+          </Typography>
+          <Button
+            component="label"
+            variant="outlined"
+            startIcon={<CloudUploadIcon />}
+          >
+            파일 선택
+            <input
+              type="file"
+              name="challengeImg"
+              accept="image/*"
+              onChange={handleChange}
+              hidden
+            />
+          </Button>
+          {fileName && (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              {fileName}
+            </Typography>
+          )}
+        </Box>
+
+        {error && (
+          <Typography color="error" variant="body2" textAlign="center">
+            {error}
+          </Typography>
+        )}
+
+        <Stack direction="row" spacing={2} justifyContent="center">
+          <Button variant="contained" onClick={handleSubmit}>
             {text}
-          </button>
-          <button
-            className="ChallengeEditorbtn"
-            type="button"
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#212121", "&:hover": { bgcolor: "#424242" } }}
             onClick={handleCancel}
           >
             취소
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Stack>
+      </Stack>
+    </Paper>
   );
 }
 

@@ -22,7 +22,6 @@ function UserAuth({ mobile = false }) {
     }
   };
 
-  // 모바일 드로어(흰 배경)용 스타일
   const mobileStyles = {
     mypage: {
       borderColor: "#FFAA46",
@@ -46,7 +45,6 @@ function UserAuth({ mobile = false }) {
     },
   };
 
-  // 데스크톱 헤더(주황 배경)용 스타일
   const desktopStyles = {
     mypage: {
       borderColor: "white",
