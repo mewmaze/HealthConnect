@@ -23,19 +23,25 @@ const communityIcons = {
 
 const CommunityList = ({ communities }) => {
   return (
-    <Box sx={{ mt: 8, pb: 4 }}>
+    <Box sx={{ mt: { xs: 3, sm: 8 }, pb: 4, px: { xs: 1, sm: 0 } }}>
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
         커뮤니티 목록
       </Typography>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", md: `repeat(${Math.min(communities.length, 5)}, 1fr)` },
+          gap: 2,
+        }}
+      >
         {communities.map((community) => (
-          <Card key={community.id} sx={{ flex: 1, minWidth: 0 }}>
+          <Card key={community.id}>
             <CardActionArea
               component={Link}
               to={`/community/${community.id}`}
               sx={{ textDecoration: "none", height: "100%" }}
             >
-              <CardContent sx={{ textAlign: "center", py: 5 }}>
+              <CardContent sx={{ textAlign: "center", py: { xs: 3, sm: 5 } }}>
                 {communityIcons[community.id] || (
                   <ForumIcon sx={{ fontSize: 48, color: "primary.main" }} />
                 )}

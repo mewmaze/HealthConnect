@@ -28,7 +28,7 @@ const categories = [
   { value: "5", label: "자유" },
 ];
 
-function SectionTitle({ icon, title, accent }) {
+function SectionTitle({ icon, title, accent, to }) {
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
       {icon}
@@ -42,6 +42,24 @@ function SectionTitle({ icon, title, accent }) {
         >
           {accent}
         </Typography>
+      )}
+      {to && (
+        <>
+          <Box sx={{ flex: 1 }} />
+          <Typography
+            component={Link}
+            to={to}
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              textDecoration: "none",
+              flexShrink: 0,
+              "&:hover": { color: "primary.main" },
+            }}
+          >
+            더보기 &gt;
+          </Typography>
+        </>
       )}
     </Stack>
   );
@@ -78,7 +96,7 @@ function Home() {
   return (
     <Container
       maxWidth="md"
-      sx={{ py: 4, display: "flex", flexDirection: "column", gap: 4 }}
+      sx={{ py: { xs: 2, sm: 4 }, px: { xs: 1, sm: 3 }, display: "flex", flexDirection: "column", gap: { xs: 2, sm: 4 } }}
     >
       {loading && <Typography>Loading...</Typography>}
       {error && <Typography color="error">{error}</Typography>}
@@ -97,8 +115,9 @@ function Home() {
         <SectionTitle
           icon={<ForumIcon sx={{ color: "primary.main" }} />}
           title="커뮤니티"
+          to="/communities"
         />
-        <Paper sx={{ p: 3, mt: 1.5 }}>
+        <Paper sx={{ p: { xs: 1.5, sm: 3 }, mt: 1.5 }}>
           <Stack
             direction="row"
             spacing={1}
@@ -145,19 +164,21 @@ function Home() {
                       {post.title}
                     </Link>
                   }
-                  sx={{ flex: 7 }}
+                  sx={{ flex: 1, minWidth: 0 }}
                 />
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ flex: 1 }}
+                  noWrap
+                  sx={{ display: { xs: "none", sm: "block" }, ml: 2, flexShrink: 0 }}
                 >
                   {post.user ? post.user.nickname : "Unknown"}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ flex: 1, textAlign: "right" }}
+                  noWrap
+                  sx={{ display: { xs: "none", sm: "block" }, ml: 2, flexShrink: 0, textAlign: "right" }}
                 >
                   {new Date(post.created_at).toLocaleDateString()}
                 </Typography>
@@ -167,7 +188,7 @@ function Home() {
         </Paper>
       </Box>
 
-      <Box sx={{ maxWidth: 830, width: "100%", mx: "auto" }}>
+      <Box sx={{ width: "100%", mx: "auto" }}>
         <BannerSlider />
       </Box>
 
@@ -176,8 +197,9 @@ function Home() {
           icon={<WhatshotIcon sx={{ color: "#FF4444" }} />}
           title="챌린지"
           accent="HOT!"
+          to="/challenge"
         />
-        <Box sx={{ width: "100%", maxWidth: 900, mt: 1.5 }}>
+        <Box sx={{ width: "100%", mt: 1.5 }}>
           <ChallengeSlider />
         </Box>
       </Box>

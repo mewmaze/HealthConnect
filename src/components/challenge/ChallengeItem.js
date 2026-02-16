@@ -37,8 +37,8 @@ function ChallengeItem({
           image={getImageUrl(challenge_img)}
           alt={challenge_name}
           sx={{
-            width: 240,
-            height: 160,
+            width: "100%",
+            aspectRatio: "3 / 2",
             objectFit: "cover",
             borderRadius: 1,
             mt: 1,

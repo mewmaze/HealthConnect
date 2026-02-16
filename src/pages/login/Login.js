@@ -123,10 +123,11 @@ const Login = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "calc(100vh - 200px)",
-        mt: 8,
+        mt: { xs: 2, sm: 8 },
+        px: { xs: 2, sm: 0 },
       }}
     >
-      <Paper sx={{ p: 5, width: "100%", maxWidth: 460 }}>
+      <Paper sx={{ p: { xs: 3, sm: 5 }, width: "100%", maxWidth: 460 }}>
         <Typography variant="h5" fontWeight="bold" textAlign="center" sx={{ mb: 4 }}>
           로그인
         </Typography>

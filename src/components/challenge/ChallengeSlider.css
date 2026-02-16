@@ -16,7 +16,6 @@
 .ChallengeSlider .slick-next {
   width: 40px;
   height: 40px;
-
   border-radius: 50%;
   z-index: 1000;
 }
@@ -33,4 +32,10 @@
 .ChallengeSlider .slick-next::before {
   color: #000000;
   font-size: 40px;
+}
+
+@media (max-width: 768px) {
+  .ChallengeSlider {
+    padding: 0 8px;
+  }
 }

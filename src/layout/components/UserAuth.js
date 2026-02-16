@@ -88,7 +88,8 @@ function UserAuth({ mobile = false }) {
         alignItems: "center",
         gap: 1.5,
         p: mobile ? 2 : 0,
-        width: mobile ? "90%" : "auto",
+        width: mobile ? "100%" : "auto",
+        boxSizing: mobile ? "border-box" : undefined,
       }}
     >
       {user_id ? (

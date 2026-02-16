@@ -52,8 +52,8 @@ const NewPostPage = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8, pb: 4 }}>
-      <Paper sx={{ p: 4 }}>
+    <Container maxWidth="sm" sx={{ mt: { xs: 2, sm: 8 }, pb: 4, px: { xs: 1, sm: 3 } }}>
+      <Paper sx={{ p: { xs: 2, sm: 4 } }}>
         <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
           글쓰기
         </Typography>

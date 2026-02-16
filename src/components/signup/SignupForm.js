@@ -128,7 +128,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <Paper sx={{ p: 5, width: "100%", maxWidth: 500 }}>
+      <Paper sx={{ p: { xs: 3, sm: 5 }, width: "100%", maxWidth: 500, mx: { xs: 2, sm: 0 } }}>
         <Typography variant="h5" fontWeight="bold" textAlign="center" sx={{ mb: 3 }}>
           회원가입
         </Typography>

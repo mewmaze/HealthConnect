@@ -25,10 +25,10 @@ function LangkingList() {
   return (
     <Stack
       direction="row"
-      spacing={3}
+      spacing={{ xs: 1.5, sm: 3 }}
       justifyContent="center"
       alignItems="flex-end"
-      sx={{ py: 2 }}
+      sx={{ py: 2, px: 1, overflowX: "auto" }}
     >
       {rankings.map((user, index) => (
         <Stack key={user.user_id} alignItems="center" spacing={0.5}>
@@ -59,8 +59,8 @@ function LangkingList() {
             }
             alt={user.nickname}
             sx={{
-              width: index === 0 ? 64 : 52,
-              height: index === 0 ? 64 : 52,
+              width: { xs: index === 0 ? 48 : 40, sm: index === 0 ? 64 : 52 },
+              height: { xs: index === 0 ? 48 : 40, sm: index === 0 ? 64 : 52 },
               border:
                 index < 3
                   ? `2px solid ${medalColors[index]}`

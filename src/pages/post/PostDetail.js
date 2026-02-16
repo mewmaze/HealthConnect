@@ -118,8 +118,8 @@ const PostDetail = ({ communities, addComment }) => {
     );
 
   return (
-    <Container maxWidth="md" sx={{ mt: 8, pb: 4 }}>
-      <Paper sx={{ p: 4 }}>
+    <Container maxWidth="md" sx={{ mt: { xs: 2, sm: 8 }, pb: 4, px: { xs: 1, sm: 3 } }}>
+      <Paper sx={{ p: { xs: 2, sm: 4 } }}>
         {editMode ? (
           <form onSubmit={handleEditSubmit}>
             <Stack spacing={2}>
