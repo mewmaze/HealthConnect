@@ -5,8 +5,6 @@ import { ChallengeDispatchContext } from "../App";
 const useChallengeActions = () => {
   const dispatch = useContext(ChallengeDispatchContext);
 
-  console.log("Dispatch: ", dispatch);
-
   const addChallenge = async (formData) => {
     try {
       const response = await api.post("/challenges", formData, {
@@ -15,7 +13,6 @@ const useChallengeActions = () => {
         },
       });
       dispatch({ type: "CREATE_CHALLENGE", data: response.data });
-      console.log("챌린지 생성 성공");
     } catch (error) {
       console.error("Failed to create challenge:", error);
       alert("챌린지 생성에 실패했습니다. 나중에 다시 시도해주세요.");
@@ -47,31 +44,26 @@ const useChallengeActions = () => {
   };
 
   const joinChallenge = async (challengeId, userId, challenge, token) => {
-    try {
-      if (!token) {
-        throw new Error("Authentication token is missing");
-      }
-      const progress = "not started"; // 기본 진행 상태 설정
-      const response = await api.post(
-        "/participants",
-        {
-          //참여 데이터 서버에 전송
-          user_id: userId,
-          challenge_id: challengeId,
-          start_date: challenge.start_date,
-          end_date: challenge.end_date,
-          progress: progress,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
-          },
-        }
-      );
-      dispatch({ type: "JOIN_CHALLENGE", data: response.data });
-    } catch (error) {
-      console.error("Failed to join Challenge:", error);
+    if (!token) {
+      throw new Error("Authentication token is missing");
     }
+    const progress = "not started"; // 기본 진행 상태 설정
+    const response = await api.post(
+      "/participants",
+      {
+        user_id: userId,
+        challenge_id: challengeId,
+        start_date: challenge.start_date,
+        end_date: challenge.end_date,
+        progress: progress,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
+        },
+      },
+    );
+    dispatch({ type: "JOIN_CHALLENGE", data: response.data });
   };
 
   const checkParticipant = async (challengeId, userId, token) => {
@@ -81,7 +73,7 @@ const useChallengeActions = () => {
       }
       const response = await api.get(`/participants/${challengeId}/${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰을 헤더에 추가
+          Authorization: `Bearer ${token}`,
         },
       });
       return response.data.isParticipant;
