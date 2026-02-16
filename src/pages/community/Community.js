@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Fab,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import api from "../../api/api";
-import "./Community.css";
 
 const Community = () => {
   const { communityId } = useParams();
@@ -11,11 +22,11 @@ const Community = () => {
   useEffect(() => {
     api
       .get("/posts", {
-        params: { communityId }, // 커뮤니티 ID를 쿼리 파라미터로 전달
+        params: { communityId },
       })
       .then((response) => setPosts(response.data))
       .catch((error) =>
-        console.error("게시글을 불러오는 데 실패했습니다:", error)
+        console.error("게시글을 불러오는 데 실패했습니다:", error),
       );
   }, [communityId]);
 
@@ -24,35 +35,71 @@ const Community = () => {
   };
 
   return (
-    <div className="community">
-      <table className="posts-list">
-        <thead>
-          <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post, index) => (
-            <tr key={post.post_id}>
-              <td>{index + 1}</td>
-              <td>
-                <Link to={`/community/${communityId}/post/${post.post_id}`}>
-                  {post.title}
-                </Link>
-              </td>
-              <td>{post.user.nickname}</td>
-              <td>{new Date(post.created_at).toLocaleString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button className="new-post-button" onClick={handleNewPost}>
-        글쓰기
-      </button>
-    </div>
+    <Container maxWidth="md" sx={{ mt: 8, pb: 10 }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: "primary.main" }}>
+              <TableCell sx={{ color: "white", fontWeight: "bold", width: 60 }}>
+                번호
+              </TableCell>
+              <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+                제목
+              </TableCell>
+              <TableCell
+                sx={{ color: "white", fontWeight: "bold", width: 120 }}
+              >
+                작성자
+              </TableCell>
+              <TableCell
+                sx={{ color: "white", fontWeight: "bold", width: 160 }}
+              >
+                작성일
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {posts.map((post, index) => (
+              <TableRow
+                key={post.post_id}
+                hover
+                sx={{ "&:nth-of-type(even)": { bgcolor: "#fafafa" } }}
+              >
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  <Link
+                    to={`/community/${communityId}/post/${post.post_id}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {post.title}
+                  </Link>
+                </TableCell>
+                <TableCell>{post.user.nickname}</TableCell>
+                <TableCell>
+                  {new Date(post.created_at).toLocaleString()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Fab
+        color="primary"
+        onClick={handleNewPost}
+        sx={{
+          position: "fixed",
+          bottom: 24,
+          right: 24,
+        }}
+      >
+        <EditIcon />
+      </Fab>
+    </Container>
   );
 };
 

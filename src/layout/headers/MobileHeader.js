@@ -15,6 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import UserAuth from "../components/UserAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search as SearchIcon } from "@mui/icons-material";
+import mainLogo from "../../img/MainLogo.svg";
 
 const MobileHeader = () => {
   const theme = useTheme();
@@ -30,22 +31,22 @@ const MobileHeader = () => {
 
   return (
     <>
-      {/* 상단 바 */}
       <AppBar
         position="static"
         elevation={1}
         sx={{ backgroundColor: theme.palette.primary.main }}
       >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar sx={{ justifyContent: "space-between", pl: 2 }}>
           <Box
             component="img"
-            src={require("../../img/MainLogo.png")}
+            src={mainLogo}
             alt="Logo"
             onClick={goHome}
             sx={{
-              width: "80px",
+              width: "68px",
               height: "auto",
               cursor: "pointer",
+              marginTop: "4px",
               "&:hover": { opacity: 0.8 },
             }}
           />
@@ -55,7 +56,6 @@ const MobileHeader = () => {
         </Toolbar>
       </AppBar>
 
-      {/* 모바일 메뉴 드로어 */}
       <Drawer
         anchor="right"
         open={drawerOpen}
@@ -93,7 +93,6 @@ const MobileHeader = () => {
           }}
         >
           <Box>
-            {/* 상단: 메인 네비게이션 */}
             {menuItems.map((item) => (
               <Button
                 key={item.label}
@@ -124,7 +123,6 @@ const MobileHeader = () => {
             ))}
           </Box>
 
-          {/* 하단: 로그인, 회원가입 인증 버튼들들 */}
           <UserAuth mobile={true} />
         </Box>
       </Drawer>

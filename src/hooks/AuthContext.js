@@ -1,19 +1,16 @@
-//로그인한 사용자의 정보 제공
-//token, user관리 
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
+import { setupAuthInterceptor } from '../api/api';
 
-// AuthContext를 생성하여 사용자 인증 상태를 관리
-export const AuthContext = createContext(); 
+export const AuthContext = createContext();
 
-// AuthContextProvider는 인증 정보를 제공
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(() => { // currentUser : 현재 로그인한 사용자 정보
+  const [currentUser, setCurrentUser] = useState(() => {
       const user = localStorage.getItem('user');
-      return user ? JSON.parse(user) : null; // 사용자 정보가 있으면 파싱하여 반환, 없으면 null 반환
+      return user ? JSON.parse(user) : null;
   });
 
-  const [token, setToken] = useState(() => { // token : 현재 로그인한 사용자의 토큰
-    return localStorage.getItem('token') || null; // 토큰이 있으면 반환, 없으면 null 반환
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('token') || null;
   });
 
   useEffect(() => {
@@ -32,16 +29,20 @@ export const AuthContextProvider = ({ children }) => {
     }
   }, [token]);
 
-  //로그아웃시 사용자 정보를 null로 설정하고 localStorate에서 user,token 제거
-  const logout = () => {
+  const logout = useCallback(() => {
     setCurrentUser(null);
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-  };
+    localStorage.removeItem('refreshToken');
+  }, []);
+
+  useEffect(() => {
+    setupAuthInterceptor(logout);
+  }, [logout]);
 
   return (
-      <AuthContext.Provider value={{ currentUser, setCurrentUser, token, setToken ,logout}}>
+      <AuthContext.Provider value={{ currentUser, setCurrentUser, token, setToken, logout }}>
           {children}
       </AuthContext.Provider>
   );

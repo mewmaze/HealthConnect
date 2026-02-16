@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
+import api from "../../api/api";
 import ChallengeItem from "./ChallengeItem";
 import "./ChallengeSlider.css";
 import "slick-carousel/slick/slick.css";
@@ -7,20 +8,18 @@ import "slick-carousel/slick/slick-theme.css";
 
 const ChallengeSlider = () => {
   const [challenges, setChallenges] = useState([]);
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/challenges`);
-        const data = await response.json();
-        setChallenges(data.slice(0, 8));
+        const response = await api.get("/challenges");
+        setChallenges(response.data.slice(0, 8));
       } catch (error) {
         console.error("Failed to fetch challenges:", error);
       }
     };
 
     fetchChallenges();
-  }, [API_BASE_URL]);
+  }, []);
 
   const settings = {
     dots: false,

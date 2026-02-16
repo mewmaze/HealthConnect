@@ -122,7 +122,7 @@ function Challenge() {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4">챌린지</Typography>
+          <Typography variant="h5" fontWeight="bold">챌린지</Typography>
           <Box sx={{ flex: 1 }}>
             <Autocomplete
               freeSolo
@@ -138,6 +138,7 @@ function Challenge() {
                   {...params}
                   fullWidth
                   variant="outlined"
+                  placeholder="챌린지 검색..."
                   slotProps={{
                     ...params.InputProps,
                     type: "search",

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../api/api";
 import MyTabs from "../../layout/components/UserAuth";
 import LeftNav from "../../components/leftNav";
+import mainLogo from "../../img/MainLogo.svg";
 import "./ProfileEdit.css";
 
 export default function ProfileEdit({ profiles }) {
@@ -86,7 +87,7 @@ export default function ProfileEdit({ profiles }) {
           <li className="edit-Logo" onClick={goHome}>
             <img
               className="edit-imgLogo"
-              src={require("../../img/MainLogo.png")}
+              src={mainLogo}
               alt="Logo"
             />
           </li>

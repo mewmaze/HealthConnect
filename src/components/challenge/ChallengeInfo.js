@@ -1,9 +1,9 @@
 import React from "react";
+import { Box, Typography, Chip, Stack } from "@mui/material";
 import useChallengeUtils from "../../hooks/useChallengeUtils";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import dayjs from "dayjs";
-import "./ChallengeInfo.css";
 
 const ChallengeInfo = ({ challenge }) => {
   const { calculateBadges } = useChallengeUtils();
@@ -14,7 +14,7 @@ const ChallengeInfo = ({ challenge }) => {
   );
   const start = dayjs(challenge.start_date);
   const end = dayjs(challenge.end_date);
-  const today = dayjs().add(3, "day");
+  const today = dayjs();
 
   const renderDay = (props) => {
     const { day, selected, ...other } = props;
@@ -67,9 +67,29 @@ const ChallengeInfo = ({ challenge }) => {
       />
     );
   };
+
   return (
-    <div className="ChallengeInfo">
-      <div className="CalendarWrapper">
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={4}
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Box
+        sx={{
+          "& .MuiDayCalendar-header, & .MuiDayCalendar-weekContainer": {
+            gap: 0,
+          },
+          "& .MuiDayCalendar-weekDayLabel": {
+            width: 36,
+            height: 36,
+            margin: 0,
+          },
+          "& .MuiPickersDay-root": {
+            margin: 0,
+          },
+        }}
+      >
         <DateCalendar
           readOnly
           disableHighlightToday
@@ -77,13 +97,31 @@ const ChallengeInfo = ({ challenge }) => {
             day: renderDay,
           }}
         />
-      </div>
-      <div className="ChallengeInfo-container">
-        <div>챌린지 시작일 : {challenge.start_date}</div>
-        <div>챌린지 종료일 : {challenge.end_date}</div>
-        <div>얻을 수 있는 뱃지 개수 : {badges}</div>
-      </div>
-    </div>
+      </Box>
+      <Stack spacing={2.5}>
+        <Box>
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+            챌린지 시작일
+          </Typography>
+          <Chip label={challenge.start_date} variant="outlined" />
+        </Box>
+        <Box>
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+            챌린지 종료일
+          </Typography>
+          <Chip label={challenge.end_date} variant="outlined" />
+        </Box>
+        <Box>
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+            얻을 수 있는 뱃지
+          </Typography>
+          <Chip
+            label={`${badges}개`}
+            sx={{ bgcolor: "primary.main", color: "white", fontWeight: 700 }}
+          />
+        </Box>
+      </Stack>
+    </Stack>
   );
 };
 

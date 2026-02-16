@@ -1,7 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Paper,
+  Typography,
+  Button,
+  TextField,
+  Stack,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  Alert,
+} from "@mui/material";
 import api from "../../api/api";
-import "./PostDetail.css";
 
 const PostDetail = ({ communities, addComment }) => {
   const { communityId, postId } = useParams();
@@ -15,7 +27,6 @@ const PostDetail = ({ communities, addComment }) => {
   const [editedContent, setEditedContent] = useState("");
 
   useEffect(() => {
-    // 게시글 불러오기
     api
       .get(`/posts/${postId}`)
       .then((response) => {
@@ -25,7 +36,6 @@ const PostDetail = ({ communities, addComment }) => {
       })
       .catch((error) => console.error(error));
 
-    // 댓글 불러오기
     api
       .get(`/posts/${postId}/comments`)
       .then((response) => setComments(response.data))
@@ -100,77 +110,153 @@ const PostDetail = ({ communities, addComment }) => {
     }
   };
 
-  if (!post) return <div>로딩중...</div>;
+  if (!post)
+    return (
+      <Container maxWidth="md" sx={{ mt: 12, textAlign: "center" }}>
+        <Typography>로딩중...</Typography>
+      </Container>
+    );
 
   return (
-    <div>
-      <div className="post-detail">
+    <Container maxWidth="md" sx={{ mt: 8, pb: 4 }}>
+      <Paper sx={{ p: 4 }}>
         {editMode ? (
           <form onSubmit={handleEditSubmit}>
-            <input
-              type="text"
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              required
-            />
-            <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              required
-            ></textarea>
-            <button type="submit">저장</button>
-            <button type="button" onClick={() => setEditMode(false)}>
-              취소
-            </button>
+            <Stack spacing={2}>
+              <TextField
+                label="제목"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                required
+                fullWidth
+              />
+              <TextField
+                label="내용"
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                required
+                fullWidth
+                multiline
+                minRows={4}
+              />
+              <Stack direction="row" spacing={1}>
+                <Button type="submit" variant="contained">
+                  저장
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setEditMode(false)}
+                >
+                  취소
+                </Button>
+              </Stack>
+            </Stack>
           </form>
         ) : (
           <>
-            <h2>{post.title}</h2>
-            <div className="post-meta">
-              <p className="author-info">작성자: {post.user_id}</p>
-              <p className="timestamp">
-                작성 시간: {new Date(post.created_at).toLocaleString()}
-              </p>
-            </div>
-            <p className="content">{post.content}</p>
-            <button className="edit-button" onClick={() => setEditMode(true)}>
-              수정
-            </button>
-            <button className="delete-button" onClick={handleDelete}>
-              삭제
-            </button>
+            <Typography variant="h5" fontWeight="bold" sx={{ pb: 2, borderBottom: "2px solid #e0e0e0" }}>
+              {post.title}
+            </Typography>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{ my: 2 }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                작성자: {post.user_id}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" fontStyle="italic">
+                {new Date(post.created_at).toLocaleString()}
+              </Typography>
+            </Stack>
+            <Paper
+              variant="outlined"
+              sx={{
+                p: 3,
+                my: 2,
+                minHeight: 200,
+                bgcolor: "#fafafa",
+              }}
+            >
+              <Typography sx={{ lineHeight: 1.8 }}>{post.content}</Typography>
+            </Paper>
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                sx={{ bgcolor: "#212121", "&:hover": { bgcolor: "#424242" } }}
+                onClick={() => setEditMode(true)}
+              >
+                수정
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleDelete}
+              >
+                삭제
+              </Button>
+            </Stack>
           </>
         )}
 
-        <h3>댓글</h3>
-        <ul className="comments-list">
-          {comments.map((comment) => (
-            <li key={comment.comment_id}>
-              <p>{comment.content}</p>
-              <div className="comment-meta">
-                <p className="author-info">작성자: {comment.user_id}</p>
-                <p className="timestamp">
-                  작성 시간: {new Date(comment.created_at).toLocaleString()}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <Divider sx={{ my: 3 }} />
 
-        <form onSubmit={handleCommentSubmit}>
-          <textarea
+        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+          댓글
+        </Typography>
+        <List disablePadding>
+          {comments.map((cmt) => (
+            <ListItem
+              key={cmt.comment_id}
+              disablePadding
+              sx={{
+                py: 1.5,
+                px: 2,
+                mb: 1,
+                bgcolor: "#fafafa",
+                borderRadius: 1,
+                display: "block",
+              }}
+            >
+              <Typography>{cmt.content}</Typography>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                sx={{ mt: 0.5 }}
+              >
+                <Typography variant="caption" color="text.secondary">
+                  작성자: {cmt.user_id}
+                </Typography>
+                <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                  {new Date(cmt.created_at).toLocaleString()}
+                </Typography>
+              </Stack>
+            </ListItem>
+          ))}
+        </List>
+
+        <Box component="form" onSubmit={handleCommentSubmit} sx={{ mt: 2 }}>
+          <TextField
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="댓글을 입력하세요"
             required
-          ></textarea>
-          <button className="comment-submit-button" type="submit">
+            fullWidth
+            multiline
+            minRows={2}
+            sx={{ mb: 1 }}
+          />
+          <Button type="submit" variant="contained">
             댓글 작성
-          </button>
-          {errorMessage && <p className="error">{errorMessage}</p>}
-        </form>
-      </div>
-    </div>
+          </Button>
+          {errorMessage && (
+            <Alert severity="error" sx={{ mt: 1 }}>
+              {errorMessage}
+            </Alert>
+          )}
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
