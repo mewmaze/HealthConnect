@@ -1,15 +1,24 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  Stack,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import api from "../../api/api";
 import { AuthContext } from "../../hooks/AuthContext";
-import "../../components/styles.css";
-import "./Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "error" });
 
   const { setCurrentUser, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -48,30 +57,58 @@ const Login = () => {
         password,
       });
 
-      const { token, user } = response.data;
+      const { token, refreshToken, user } = response.data;
 
-      // 토큰,User정보 localStorage에 저장
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
 
-      console.log("Received Token:", token);
-      console.log("User:", user);
-
-      // 현재 사용자 정보를 업데이트
       setToken(token);
       setCurrentUser(user);
 
-      // 상태 초기화
       setEmail("");
       setPassword("");
 
       navigate("/");
-      // navigate(`/myPage/${user.user_id}`); //로그인 후 마이페이지로 이동
     } catch (error) {
       console.error(
         "Error 로그인 실패",
         error.response ? error.response.data : error.message
       );
+      setSnackbar({
+        open: true,
+        message: "이메일 또는 비밀번호가 올바르지 않습니다.",
+        severity: "error",
+      });
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      const response = await api.post("/auth/login", {
+        email: "guest@healthconnect.com",
+        password: "Guest1234!",
+      });
+
+      const { token, refreshToken, user } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
+
+      setToken(token);
+      setCurrentUser(user);
+      navigate("/");
+    } catch {
+      setSnackbar({
+        open: true,
+        message: "게스트 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.",
+        severity: "error",
+      });
     }
   };
 
@@ -80,40 +117,96 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin}>
-        <div className="login-form-group">
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-        </div>
-        {emailError && <p className="error">{emailError}</p>}
-        <div className="login-form-group">
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-        </div>
-        {passwordError && <p className="error">{passwordError}</p>}
-        <button className="login-btn" type="submit">
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "calc(100vh - 200px)",
+        mt: 8,
+      }}
+    >
+      <Paper sx={{ p: 5, width: "100%", maxWidth: 460 }}>
+        <Typography variant="h5" fontWeight="bold" textAlign="center" sx={{ mb: 4 }}>
           로그인
-        </button>
-      </form>
-      <div className="gosignUp">
-        <p>아직 계정이 없으신가요?</p>
-        <button className="gosignUp-btn" onClick={handleSignup}>
-          회원가입 하기
-        </button>
-      </div>
-    </div>
+        </Typography>
+        <form onSubmit={handleLogin}>
+          <Stack spacing={2.5}>
+            <TextField
+              label="이메일"
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+              fullWidth
+              error={!!emailError}
+              helperText={emailError}
+            />
+            <TextField
+              label="비밀번호"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+              fullWidth
+              error={!!passwordError}
+              helperText={passwordError}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              fullWidth
+            >
+              로그인
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              fullWidth
+              onClick={handleGuestLogin}
+              sx={{ color: "text.secondary", borderColor: "#e0e0e0" }}
+            >
+              게스트로 체험하기
+            </Button>
+          </Stack>
+        </form>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ mt: 3 }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            아직 계정이 없으신가요?
+          </Typography>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ bgcolor: "#212121", "&:hover": { bgcolor: "#424242" } }}
+            onClick={handleSignup}
+          >
+            회원가입 하기
+          </Button>
+        </Stack>
+      </Paper>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          severity={snackbar.severity}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 
