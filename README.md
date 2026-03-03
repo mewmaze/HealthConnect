@@ -47,8 +47,7 @@
 - **일정 관리**: [WBS 스케줄표](https://docs.google.com/spreadsheets/d/1fXf6Ovl8LxCDOna9BVicUpL3LJGAyyTx/edit?gid=755731839#gid=755731839)
 
 ## 시스템아키텍처
-
-## ERD
+<img width="1603" height="909" alt="Image" src="https://github.com/user-attachments/assets/7f4dfe36-36fd-4acf-abdb-55308c4bdf06" />
 
 ## 🛠️ 기술 스택
 
