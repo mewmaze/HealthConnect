@@ -4,6 +4,24 @@
 
 
 ## 미리보기
+<table>
+  <tr>
+    <td><img width="400" src="https://github.com/user-attachments/assets/b674f069-ba81-4f55-b8b0-956cf0a1f761" /></td>
+    <td><img width="400" src="https://github.com/user-attachments/assets/958f456a-b7bc-4ba1-9215-a98dadebd7d5" /></td>
+  </tr>
+  <tr>
+    <td><img width="400" src="https://github.com/user-attachments/assets/38abb6b2-0707-4e0b-a5c1-a97b45f16ec7" /></td>
+    <td><img width="400" src="https://github.com/user-attachments/assets/6830ffda-344c-40ae-8574-a58786176940" /></td>
+  </tr>
+  <tr>
+    <td><img width="400" src="https://github.com/user-attachments/assets/8080d342-4698-4492-9741-18ed0b3fddc9" /></td>
+    <td><img width="400" src="https://github.com/user-attachments/assets/334090e5-b2bf-42f0-91f2-c57f8f98c25e" /></td>
+  </tr>
+  <tr>
+    <td><img width="400" src="https://github.com/user-attachments/assets/62ab49a7-9712-419f-864d-8819058ef447" /></td>
+    <td></td>
+  </tr>
+</table>
 
 ## 주요기능
 
