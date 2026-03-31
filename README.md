@@ -2,6 +2,7 @@
 
 운동 정보를 공유하고, 챌린지를 통해 성취를 기록하는 커뮤니티
 
+## 배포 사이트 : https://healthconnect-web.vercel.app/
 
 ## 미리보기
 <table>
